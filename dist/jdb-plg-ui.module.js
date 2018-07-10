@@ -80,4 +80,3 @@ var fill_table_service_2 = require("./core/services/jdb-plg-base/fill-table.serv
 exports.FillTableService = fill_table_service_2.FillTableService;
 var common_method_service_2 = require("./core/services/jdb-plg-base/common-method.service");
 exports.CommonMethodService = common_method_service_2.CommonMethodService;
-//# sourceMappingURL=jdb-plg-ui.module.js.map

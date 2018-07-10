@@ -25,4 +25,3 @@ var AmountReformPipe = (function () {
     return AmountReformPipe;
 }());
 exports.AmountReformPipe = AmountReformPipe;
-//# sourceMappingURL=amount-reform.pipe.js.map

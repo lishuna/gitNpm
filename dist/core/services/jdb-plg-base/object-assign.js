@@ -36,4 +36,3 @@ function objectAssign(target) {
     return to;
 }
 exports.objectAssign = objectAssign;
-//# sourceMappingURL=object-assign.js.map

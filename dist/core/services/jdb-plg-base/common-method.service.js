@@ -51,4 +51,3 @@ var CommonMethodService = (function () {
     return CommonMethodService;
 }());
 exports.CommonMethodService = CommonMethodService;
-//# sourceMappingURL=common-method.service.js.map

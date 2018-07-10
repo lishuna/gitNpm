@@ -82,4 +82,3 @@ var DragDirective = (function () {
     return DragDirective;
 }());
 exports.DragDirective = DragDirective;
-//# sourceMappingURL=drag.directive.js.map

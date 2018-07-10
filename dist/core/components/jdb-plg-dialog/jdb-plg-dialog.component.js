@@ -288,4 +288,3 @@ var JdbPlgDialogComponent = (function () {
     return JdbPlgDialogComponent;
 }());
 exports.JdbPlgDialogComponent = JdbPlgDialogComponent;
-//# sourceMappingURL=jdb-plg-dialog.component.js.map

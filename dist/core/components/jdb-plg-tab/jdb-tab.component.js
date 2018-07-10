@@ -141,4 +141,3 @@ var JdbTabComponent = (function () {
     return JdbTabComponent;
 }());
 exports.JdbTabComponent = JdbTabComponent;
-//# sourceMappingURL=jdb-tab.component.js.map

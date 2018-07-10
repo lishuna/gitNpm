@@ -31,4 +31,3 @@ var JdbPlgToastComponent = (function () {
     return JdbPlgToastComponent;
 }());
 exports.JdbPlgToastComponent = JdbPlgToastComponent;
-//# sourceMappingURL=jdb-plg-toast.component.js.map

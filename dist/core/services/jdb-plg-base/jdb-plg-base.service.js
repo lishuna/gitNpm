@@ -209,4 +209,3 @@ var JdbPlgBaseService = (function () {
     return JdbPlgBaseService;
 }());
 exports.JdbPlgBaseService = JdbPlgBaseService;
-//# sourceMappingURL=jdb-plg-base.service.js.map

@@ -6,4 +6,3 @@ function strictUriEncode(str) {
     });
 }
 exports.strictUriEncode = strictUriEncode;
-//# sourceMappingURL=strict-uri-encode.js.map

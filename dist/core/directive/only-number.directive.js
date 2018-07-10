@@ -64,4 +64,3 @@ var OnlyNumberDirective = (function () {
     return OnlyNumberDirective;
 }());
 exports.OnlyNumberDirective = OnlyNumberDirective;
-//# sourceMappingURL=only-number.directive.js.map

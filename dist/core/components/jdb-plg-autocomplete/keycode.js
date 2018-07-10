@@ -5,4 +5,3 @@ exports.keyCode = {
     DOWN: 40,
     ENTER: 13
 };
-//# sourceMappingURL=keycode.js.map

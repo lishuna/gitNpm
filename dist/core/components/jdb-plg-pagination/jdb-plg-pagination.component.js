@@ -280,4 +280,3 @@ var JdbPlgPaginationComponent = (function () {
     return JdbPlgPaginationComponent;
 }());
 exports.JdbPlgPaginationComponent = JdbPlgPaginationComponent;
-//# sourceMappingURL=jdb-plg-pagination.component.js.map

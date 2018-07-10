@@ -38,4 +38,3 @@ var ShowPictureComponent = (function () {
     return ShowPictureComponent;
 }());
 exports.ShowPictureComponent = ShowPictureComponent;
-//# sourceMappingURL=show-picture.component.js.map

@@ -597,4 +597,3 @@ var JdbPlgSelectComponent = (function () {
     return JdbPlgSelectComponent;
 }());
 exports.JdbPlgSelectComponent = JdbPlgSelectComponent;
-//# sourceMappingURL=jdb-plg-select.component.js.map

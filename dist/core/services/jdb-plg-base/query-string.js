@@ -60,4 +60,3 @@ function jQueryLikeParamSerializer(params) {
     }
 }
 exports.jQueryLikeParamSerializer = jQueryLikeParamSerializer;
-//# sourceMappingURL=query-string.js.map

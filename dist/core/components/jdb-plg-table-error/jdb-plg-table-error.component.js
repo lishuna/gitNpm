@@ -31,4 +31,3 @@ var JdbPlgTableErrorComponent = (function () {
     return JdbPlgTableErrorComponent;
 }());
 exports.JdbPlgTableErrorComponent = JdbPlgTableErrorComponent;
-//# sourceMappingURL=jdb-plg-table-error.component.js.map

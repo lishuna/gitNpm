@@ -22,4 +22,3 @@ var ProvinceReformPipe = (function () {
     return ProvinceReformPipe;
 }());
 exports.ProvinceReformPipe = ProvinceReformPipe;
-//# sourceMappingURL=province-reform.pipe.js.map

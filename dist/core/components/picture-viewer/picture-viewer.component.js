@@ -291,4 +291,3 @@ var PictureViewerComponent = (function () {
     return PictureViewerComponent;
 }());
 exports.PictureViewerComponent = PictureViewerComponent;
-//# sourceMappingURL=picture-viewer.component.js.map

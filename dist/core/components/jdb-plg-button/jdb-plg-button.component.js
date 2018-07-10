@@ -98,4 +98,3 @@ var JdbPlgButtonComponent = (function () {
     return JdbPlgButtonComponent;
 }());
 exports.JdbPlgButtonComponent = JdbPlgButtonComponent;
-//# sourceMappingURL=jdb-plg-button.component.js.map
