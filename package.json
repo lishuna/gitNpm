@@ -1,65 +1,65 @@
 {
-  "name": "@jdb-ui/core",
-  "version": "1.0.1",
-  "description": "",
-  "main": "./dist/jdb-plg-ui.module.js",
-  "typings": "./dist/jdb-plg-ui.module.js",
-  "scripts": {
-    "tsc": "tsc"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@git.jdb-dev.com:plg/jdbBaseUICore.git"
-  },
-  "files": [
-    "dist/*.js",
-    "dist/*.d.ts",
-    "dist/**/*.js",
-    "dist/**/*.d.ts",
-    "README.md",
-    "LICENSE",
-    "package.json",
-    "tsconfig.json"
-  ],
-  "author": "",
-  "license": "ISC",
-  "peerDependencies": {
-    "@angular/animations": "^5.2.0",
-    "@angular/common": "^5.2.0",
-    "@angular/compiler": "^5.2.0",
-    "@angular/core": "^5.2.0",
-    "@angular/forms": "^5.2.0",
-    "@angular/http": "^5.2.0",
-    "@angular/platform-browser": "^5.2.0",
-    "@angular/platform-browser-dynamic": "^5.2.0",
-    "@angular/router": "^5.2.0",
-    "core-js": "^2.4.1",
-    "rxjs": "^5.5.6",
-    "zone.js": "^0.8.19",
-    "ng2-cookies": "^1.0.12"
-  },
-  "dependencies": {
-    "@angular/animations": "^5.2.0",
-    "@angular/common": "^5.2.0",
-    "@angular/compiler": "^5.2.0",
-    "@angular/core": "^5.2.0",
-    "@angular/forms": "^5.2.0",
-    "@angular/http": "^5.2.0",
-    "@angular/platform-browser": "^5.2.0",
-    "@angular/platform-browser-dynamic": "^5.2.0",
-    "@angular/router": "^5.2.0",
-    "core-js": "^2.4.1",
-    "rxjs": "^5.5.6",
-    "zone.js": "^0.8.19",
-    "ng2-cookies": "^1.0.12"
-  },
-  "devDependencies": {
-    "browserify": "^16.2.2",
-    "del": "^3.0.0",
-    "gulp": "^3.9.1",
-    "gulp-typescript": "^5.0.0-alpha.3",
-    "tsify": "^4.0.0",
-    "typescript": "^2.9.2",
-    "vinyl-source-stream": "^2.0.0"
-  }
+    "name": "@test-ui/core",
+    "version": "1.0.1",
+    "description": "",
+    "main": "./dist/jdb-plg-ui.module.js",
+    "typings": "./dist/jdb-plg-ui.module.js",
+    "scripts": {
+        "tsc": "tsc"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@git.jdb-dev.com:plg/jdbBaseUICore.git"
+    },
+    "files": [
+        "dist/*.js",
+        "dist/*.d.ts",
+        "dist/**/*.js",
+        "dist/**/*.d.ts",
+        "README.md",
+        "LICENSE",
+        "package.json",
+        "tsconfig.json"
+    ],
+    "author": "",
+    "license": "ISC",
+    "peerDependencies": {
+        "@angular/animations": "^5.2.0",
+        "@angular/common": "^5.2.0",
+        "@angular/compiler": "^5.2.0",
+        "@angular/core": "^5.2.0",
+        "@angular/forms": "^5.2.0",
+        "@angular/http": "^5.2.0",
+        "@angular/platform-browser": "^5.2.0",
+        "@angular/platform-browser-dynamic": "^5.2.0",
+        "@angular/router": "^5.2.0",
+        "core-js": "^2.4.1",
+        "rxjs": "^5.5.6",
+        "zone.js": "^0.8.19",
+        "ng2-cookies": "^1.0.12"
+    },
+    "dependencies": {
+        "@angular/animations": "^5.2.0",
+        "@angular/common": "^5.2.0",
+        "@angular/compiler": "^5.2.0",
+        "@angular/core": "^5.2.0",
+        "@angular/forms": "^5.2.0",
+        "@angular/http": "^5.2.0",
+        "@angular/platform-browser": "^5.2.0",
+        "@angular/platform-browser-dynamic": "^5.2.0",
+        "@angular/router": "^5.2.0",
+        "core-js": "^2.4.1",
+        "rxjs": "^5.5.6",
+        "zone.js": "^0.8.19",
+        "ng2-cookies": "^1.0.12"
+    },
+    "devDependencies": {
+        "browserify": "^16.2.2",
+        "del": "^3.0.0",
+        "gulp": "^3.9.1",
+        "gulp-typescript": "^5.0.0-alpha.3",
+        "tsify": "^4.0.0",
+        "typescript": "^2.9.2",
+        "vinyl-source-stream": "^2.0.0"
+    }
 }
