@@ -20,8 +20,8 @@
         "LICENSE",
         "package.json",
         "tsconfig.json",
-        "dist/*.html",
-        "dist/*.scss"
+        "dist/**/*.html",
+        "dist/**/*.scss"
     ],
     "author": "",
     "license": "ISC",
