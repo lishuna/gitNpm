@@ -19,7 +19,9 @@
         "README.md",
         "LICENSE",
         "package.json",
-        "tsconfig.json"
+        "tsconfig.json",
+        "dist/*.html",
+        "dist/*.scss"
     ],
     "author": "",
     "license": "ISC",
