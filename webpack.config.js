@@ -102,32 +102,9 @@ const postcssPlugins = function(loader) {
 };
 
 module.exports = {
-    "resolve": {
-        "extensions": [
-            ".ts",
-            ".js"
-        ],
-        "symlinks": false,
-        "modules": [
-            "./src",
-            "./node_modules"
-        ],
-        "alias": rxPaths(),
-        "mainFields": [
-            "browser",
-            "module",
-            "main"
-        ]
-    },
-    "resolveLoader": {
-        "modules": [
-            "./node_modules"
-        ],
-        "alias": rxPaths()
-    },
     entry: './jdb-plg-ui.module.ts',
     output: {
-        filename: 'jdb-ui.bundle.js',
+        filename: 'jdb-ui.umd.js',
         path: path.join(process.cwd(), "dist"),
         libraryTarget: "umd",
     },
@@ -136,7 +113,7 @@ module.exports = {
         rules: [{
                 test: /\.tsx?$/,
                 use: 'ts-loader',
-                exclude: /node_modules/
+                exclude: ['node_modules', 'dist']
             },
             {
                 "test": /\.html$/,
@@ -144,7 +121,8 @@ module.exports = {
             },
             {
                 "test": /\.ts$/,
-                "loader": "@ngtools/webpack"
+                "loader": "@ngtools/webpack",
+                exclude: ['node_modules', 'dist']
             },
             {
                 "test": /\.scss$|\.sass$/,
