@@ -2,9 +2,8 @@
     "name": "@test-ui/core",
     "version": "1.0.1",
     "description": "",
-    "private": true,
-    "typings": "./dist/jdb-ui.bundle.js",
-    "main": "./dist/jdb-ui.bundle.js",
+    "typings": "./dist/jdb-ui.umd.js",
+    "main": "./dist/jdb-ui.umd.js",
     "scripts": {
         "start": "webpack"
     },
