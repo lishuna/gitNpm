@@ -4,12 +4,15 @@ const { ScriptsWebpackPlugin, NamedLazyChunksWebpackPlugin, BaseHrefWebpackPlugi
 const autoprefixer = require('autoprefixer');
 const postcssUrl = require('postcss-url');
 const postcssImports = require('postcss-import');
+const rxPaths = require('rxjs/_esm5/path-mapping');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+
 const maximumInlineSize = 10;
 const projectRoot = process.cwd();
 const baseHref = "";
 const deployUrl = "";
 const hashFormat = { "chunk": "", "extract": "", "file": ".[hash:20]", "script": "" };
-
+console.log(process.cwd() + '=============================');
 const postcssPlugins = function(loader) {
     return [
         postcssImports({
@@ -99,14 +102,42 @@ const postcssPlugins = function(loader) {
 };
 
 module.exports = {
+    "resolve": {
+        "extensions": [
+            ".ts",
+            ".js"
+        ],
+        "symlinks": false,
+        "modules": [
+            "./src",
+            "./node_modules"
+        ],
+        "alias": rxPaths(),
+        "mainFields": [
+            "browser",
+            "module",
+            "main"
+        ]
+    },
+    "resolveLoader": {
+        "modules": [
+            "./node_modules"
+        ],
+        "alias": rxPaths()
+    },
     entry: './jdb-plg-ui.module.ts',
+    output: {
+        filename: 'jdb-ui.bundle.js',
+        path: path.join(process.cwd(), "dist"),
+        libraryTarget: "umd",
+    },
+    devtool: 'inline-source-map',
     module: {
-        rules: [
-            // {
-            //     test: /\.tsx?$/,
-            //     use: 'ts-loader',
-            //     exclude: /node_modules/
-            // },
+        rules: [{
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/
+            },
             {
                 "test": /\.html$/,
                 "loader": "raw-loader"
@@ -115,29 +146,6 @@ module.exports = {
                 "test": /\.ts$/,
                 "loader": "@ngtools/webpack"
             },
-            // {
-            //     "test": /\.scss$|\.sass$/,
-            //     "use": [{
-            //             "loader": "raw-loader"
-            //         },
-            //         {
-            //             "loader": "postcss-loader",
-            //             "options": {
-            //                 "ident": "embedded",
-            //                 "plugins": postcssPlugins,
-            //                 "sourceMap": true
-            //             }
-            //         },
-            //         {
-            //             "loader": "sass-loader",
-            //             "options": {
-            //                 "sourceMap": true,
-            //                 "precision": 8,
-            //                 "includePaths": []
-            //             }
-            //         }
-            //     ]
-            // },
             {
                 "test": /\.scss$|\.sass$/,
                 "use": [
@@ -185,12 +193,8 @@ module.exports = {
     resolve: {
         extensions: ['.tsx', '.ts', '.js']
     },
-    output: {
-        filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist'),
-        libraryTarget: "umd",
-    },
     plugins: [
+        new CleanWebpackPlugin(['dist']),
         new AngularCompilerPlugin({
             "mainPath": "jdb-plg-ui.module.ts",
             "platform": 0,

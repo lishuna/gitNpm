@@ -3,7 +3,8 @@
     "version": "1.0.1",
     "description": "",
     "private": true,
-    "typings": "./dist/jdb-plg-ui.module.js",
+    "typings": "./dist/jdb-ui.bundle.js",
+    "main": "./dist/jdb-ui.bundle.js",
     "scripts": {
         "start": "webpack"
     },
@@ -19,9 +20,7 @@
         "README.md",
         "LICENSE",
         "package.json",
-        "tsconfig.json",
-        "dist/**/*.html",
-        "dist/**/*.scss"
+        "tsconfig.json"
     ],
     "author": "",
     "license": "ISC",
@@ -53,7 +52,6 @@
         "core-js": "^2.4.1",
         "ng2-cookies": "^1.0.12",
         "rxjs": "^5.5.6",
-        "ts-loader": "^4.4.2",
         "zone.js": "^0.8.19"
     },
     "devDependencies": {
@@ -62,6 +60,7 @@
         "@ngtools/webpack": "^1.10.2",
         "autoprefixer": "^8.6.5",
         "browserify": "^16.2.2",
+        "clean-webpack-plugin": "^0.1.19",
         "del": "^3.0.0",
         "gulp": "^3.9.1",
         "gulp-typescript": "^5.0.0-alpha.3",
@@ -72,6 +71,8 @@
         "raw-loader": "^0.5.1",
         "sass-loader": "^6.0.7",
         "style-loader": "^0.21.0",
+        "ts-loader": "^3.5.0",
+        "ts-node": "^7.0.0",
         "tsify": "^4.0.0",
         "typescript": "^2.9.2",
         "vinyl-source-stream": "^2.0.0",
