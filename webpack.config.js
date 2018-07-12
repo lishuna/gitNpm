@@ -102,7 +102,12 @@ const postcssPlugins = function(loader) {
 };
 
 module.exports = {
-    entry: './jdb-plg-ui.module.ts',
+    entry: {
+        main: './jdb-plg-ui.module.ts',
+        styles: [
+            "./core/scss/base.scss"
+        ]
+    },
     output: {
         filename: 'jdb-ui.umd.js',
         path: path.join(process.cwd(), "dist"),
@@ -115,6 +120,22 @@ module.exports = {
                 "loader": "raw-loader"
             },
             {
+                "test": /\.(eot|svg|cur)$/,
+                "loader": "file-loader",
+                "options": {
+                    "name": "[name].[hash:20].[ext]",
+                    "limit": 10000
+                }
+            },
+            {
+                "test": /\.(jpg|png|webp|gif|otf|ttf|woff|woff2|ani)$/,
+                "loader": "url-loader",
+                "options": {
+                    "name": "[name].[hash:20].[ext]",
+                    "limit": 10000
+                }
+            },
+            {
                 "test": /\.ts$/,
                 "loader": "@ngtools/webpack",
                 exclude: [/node_modules/, /\.(spec)\.ts$/]
@@ -125,10 +146,69 @@ module.exports = {
                 exclude: ['node_modules', 'dist']
             },
             {
-                "test": /\.scss$|\.sass$/,
-                "use": [
-                    "style-loader",
+                "test": /\.css$/,
+                "use": [{
+                        "loader": "raw-loader"
+                    },
                     {
+                        "loader": "postcss-loader",
+                        "options": {
+                            "ident": "embedded",
+                            "plugins": postcssPlugins,
+                            "sourceMap": true
+                        }
+                    }
+                ]
+            },
+            {
+                "test": /\.less$/,
+                "use": [{
+                        "loader": "raw-loader"
+                    },
+                    {
+                        "loader": "postcss-loader",
+                        "options": {
+                            "ident": "embedded",
+                            "plugins": postcssPlugins,
+                            "sourceMap": true
+                        }
+                    },
+                    {
+                        "loader": "less-loader",
+                        "options": {
+                            "sourceMap": true
+                        }
+                    }
+                ]
+            },
+            {
+                "test": /\.styl$/,
+                "use": [{
+                        "loader": "raw-loader"
+                    },
+                    {
+                        "loader": "postcss-loader",
+                        "options": {
+                            "ident": "embedded",
+                            "plugins": postcssPlugins,
+                            "sourceMap": true
+                        }
+                    },
+                    {
+                        "loader": "stylus-loader",
+                        "options": {
+                            "sourceMap": true,
+                            "paths": []
+                        }
+                    }
+                ]
+            },
+            {
+                "test": /\.scss$|\.sass$/,
+                "exclude": [
+                    path.join(process.cwd(), "core/scss/base.scss")
+                ],
+                "use": [{
                         "loader": "raw-loader"
                     },
                     {
@@ -150,7 +230,10 @@ module.exports = {
                 ]
             },
             {
-                "test": /\.css$/,
+                "test": /\.scss$|\.sass$/,
+                "include": [
+                    path.join(process.cwd(), "core/scss/base.scss")
+                ],
                 "use": [
                     "style-loader",
                     {
@@ -162,6 +245,14 @@ module.exports = {
                             "ident": "embedded",
                             "plugins": postcssPlugins,
                             "sourceMap": true
+                        }
+                    },
+                    {
+                        "loader": "sass-loader",
+                        "options": {
+                            "sourceMap": true,
+                            "precision": 8,
+                            "includePaths": []
                         }
                     }
                 ]
