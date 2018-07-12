@@ -12,7 +12,7 @@ const projectRoot = process.cwd();
 const baseHref = "";
 const deployUrl = "";
 const hashFormat = { "chunk": "", "extract": "", "file": ".[hash:20]", "script": "" };
-console.log(process.cwd() + '=============================');
+console.log(process.cwd() + '=============================' + path.join(projectRoot, "jdb-plg-ui.module#JdbPlgUiModule"));
 const postcssPlugins = function(loader) {
     return [
         postcssImports({
@@ -111,17 +111,17 @@ module.exports = {
     devtool: 'inline-source-map',
     module: {
         rules: [{
-                test: /\.tsx?$/,
-                use: 'ts-loader',
-                exclude: ['node_modules', 'dist']
-            },
-            {
                 "test": /\.html$/,
                 "loader": "raw-loader"
             },
             {
                 "test": /\.ts$/,
                 "loader": "@ngtools/webpack",
+                exclude: [/node_modules/, /\.(spec)\.ts$/]
+            },
+            {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
                 exclude: ['node_modules', 'dist']
             },
             {
@@ -169,16 +169,22 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js']
+        extensions: ['.ts', '.js'],
+        modules: [
+            path.resolve('./'),
+            path.resolve('./node_modules')
+        ],
+        alias: {
+            // 'ng2-charts/charts/charts': 'node_modules/ng2-charts/bundles/ng2-charts.umd.min.js'
+            //'ng2-dragula': 'node_modules/ng2-dragula/bundles/ng2-dragula.umd.min.js' 
+        }
     },
     plugins: [
         new CleanWebpackPlugin(['dist']),
         new AngularCompilerPlugin({
             "mainPath": "jdb-plg-ui.module.ts",
+            // "entryModule": path.join(projectRoot, "jdb-plg-ui.module#JdbPlgUiModule"),
             "platform": 0,
-            // "hostReplacementPaths": {
-            //     "environments/environment.ts": "environments/environment.dev.ts"
-            // },
             "sourceMap": true,
             "tsConfigPath": "./tsconfig.app.json",
             "skipCodeGeneration": true,

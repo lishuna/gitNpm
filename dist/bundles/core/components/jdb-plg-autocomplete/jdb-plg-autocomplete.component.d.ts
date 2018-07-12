@@ -1,0 +1,30 @@
+import { OnInit, EventEmitter, ElementRef, Renderer2, AfterViewInit } from '@angular/core';
+import { AutoCompleteResult } from './autocomplete.result';
+export declare class JdbPlgAutocompleteComponent implements OnInit, AfterViewInit {
+    private el;
+    private jdbPlgBaseApi;
+    private render;
+    _searchParam: string;
+    _serverApi: string;
+    _searchWord: string;
+    items: AutoCompleteResult[];
+    _listShow: boolean;
+    activeIndex: number;
+    jdbPlaceHolder: string;
+    width: string;
+    onSelected: EventEmitter<AutoCompleteResult>;
+    constructor(el: ElementRef, jdbPlgBaseApi: any, render: Renderer2);
+    ngOnInit(): void;
+    ngAfterViewInit(): void;
+    OnClick(el: HTMLElement): void;
+    OnKeyDown(event: KeyboardEvent): void;
+    OnPaste(event: Event): void;
+    setSelectClass(obj: any): boolean;
+    setSearchWord(): void;
+    selectedItem(item: any, index: any): void;
+    popupList(): void;
+    debounce(fn: any, wait: any, immediate: any): () => any;
+    jdbSearchParam: any;
+    jdbServerApi: any;
+    jdbSearchWord: any;
+}
