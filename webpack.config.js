@@ -1,6 +1,13 @@
 const path = require('path');
-const { AngularCompilerPlugin } = require('@ngtools/webpack');
-const { ScriptsWebpackPlugin, NamedLazyChunksWebpackPlugin, BaseHrefWebpackPlugin, PostcssCliResources } = require('@angular/cli/plugins/webpack');
+const {
+    AngularCompilerPlugin
+} = require('@ngtools/webpack');
+const {
+    ScriptsWebpackPlugin,
+    NamedLazyChunksWebpackPlugin,
+    BaseHrefWebpackPlugin,
+    PostcssCliResources
+} = require('@angular/cli/plugins/webpack');
 const autoprefixer = require('autoprefixer');
 const postcssUrl = require('postcss-url');
 const postcssImports = require('postcss-import');
@@ -11,7 +18,12 @@ const maximumInlineSize = 10;
 const projectRoot = process.cwd();
 const baseHref = "";
 const deployUrl = "";
-const hashFormat = { "chunk": "", "extract": "", "file": ".[hash:20]", "script": "" };
+const hashFormat = {
+    "chunk": "",
+    "extract": "",
+    "file": ".[hash:20]",
+    "script": ""
+};
 console.log(process.cwd() + '=============================' + path.join(projectRoot, "jdb-plg-ui.module#JdbPlgUiModule"));
 const postcssPlugins = function(loader) {
     return [
@@ -56,16 +68,24 @@ const postcssPlugins = function(loader) {
             }
         }),
         postcssUrl({
-            filter: ({ url }) => url.startsWith('~'),
-            url: ({ url }) => {
+            filter: ({
+                url
+            }) => url.startsWith('~'),
+            url: ({
+                url
+            }) => {
                 const fullPath = path.join(projectRoot, 'node_modules', url.substr(1));
                 return path.relative(loader.context, fullPath).replace(/\\/g, '/');
             }
         }),
         postcssUrl([{
                 // Only convert root relative URLs, which CSS-Loader won't process into require().
-                filter: ({ url }) => url.startsWith('/') && !url.startsWith('//'),
-                url: ({ url }) => {
+                filter: ({
+                    url
+                }) => url.startsWith('/') && !url.startsWith('//'),
+                url: ({
+                    url
+                }) => {
                     if (deployUrl.match(/:\/\//) || deployUrl.startsWith('/')) {
                         // If deployUrl is absolute or root relative, ignore baseHref & use deployUrl as is.
                         return `${deployUrl.replace(/\/$/, '')}${url}`;
@@ -90,14 +110,18 @@ const postcssPlugins = function(loader) {
                 maxSize: maximumInlineSize,
                 fallback: 'rebase',
             },
-            { url: 'rebase' },
+            {
+                url: 'rebase'
+            },
         ]),
         PostcssCliResources({
             deployUrl: loader.loaders[loader.loaderIndex].options.ident == 'extracted' ? '' : deployUrl,
             loader,
             filename: `[name]${hashFormat.file}.[ext]`,
         }),
-        autoprefixer({ grid: true }),
+        autoprefixer({
+            grid: true
+        }),
     ];
 };
 
@@ -205,9 +229,7 @@ module.exports = {
             },
             {
                 "test": /\.scss$|\.sass$/,
-                "exclude": [
-                    path.join(process.cwd(), "core/scss/base.scss")
-                ],
+                exclude: /node_modules/,
                 "use": [{
                         "loader": "raw-loader"
                     },
