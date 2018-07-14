@@ -1,4 +1,3 @@
-export * from './core/components/jdb-plg-autocomplete/jdb-plg-autocomplete.component';
 export * from './core/components/jdb-plg-button/jdb-plg-button.component';
 export * from './core/components/jdb-plg-dialog/jdb-plg-dialog.component';
 export * from './core/components/jdb-plg-input/jdb-plg-input.component';
