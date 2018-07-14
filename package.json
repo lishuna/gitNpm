@@ -3,7 +3,9 @@
     "version": "1.0.1",
     "description": "",
     "typings": "./dist/jdb-ui.umd.js",
-    "main": "./dist/jdb-ui.umd.js",
+    "types": "./dist/bundles/jdb-plg-ui.module.d.ts",
+    "main": "./dist/jdb-plg-ui.umd.js",
+    "module": "./esm5/jdb-plg-ui.js",
     "scripts": {
         "start": "webpack"
     },
@@ -67,6 +69,7 @@
         "gulp": "^3.9.1",
         "gulp-typescript": "^5.0.0-alpha.3",
         "less-loader": "^4.1.0",
+        "ngc-webpack": "^4.1.2",
         "node-sass": "^4.9.2",
         "postcss-import": "^11.1.0",
         "postcss-loader": "^2.1.6",
@@ -74,6 +77,7 @@
         "raw-loader": "^0.5.1",
         "reflect-metadata": "^0.1.12",
         "sass-loader": "^6.0.7",
+        "source-map-loader": "^0.2.3",
         "style-loader": "^0.21.0",
         "stylus-loader": "^3.0.2",
         "ts-loader": "^3.5.0",
