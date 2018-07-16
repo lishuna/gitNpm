@@ -1,0 +1,24 @@
+{
+    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "project": {
+        "name": "jdb-plg-ui"
+    },
+    "apps": [{
+        "root": "./",
+        "outDir": "dist",
+        "main": "jdb-plg-ui.module.ts",
+        "tsconfig": "tsconfig.app.json",
+        "index": "index.html"
+    }],
+    "defaults": {
+        "styleExt": "css",
+        "component": {
+            "flat": true,
+            "spec": true,
+            "inlineStyle": false,
+            "inlineTemplate": false,
+            "viewEncapsulation": "Emulated",
+            "changeDetection": "OnPush"
+        }
+    }
+}

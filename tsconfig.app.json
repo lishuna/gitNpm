@@ -4,6 +4,7 @@
         "outDir": "../",
         "baseUrl": "./",
         "module": "es2015",
+        "target": "es2015",
         "types": []
     },
     "exclude": [

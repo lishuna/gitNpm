@@ -3,11 +3,14 @@
     "version": "1.0.1",
     "description": "",
     "typings": "./dist/jdb-plg-ui.module.d.ts",
+    "types": "./dist/jdb-plg-ui.module.d.ts",
     "main": "./dist/jdb-plg-ui.umd.js",
-    "module": "./dist/jdb-plg-ui.module.d.ts",
     "scripts": {
-        "start": "webpack"
+        "start": "webpack",
+        "build": "ng build",
+        "packagr": "ng-packagr -p ng-package.json"
     },
+    "private": true,
     "repository": {
         "type": "git",
         "url": "git@git.jdb-dev.com:plg/jdbBaseUICore.git"
@@ -19,7 +22,8 @@
         "dist/**/*.d.ts",
         "README.md",
         "LICENSE",
-        "package.json"
+        "package.json",
+        "tsconfig.json"
     ],
     "author": "",
     "license": "ISC",
@@ -59,6 +63,7 @@
         "@angular/compiler-cli": "^5.2.11",
         "@angular/language-service": "^5.2.11",
         "@ngtools/webpack": "^1.10.2",
+        "angular-package-builder": "^2.0.0",
         "autoprefixer": "^8.6.5",
         "browserify": "^16.2.2",
         "clean-webpack-plugin": "^0.1.19",
@@ -67,6 +72,7 @@
         "gulp": "^3.9.1",
         "gulp-typescript": "^5.0.0-alpha.3",
         "less-loader": "^4.1.0",
+        "ng-packagr": "^3.0.3",
         "ngc-webpack": "^4.1.2",
         "node-sass": "^4.9.2",
         "postcss-import": "^11.1.0",

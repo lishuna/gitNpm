@@ -140,6 +140,7 @@ module.exports = {
         umdNamedDefine: true
     },
     devtool: 'source-map',
+    mode: "development",
     module: {
         rules: [{
                 "test": /\.html$/,
