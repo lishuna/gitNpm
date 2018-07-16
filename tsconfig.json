@@ -19,9 +19,9 @@
         // "flatModuleId": "jdb-ui",
         // "skipTemplateCodegen": true
     },
-    "files": [
-        "./jdb-plg-ui.module.ts"
-    ],
+    // "files": [
+    //     "./jdb-plg-ui.module.ts"
+    // ],
     "exclude": [
         "node_modules",
         "dist"
