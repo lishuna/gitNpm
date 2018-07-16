@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "outDir": "./",
+        "outDir": "./bundles",
         "baseUrl": "./",
         "declaration": true,
         "experimentalDecorators": true,

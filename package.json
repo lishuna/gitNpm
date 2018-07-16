@@ -2,7 +2,7 @@
     "name": "@test-ui/core",
     "version": "1.0.1",
     "description": "",
-    "typings": "./dist/jdb-ui.umd.js",
+    "typings": "./dist/jdb-plg-ui.module.d.ts",
     "types": "./dist/jdb-plg-ui.module.d.ts",
     "main": "./dist/jdb-plg-ui.umd.js",
     "module": "./dist/jdb-plg-ui.module.d.ts",
