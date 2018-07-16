@@ -12,7 +12,8 @@
         "sourceMap": true
     },
     "angularCompilerOptions": {
-        "skipMetadataEmit": false,
+        // "skipMetadataEmit": false,
+        // "skipCodeGeneration": true,
         // "strictMetadataEmit": true,
         // "flatModuleOutFile": "index.js",
         // "flatModuleId": "jdb-ui",

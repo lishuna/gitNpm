@@ -129,9 +129,9 @@ const postcssPlugins = function(loader) {
 module.exports = {
     entry: {
         'jdb-plg-ui': './jdb-plg-ui.module.ts',
-        styles: [
-            "./core/scss/base.scss"
-        ]
+        // styles: [
+        //     "./core/scss/base.scss"
+        // ]
     },
     output: {
         filename: '[name].umd.js',
@@ -308,12 +308,8 @@ module.exports = {
             "entryModule": "jdb-plg-ui.module#JdbPlgUiModule",
             "sourceMap": true,
             "tsConfigPath": "./tsconfig.json",
+            "skipCodeGeneration": true,
             "compilerOptions": {
-                "skipCodeGeneration": true,
-                "skipTemplateCodegen": true,
-                "skipMetadataEmit": false,
-                "genDir": "./ngfactory",
-                "strictInjectionParameters": false,
                 "preserveSymlinks": true
             }
         })
