@@ -19,8 +19,7 @@
         "dist/**/*.d.ts",
         "README.md",
         "LICENSE",
-        "package.json",
-        "tsconfig.json"
+        "package.json"
     ],
     "author": "",
     "license": "ISC",
