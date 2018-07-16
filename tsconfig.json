@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "outDir": "./",
+        "outDir": "./src",
         "baseUrl": "./",
         "declaration": true,
         "experimentalDecorators": true,

@@ -3,9 +3,9 @@
     "version": "1.0.1",
     "description": "",
     "typings": "./dist/jdb-ui.umd.js",
-    "types": "./dist/jdb-plg-ui.module.d.ts",
+    "types": "./dist/src/jdb-plg-ui.module.d.ts",
     "main": "./dist/jdb-plg-ui.umd.js",
-    "module": "./esm5/jdb-plg-ui.d.ts",
+    "module": "./esm5/src/jdb-plg-ui.module.d.ts",
     "scripts": {
         "start": "webpack"
     },
