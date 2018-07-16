@@ -2,10 +2,10 @@
     "name": "@test-ui/core",
     "version": "1.0.1",
     "description": "",
-    "typings": "./bundles/jdb-ui.umd.js",
-    "types": "./bundles/jdb-plg-ui.module.d.ts",
-    "main": "./bundles/jdb-plg-ui.umd.js",
-    "module": "./bundles/jdb-plg-ui.module.d.ts",
+    "typings": "./dist/jdb-ui.umd.js",
+    "types": "./dist/jdb-plg-ui.module.d.ts",
+    "main": "./dist/jdb-plg-ui.umd.js",
+    "module": "./dist/jdb-plg-ui.module.d.ts",
     "scripts": {
         "start": "webpack"
     },
