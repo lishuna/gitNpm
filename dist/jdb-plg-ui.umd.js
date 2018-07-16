@@ -397,7 +397,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var isFunction_1 = __webpack_require__(30);
 var Subscription_1 = __webpack_require__(6);
-var Observer_1 = __webpack_require__(68);
+var Observer_1 = __webpack_require__(69);
 var rxSubscriber_1 = __webpack_require__(31);
 /**
  * Implements the {@link Observer} interface and extends the
@@ -668,9 +668,9 @@ function isTrustedSubscriber(obj) {
 "use strict";
 
 var root_1 = __webpack_require__(10);
-var isArrayLike_1 = __webpack_require__(69);
-var isPromise_1 = __webpack_require__(70);
-var isObject_1 = __webpack_require__(66);
+var isArrayLike_1 = __webpack_require__(70);
+var isPromise_1 = __webpack_require__(71);
+var isObject_1 = __webpack_require__(67);
 var Observable_1 = __webpack_require__(0);
 var iterator_1 = __webpack_require__(19);
 var InnerSubscriber_1 = __webpack_require__(194);
@@ -1055,7 +1055,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_observable_merge__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_observable_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_observable_merge__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_share__ = __webpack_require__(72);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_share__ = __webpack_require__(73);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_share___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_operator_share__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Subject__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_Subject__);
@@ -7630,7 +7630,7 @@ var SystemJsNgModuleLoader = /** @class */ (function () {
         if (exportName === undefined) {
             exportName = 'default';
         }
-        return __webpack_require__(76)(module)
+        return __webpack_require__(77)(module)
             .then(function (module) { return module[exportName]; })
             .then(function (type) { return checkNotEmpty(type, module, exportName); })
             .then(function (type) { return _this._compiler.compileModuleAsync(type); });
@@ -7650,7 +7650,7 @@ var SystemJsNgModuleLoader = /** @class */ (function () {
             exportName = 'default';
             factoryClassSuffix = '';
         }
-        return __webpack_require__(76)(this._config.factoryPathPrefix + module + this._config.factoryPathSuffix)
+        return __webpack_require__(77)(this._config.factoryPathPrefix + module + this._config.factoryPathSuffix)
             .then(function (module) { return module[exportName + factoryClassSuffix]; })
             .then(function (factory) { return checkNotEmpty(factory, module, exportName); });
     };
@@ -20407,11 +20407,11 @@ function transition$$1(stateChangeExpr, steps) {
 "use strict";
 
 var isArray_1 = __webpack_require__(12);
-var isObject_1 = __webpack_require__(66);
+var isObject_1 = __webpack_require__(67);
 var isFunction_1 = __webpack_require__(30);
 var tryCatch_1 = __webpack_require__(9);
 var errorObject_1 = __webpack_require__(8);
-var UnsubscriptionError_1 = __webpack_require__(67);
+var UnsubscriptionError_1 = __webpack_require__(68);
 /**
  * Represents a disposable resource, such as the execution of an Observable. A
  * Subscription has one important method, `unsubscribe`, that takes no argument
@@ -20614,7 +20614,7 @@ var Observable_1 = __webpack_require__(0);
 var Subscriber_1 = __webpack_require__(1);
 var Subscription_1 = __webpack_require__(6);
 var ObjectUnsubscribedError_1 = __webpack_require__(34);
-var SubjectSubscription_1 = __webpack_require__(75);
+var SubjectSubscription_1 = __webpack_require__(76);
 var rxSubscriber_1 = __webpack_require__(31);
 /**
  * @class SubjectSubscriber<T>
@@ -21076,7 +21076,7 @@ exports.EmptyObservable = EmptyObservable;
 
 "use strict";
 
-var ConnectableObservable_1 = __webpack_require__(74);
+var ConnectableObservable_1 = __webpack_require__(75);
 /* tslint:enable:max-line-length */
 /**
  * Returns an Observable that emits the results of invoking a specified selector on items
@@ -22471,7 +22471,7 @@ exports.$$observable = exports.observable;
 "use strict";
 
 var mergeMap_1 = __webpack_require__(18);
-var identity_1 = __webpack_require__(71);
+var identity_1 = __webpack_require__(72);
 /**
  * Converts a higher-order Observable into a first-order Observable which
  * concurrently delivers all values that are emitted on the inner Observables.
@@ -23208,7 +23208,7 @@ var queue_1 = __webpack_require__(93);
 var Subscription_1 = __webpack_require__(6);
 var observeOn_1 = __webpack_require__(37);
 var ObjectUnsubscribedError_1 = __webpack_require__(34);
-var SubjectSubscription_1 = __webpack_require__(75);
+var SubjectSubscription_1 = __webpack_require__(76);
 /**
  * @class ReplaySubject<T>
  */
@@ -30569,6 +30569,133 @@ exports.JdbPlgToastComponent = JdbPlgToastComponent;
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(5);
+var JdbTabComponent = /** @class */ (function () {
+    function JdbTabComponent(componentFactoryResolver, _injector) {
+        this.componentFactoryResolver = componentFactoryResolver;
+        this._injector = _injector;
+        this.onTabChange = new core_1.EventEmitter();
+        this.onTabRemove = new core_1.EventEmitter();
+        this.onTopComMsg = new core_1.EventEmitter();
+        this.items = [];
+        this.tabComs = [];
+        this.curTabIndex = 0;
+        this.tabIdComMap = {};
+    }
+    JdbTabComponent.prototype.ngOnInit = function () {
+    };
+    /**
+     *
+     * @param ChildComponent
+     * @param attrs:{
+     *     propery:value
+     * ]
+     * title:string
+     * isCloseFlag
+     */
+    JdbTabComponent.prototype.addItem = function (ChildComponent, attrs, title, comId, isCloseFlag) {
+        var _this = this;
+        if (comId === void 0) { comId = ""; }
+        if (isCloseFlag === void 0) { isCloseFlag = false; }
+        if (comId && this.tabIdComMap[comId]) {
+            var com = this.tabIdComMap[comId];
+            this.tabChange(com.index);
+            return;
+        }
+        var childComponent = this.componentFactoryResolver.resolveComponentFactory(ChildComponent);
+        var comInstance = this.target.createComponent(childComponent);
+        var keys = Object.keys(attrs);
+        this.items.push({
+            title: title,
+            isCloseFlag: isCloseFlag
+        });
+        keys.forEach(function (value) {
+            comInstance.instance[value] = attrs[value];
+        });
+        this.tabComs.push(comInstance);
+        if (this.items.length > 1) {
+            this.setOneComHide(this.curTabIndex);
+        }
+        this.tabSubs = comInstance.instance['onTopComMsg'] = new core_1.EventEmitter();
+        this.tabSubs.subscribe(function (value) {
+            _this.onTopComMsg.emit(value);
+        });
+        this.curTabIndex = this.items.length - 1;
+        if (comId) {
+            this.tabIdComMap[comId] = {
+                index: this.curTabIndex,
+                comInstance: comInstance.instance
+            };
+        }
+        return comInstance;
+    };
+    JdbTabComponent.prototype.setOneComHide = function (tabIndex) {
+        this.tabComs[tabIndex].location.nativeElement.style.display = "none";
+    };
+    JdbTabComponent.prototype.setOneComShow = function (tabIndex) {
+        this.tabComs[tabIndex].location.nativeElement.style.display = "block";
+    };
+    JdbTabComponent.prototype.tabChange = function (index) {
+        if (this.curTabIndex === index) {
+            return;
+        }
+        this.setOneComHide(this.curTabIndex);
+        this.setOneComShow(index);
+        this.curTabIndex = index;
+        this.onTabChange.emit(index);
+        this.tabComs[index].instance.tabRefresh && this.tabComs[index].instance.tabRefresh({});
+        // this.tabComs[index].destroy();
+    };
+    JdbTabComponent.prototype.setOneTabShow = function (index) {
+        this.tabChange(index);
+    };
+    JdbTabComponent.prototype.removeTab = function (index) {
+        this.tabComs[index].destroy();
+        this.tabComs.splice(index, 1);
+        this.items.splice(index, 1);
+        if (index <= this.curTabIndex) {
+            this.curTabIndex--;
+        }
+        if (this.curTabIndex < 0) {
+            this.curTabIndex = 0;
+        }
+        this.setOneComShow(this.curTabIndex);
+        this.onTabRemove.emit(index);
+        var tabIdComMap = this.tabIdComMap;
+        for (var key in tabIdComMap) {
+            if (tabIdComMap[key].index == index) {
+                delete tabIdComMap[key];
+                break;
+            }
+        }
+    };
+    JdbTabComponent.prototype.removeTabById = function (id) {
+        var tabIdComMap = this.tabIdComMap;
+        for (var key in tabIdComMap) {
+            if (key == id) {
+                this.removeTab(tabIdComMap[key]['index']);
+                break;
+            }
+        }
+    };
+    JdbTabComponent.prototype.ngOnDestroy = function () {
+        if (this.target) {
+            // this.target.destroy();
+            this.target.clear();
+        }
+    };
+    return JdbTabComponent;
+}());
+exports.JdbTabComponent = JdbTabComponent;
+
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 function isObject(x) {
     return x != null && typeof x === 'object';
 }
@@ -30576,7 +30703,7 @@ exports.isObject = isObject;
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30607,7 +30734,7 @@ exports.UnsubscriptionError = UnsubscriptionError;
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30621,7 +30748,7 @@ exports.empty = {
 
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30630,7 +30757,7 @@ exports.isArrayLike = (function (x) { return x && typeof x.length === 'number'; 
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30642,7 +30769,7 @@ exports.isPromise = isPromise;
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30654,12 +30781,12 @@ exports.identity = identity;
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var share_1 = __webpack_require__(73);
+var share_1 = __webpack_require__(74);
 /**
  * Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one
  * Subscriber this Observable will be subscribed and emitting data. When all subscribers have unsubscribed it will
@@ -30684,7 +30811,7 @@ exports.share = share;
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30715,7 +30842,7 @@ exports.share = share;
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30892,7 +31019,7 @@ var RefCountSubscriber = (function (_super) {
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30938,7 +31065,7 @@ exports.SubjectSubscription = SubjectSubscription;
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -30951,134 +31078,7 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 76;
-
-/***/ }),
-/* 77 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__(5);
-var JdbTabComponent = /** @class */ (function () {
-    function JdbTabComponent(componentFactoryResolver, _injector) {
-        this.componentFactoryResolver = componentFactoryResolver;
-        this._injector = _injector;
-        this.onTabChange = new core_1.EventEmitter();
-        this.onTabRemove = new core_1.EventEmitter();
-        this.onTopComMsg = new core_1.EventEmitter();
-        this.items = [];
-        this.tabComs = [];
-        this.curTabIndex = 0;
-        this.tabIdComMap = {};
-    }
-    JdbTabComponent.prototype.ngOnInit = function () {
-    };
-    /**
-     *
-     * @param ChildComponent
-     * @param attrs:{
-     *     propery:value
-     * ]
-     * title:string
-     * isCloseFlag
-     */
-    JdbTabComponent.prototype.addItem = function (ChildComponent, attrs, title, comId, isCloseFlag) {
-        var _this = this;
-        if (comId === void 0) { comId = ""; }
-        if (isCloseFlag === void 0) { isCloseFlag = false; }
-        if (comId && this.tabIdComMap[comId]) {
-            var com = this.tabIdComMap[comId];
-            this.tabChange(com.index);
-            return;
-        }
-        var childComponent = this.componentFactoryResolver.resolveComponentFactory(ChildComponent);
-        var comInstance = this.target.createComponent(childComponent);
-        var keys = Object.keys(attrs);
-        this.items.push({
-            title: title,
-            isCloseFlag: isCloseFlag
-        });
-        keys.forEach(function (value) {
-            comInstance.instance[value] = attrs[value];
-        });
-        this.tabComs.push(comInstance);
-        if (this.items.length > 1) {
-            this.setOneComHide(this.curTabIndex);
-        }
-        this.tabSubs = comInstance.instance['onTopComMsg'] = new core_1.EventEmitter();
-        this.tabSubs.subscribe(function (value) {
-            _this.onTopComMsg.emit(value);
-        });
-        this.curTabIndex = this.items.length - 1;
-        if (comId) {
-            this.tabIdComMap[comId] = {
-                index: this.curTabIndex,
-                comInstance: comInstance.instance
-            };
-        }
-        return comInstance;
-    };
-    JdbTabComponent.prototype.setOneComHide = function (tabIndex) {
-        this.tabComs[tabIndex].location.nativeElement.style.display = "none";
-    };
-    JdbTabComponent.prototype.setOneComShow = function (tabIndex) {
-        this.tabComs[tabIndex].location.nativeElement.style.display = "block";
-    };
-    JdbTabComponent.prototype.tabChange = function (index) {
-        if (this.curTabIndex === index) {
-            return;
-        }
-        this.setOneComHide(this.curTabIndex);
-        this.setOneComShow(index);
-        this.curTabIndex = index;
-        this.onTabChange.emit(index);
-        this.tabComs[index].instance.tabRefresh && this.tabComs[index].instance.tabRefresh({});
-        // this.tabComs[index].destroy();
-    };
-    JdbTabComponent.prototype.setOneTabShow = function (index) {
-        this.tabChange(index);
-    };
-    JdbTabComponent.prototype.removeTab = function (index) {
-        this.tabComs[index].destroy();
-        this.tabComs.splice(index, 1);
-        this.items.splice(index, 1);
-        if (index <= this.curTabIndex) {
-            this.curTabIndex--;
-        }
-        if (this.curTabIndex < 0) {
-            this.curTabIndex = 0;
-        }
-        this.setOneComShow(this.curTabIndex);
-        this.onTabRemove.emit(index);
-        var tabIdComMap = this.tabIdComMap;
-        for (var key in tabIdComMap) {
-            if (tabIdComMap[key].index == index) {
-                delete tabIdComMap[key];
-                break;
-            }
-        }
-    };
-    JdbTabComponent.prototype.removeTabById = function (id) {
-        var tabIdComMap = this.tabIdComMap;
-        for (var key in tabIdComMap) {
-            if (key == id) {
-                this.removeTab(tabIdComMap[key]['index']);
-                break;
-            }
-        }
-    };
-    JdbTabComponent.prototype.ngOnDestroy = function () {
-        if (this.target) {
-            // this.target.destroy();
-            this.target.clear();
-        }
-    };
-    return JdbTabComponent;
-}());
-exports.JdbTabComponent = JdbTabComponent;
-
+webpackEmptyAsyncContext.id = 77;
 
 /***/ }),
 /* 78 */
@@ -39745,8 +39745,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var isArray_1 = __webpack_require__(12);
-var isArrayLike_1 = __webpack_require__(69);
-var isPromise_1 = __webpack_require__(70);
+var isArrayLike_1 = __webpack_require__(70);
+var isPromise_1 = __webpack_require__(71);
 var PromiseObservable_1 = __webpack_require__(86);
 var IteratorObservable_1 = __webpack_require__(211);
 var ArrayObservable_1 = __webpack_require__(13);
@@ -46779,7 +46779,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 "use strict";
 
 var switchMap_1 = __webpack_require__(63);
-var identity_1 = __webpack_require__(71);
+var identity_1 = __webpack_require__(72);
 function switchAll() {
     return switchMap_1.switchMap(identity_1.identity);
 }
@@ -48938,8 +48938,7 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__(5);
-var jdb_tab_component_1 = __webpack_require__(77);
+var jdb_tab_component_1 = __webpack_require__(66);
 var show_picture_component_1 = __webpack_require__(78);
 var picture_viewer_component_1 = __webpack_require__(79);
 var drag_directive_1 = __webpack_require__(195);
@@ -48962,7 +48961,7 @@ __export(__webpack_require__(82));
 __export(__webpack_require__(84));
 __export(__webpack_require__(80));
 __export(__webpack_require__(83));
-__export(__webpack_require__(77));
+__export(__webpack_require__(66));
 __export(__webpack_require__(191));
 __export(__webpack_require__(65));
 __export(__webpack_require__(79));
@@ -48986,14 +48985,6 @@ var MDL_MODULES = [
 var JdbPlgUiModule = /** @class */ (function () {
     function JdbPlgUiModule() {
     }
-    /**
-   * @deprecated Use `NgZorroAntdModule` instead.
-   */
-    JdbPlgUiModule.forRoot = function () {
-        return {
-            ngModule: JdbPlgUiModule
-        };
-    };
     return JdbPlgUiModule;
 }());
 exports.JdbPlgUiModule = JdbPlgUiModule;
@@ -49014,7 +49005,7 @@ exports.CommonMethodService = common_method_service_2.CommonMethodService;
 
 var Subscriber_1 = __webpack_require__(1);
 var rxSubscriber_1 = __webpack_require__(31);
-var Observer_1 = __webpack_require__(68);
+var Observer_1 = __webpack_require__(69);
 function toSubscriber(nextOrObserver, error, complete) {
     if (nextOrObserver) {
         if (nextOrObserver instanceof Subscriber_1.Subscriber) {
@@ -60678,7 +60669,7 @@ var ReplaySubject_1 = __webpack_require__(40);
 exports.ReplaySubject = ReplaySubject_1.ReplaySubject;
 var BehaviorSubject_1 = __webpack_require__(62);
 exports.BehaviorSubject = BehaviorSubject_1.BehaviorSubject;
-var ConnectableObservable_1 = __webpack_require__(74);
+var ConnectableObservable_1 = __webpack_require__(75);
 exports.ConnectableObservable = ConnectableObservable_1.ConnectableObservable;
 var Notification_1 = __webpack_require__(22);
 exports.Notification = Notification_1.Notification;
@@ -60690,7 +60681,7 @@ var ObjectUnsubscribedError_1 = __webpack_require__(34);
 exports.ObjectUnsubscribedError = ObjectUnsubscribedError_1.ObjectUnsubscribedError;
 var TimeoutError_1 = __webpack_require__(175);
 exports.TimeoutError = TimeoutError_1.TimeoutError;
-var UnsubscriptionError_1 = __webpack_require__(67);
+var UnsubscriptionError_1 = __webpack_require__(68);
 exports.UnsubscriptionError = UnsubscriptionError_1.UnsubscriptionError;
 var timeInterval_1 = __webpack_require__(172);
 exports.TimeInterval = timeInterval_1.TimeInterval;
@@ -67778,7 +67769,7 @@ exports.sequenceEqual = sequenceEqual;
 "use strict";
 
 var Observable_1 = __webpack_require__(0);
-var share_1 = __webpack_require__(72);
+var share_1 = __webpack_require__(73);
 Observable_1.Observable.prototype.share = share_1.share;
 
 
@@ -70828,7 +70819,7 @@ var scan_1 = __webpack_require__(60);
 exports.scan = scan_1.scan;
 var sequenceEqual_1 = __webpack_require__(156);
 exports.sequenceEqual = sequenceEqual_1.sequenceEqual;
-var share_1 = __webpack_require__(73);
+var share_1 = __webpack_require__(74);
 exports.share = share_1.share;
 var shareReplay_1 = __webpack_require__(157);
 exports.shareReplay = shareReplay_1.shareReplay;
