@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { JdbPlgToastComponent } from './core/components/jdb-plg-toast/jdb-plg-toast.component';
 import { JdbTabComponent } from './core/components/jdb-plg-tab/jdb-tab.component';
@@ -23,7 +23,7 @@ import { ProvinceReformPipe } from './core/pipe/province-reform.pipe';
 import { AmountReformPipe } from './core/pipe/amount-reform.pipe';
 
 
-export * from './core/components/jdb-plg-autocomplete/jdb-plg-autocomplete.component';
+// export * from './core/components/jdb-plg-autocomplete/jdb-plg-autocomplete.component';
 export * from './core/components/jdb-plg-button/jdb-plg-button.component';
 export * from './core/components/jdb-plg-dialog/jdb-plg-dialog.component';
 export * from './core/components/jdb-plg-input/jdb-plg-input.component';
@@ -80,7 +80,16 @@ const MDL_MODULES = [
   providers: [JdbPlgBaseService, CommonMethodService, FillTableService],
   entryComponents: [JdbPlgToastComponent]
 })
-export class JdbPlgUiModule { }
+export class JdbPlgUiModule { 
+    /**
+   * @deprecated Use `NgZorroAntdModule` instead.
+   */
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: JdbPlgUiModule
+    };
+  }
+}
 export { JdbPlgBaseService } from './core/services/jdb-plg-base/jdb-plg-base.service';
 export { FillTableService } from './core/services/jdb-plg-base/fill-table.service';
 export {CommonMethodService} from './core/services/jdb-plg-base/common-method.service';

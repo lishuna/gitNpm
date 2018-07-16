@@ -13,6 +13,7 @@ const postcssUrl = require('postcss-url');
 const postcssImports = require('postcss-import');
 const rxPaths = require('rxjs/_esm5/path-mapping');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ngcWebpack = require('ngc-webpack');
 
 const maximumInlineSize = 10;
 const projectRoot = process.cwd();
@@ -127,17 +128,18 @@ const postcssPlugins = function(loader) {
 
 module.exports = {
     entry: {
-        main: './jdb-plg-ui.module.ts',
+        'jdb-plg-ui': './jdb-plg-ui.module.ts',
         styles: [
             "./core/scss/base.scss"
         ]
     },
     output: {
-        filename: 'jdb-ui.umd.js',
+        filename: '[name].umd.js',
         path: path.join(process.cwd(), "dist"),
         libraryTarget: "umd",
+        umdNamedDefine: true
     },
-    devtool: 'inline-source-map',
+    devtool: 'source-map',
     module: {
         rules: [{
                 "test": /\.html$/,
@@ -167,7 +169,19 @@ module.exports = {
             {
                 test: /\.tsx?$/,
                 use: 'ts-loader',
-                exclude: ['node_modules', 'dist']
+                exclude: ['node_modules']
+            },
+            {
+                enforce: 'pre',
+                exclude: ["node-modules"],
+                test: /\.js$/,
+                loader: "source-map-loader"
+            },
+            {
+                enforce: 'pre',
+                exclude: ["node-modules"],
+                test: /\.tsx?$/,
+                use: "source-map-loader"
             },
             {
                 "test": /\.css$/,
@@ -286,22 +300,20 @@ module.exports = {
         modules: [
             path.resolve('./'),
             path.resolve('./node_modules')
-        ],
-        alias: {
-            // 'ng2-charts/charts/charts': 'node_modules/ng2-charts/bundles/ng2-charts.umd.min.js'
-            //'ng2-dragula': 'node_modules/ng2-dragula/bundles/ng2-dragula.umd.min.js' 
-        }
+        ]
     },
     plugins: [
         new CleanWebpackPlugin(['dist']),
         new AngularCompilerPlugin({
-            "mainPath": "jdb-plg-ui.module.ts",
-            // "entryModule": path.join(projectRoot, "jdb-plg-ui.module#JdbPlgUiModule"),
-            "platform": 0,
+            "entryModule": "jdb-plg-ui.module#JdbPlgUiModule",
             "sourceMap": true,
-            "tsConfigPath": "./tsconfig.app.json",
-            "skipCodeGeneration": true,
+            "tsConfigPath": "./tsconfig.json",
             "compilerOptions": {
+                "skipCodeGeneration": true,
+                "skipTemplateCodegen": true,
+                "skipMetadataEmit": false,
+                "genDir": "./ngfactory",
+                "strictInjectionParameters": false,
                 "preserveSymlinks": true
             }
         })
