@@ -2,17 +2,17 @@
     "name": "@test-ui/core",
     "version": "1.0.1",
     "description": "",
-    "typings": "./dist/test-ui-core.d.ts",
-    "types": "./dist/test-ui-core.d.ts",
-    "main": "./dist/bundles/test-ui-core.umd.js",
-    "module": "./dist/esm5/test-ui-core.js",
-    "es2015": "./dist/esm2015/test-ui-core.js",
+    "typings": "./test-ui-core.d.ts",
+    "types": "./test-ui-core.d.ts",
+    "main": "./bundles/test-ui-core.umd.js",
+    "module": "./esm5/test-ui-core.js",
+    "es2015": "./esm2015/test-ui-core.js",
     "scripts": {
         "start": "webpack",
         "build": "ng build",
         "packagr": "ng-packagr -p ng-package.json"
     },
-    "private": true,
+    "private": false,
     "repository": {
         "type": "git",
         "url": "git@git.jdb-dev.com:plg/jdbBaseUICore.git"
@@ -65,7 +65,6 @@
         "@angular/compiler-cli": "^5.2.11",
         "@angular/language-service": "^5.2.11",
         "@ngtools/webpack": "^1.10.2",
-        "angular-package-builder": "^2.0.0",
         "autoprefixer": "^8.6.5",
         "browserify": "^16.2.2",
         "clean-webpack-plugin": "^0.1.19",
