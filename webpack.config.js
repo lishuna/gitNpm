@@ -13,7 +13,7 @@ const postcssUrl = require('postcss-url');
 const postcssImports = require('postcss-import');
 const rxPaths = require('rxjs/_esm5/path-mapping');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const ngcWebpack = require('ngc-webpack');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const maximumInlineSize = 10;
 const projectRoot = process.cwd();
@@ -135,12 +135,11 @@ module.exports = {
     },
     output: {
         filename: '[name].umd.js',
-        path: path.join(process.cwd(), "dist"),
+        path: path.join(process.cwd(), "dist/bundles"),
         libraryTarget: "umd",
         umdNamedDefine: true
     },
     devtool: 'source-map',
-    mode: "development",
     module: {
         rules: [{
                 "test": /\.html$/,
@@ -308,11 +307,14 @@ module.exports = {
         new AngularCompilerPlugin({
             "entryModule": "jdb-plg-ui.module#JdbPlgUiModule",
             "sourceMap": true,
-            "tsConfigPath": "./tsconfig.json",
+            "tsConfigPath": "./tsconfig.app.json",
             "skipCodeGeneration": true,
             "compilerOptions": {
                 "preserveSymlinks": true
             }
-        })
+        }),
+        // new CopyWebpackPlugin([{
+        //     from: path.resolve('./core')
+        // }])
     ]
 };
