@@ -1,6 +1,6 @@
 {
     "name": "@test-ui/core",
-    "version": "1.0.1",
+    "version": "1.0.0",
     "description": "",
     "typings": "./dist/test-ui-core.d.ts",
     "types": "./dist/test-ui-core.d.ts",
@@ -16,13 +16,6 @@
         "type": "git",
         "url": "git@github.com:lishuna/gitNpm.git"
     },
-    "files": [
-        "dist/",
-        "README.md",
-        "LICENSE",
-        "package.json",
-        "tsconfig.json"
-    ],
     "author": "",
     "license": "ISC",
     "peerDependencies": {

@@ -1,25 +1,16 @@
 {
   "name": "@test-ui/core",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "",
   "typings": "test-ui-core.d.ts",
-  "types": "./dist/jdb-plg-ui.module.d.ts",
+  "types": "./dist/test-ui-core.d.ts",
   "main": "bundles/test-ui-core.umd.js",
-  "private": true,
+  "module": "fesm5/test-ui-core.js",
+  "es2015": "fesm2015/test-ui-core.js",
   "repository": {
     "type": "git",
-    "url": "git@git.jdb-dev.com:plg/jdbBaseUICore.git"
+    "url": "git@github.com:lishuna/gitNpm.git"
   },
-  "files": [
-    "dist/*.js",
-    "dist/*.d.ts",
-    "dist/**/*.js",
-    "dist/**/*.d.ts",
-    "README.md",
-    "LICENSE",
-    "package.json",
-    "tsconfig.json"
-  ],
   "author": "",
   "license": "ISC",
   "peerDependencies": {
@@ -59,7 +50,6 @@
     "@angular/compiler-cli": "^5.2.11",
     "@angular/language-service": "^5.2.11",
     "@ngtools/webpack": "^1.10.2",
-    "angular-package-builder": "^2.0.0",
     "autoprefixer": "^8.6.5",
     "browserify": "^16.2.2",
     "clean-webpack-plugin": "^0.1.19",
@@ -89,8 +79,6 @@
     "webpack": "^3.12.0",
     "webpack-cli": "^3.0.8"
   },
-  "module": "fesm5/test-ui-core.js",
-  "es2015": "fesm2015/test-ui-core.js",
   "esm5": "esm5/test-ui-core.js",
   "esm2015": "esm2015/test-ui-core.js",
   "fesm5": "fesm5/test-ui-core.js",
