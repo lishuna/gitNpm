@@ -12,16 +12,12 @@
         "build": "ng build",
         "packagr": "ng-packagr -p ng-package.json"
     },
-    "private": false,
     "repository": {
         "type": "git",
-        "url": "git@git.jdb-dev.com:plg/jdbBaseUICore.git"
+        "url": "git@github.com:lishuna/gitNpm.git"
     },
     "files": [
-        "dist/*.js",
-        "dist/*.d.ts",
-        "dist/**/*.js",
-        "dist/**/*.d.ts",
+        "dist/",
         "README.md",
         "LICENSE",
         "package.json",
