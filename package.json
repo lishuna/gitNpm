@@ -2,8 +2,9 @@
     "name": "@test-ui/core",
     "version": "1.0.1",
     "description": "",
-    "typings": "jdb-plg-ui.module.d.ts",
-    "main": "bundles/jdb-plg-ui.umd.js",
+    "typings": "dist/jdb-pkg-ui.module.d.ts",
+    "types": "dist/jdb-pkg-ui.module.d.ts",
+    "main": "dist/bundles/jdb-plg-ui.umd.js",
     "scripts": {
         "start": "webpack",
         "build": "ng build",

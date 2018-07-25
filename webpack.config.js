@@ -162,8 +162,8 @@ module.exports = {
                 }
             },
             {
-                "test": /\.ts$/,
-                "loader": "@ngtools/webpack",
+                test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
+                loader: '@ngtools/webpack',
                 exclude: [/node_modules/, /\.(spec)\.ts$/]
             },
             {
