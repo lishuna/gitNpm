@@ -57,7 +57,10 @@ let globals = {
     'date-fns/set_day': 'date-fns/set_day/index',
 
     'rxjs': 'Rx',
+    'rxjs/Observable': 'Observable',
+    'rxjs/Rx': 'Observable',
     'rxjs/operators': 'Rx.Observable.prototype',
+    'ng2-cookies/ng2-cookies': 'Cookie'
 };
 
 const listOfDateFns = [
@@ -85,13 +88,12 @@ const listOfReplace = listOfDateFns.map(name => {
     const map = {};
     // map[`import * as ${name} `] = `var ${name}=_${name};\nimport * as _${name} `;
     map[`import * as ${name}`] = `import ${name}`;
-    // map= { 'import * as addDays' : import }
     return replace(map)
 });
 
 let plugins = [
     sourcemaps(),
-    //...listOfReplace,
+    ...listOfReplace,
     // replace({ "import * as setMonth ": "import " }),
     resolve(),
 ];
@@ -103,20 +105,16 @@ switch (target) {
         });
         break;
     case 'mumd':
-        // tip: console.log(uglify["uglify"]);
-        plugins.push(uglify["uglify"]());
+        plugins.push(uglify());
         break;
 }
 
 export default {
-    input: './jdb-plg-ui.moudle.ts',
     plugins,
-    // 视为外部模块的模块
     external: Object.keys(globals),
     output: {
         exports: 'named',
-        name: 'jdbui',
-        format: 'umd',
+        name: 'jdb-plg-ui',
         globals,
         sourcemap: true,
     }
