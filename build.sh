@@ -60,4 +60,4 @@ cp package.json dist/package.json
 echo 'Copying README.md'
 cp README.md dist/README.md
 
-# node ./build-script/generate-less.js
+node ./build-script/generate-sass.js
