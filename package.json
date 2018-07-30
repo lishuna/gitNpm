@@ -18,7 +18,7 @@
     ],
     "repository": {
         "type": "git",
-        "url": "git@git.jdb-dev.com:plg/jdbBaseUICore.git"
+        "url": "git@github.com:lishuna/gitNpm.git"
     },
     "author": "",
     "license": "ISC",
