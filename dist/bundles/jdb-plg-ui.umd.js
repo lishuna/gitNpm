@@ -6040,17 +6040,6 @@
      * @fileoverview added by tsickle
      * @suppress {checkTypes} checked by tsc
      */
-    // export * from './components/jdb-plg-autocomplete/jdb-plg-autocomplete.component';
-    // export { JdbPlgButtonComponent } from './components/jdb-plg-button/jdb-plg-button.component';
-    // export * from './components/jdb-plg-dialog/jdb-plg-dialog.component';
-    // export * from './components/jdb-plg-input/jdb-plg-input.component';
-    // export * from './components/jdb-plg-pagination/jdb-plg-pagination.component';
-    // export * from './components/jdb-plg-select/jdb-plg-select.component';
-    // export * from './components/jdb-plg-tab/jdb-tab.component';
-    // export * from './components/jdb-plg-table-error/jdb-plg-table-error.component';
-    // export * from './components/jdb-plg-toast/jdb-plg-toast.component';
-    // export * from './components/picture-viewer/picture-viewer.component';
-    // export * from './components/show-picture/show-picture.component';
     var /** @type {?} */ MDL_MODULES = [
         ShowPictureComponent,
         PictureViewerComponent,
@@ -6100,6 +6089,9 @@
     }());
 
     exports.JdbPlgUiModule = JdbPlgUiModule;
+    exports.CommonMethodService = CommonMethodService;
+    exports.FillTableService = FillTableService;
+    exports.JdbPlgBaseService = JdbPlgBaseService;
     exports.ɵe = JdbPlgButtonComponent;
     exports.ɵf = JdbPlgDialogComponent;
     exports.ɵh = JdbPlgInputComponent;
@@ -6114,9 +6106,6 @@
     exports.ɵn = OnlyNumberDirective;
     exports.ɵl = AmountReformPipe;
     exports.ɵk = ProvinceReformPipe;
-    exports.ɵp = CommonMethodService;
-    exports.ɵq = FillTableService;
-    exports.ɵo = JdbPlgBaseService;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

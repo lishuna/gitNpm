@@ -68,14 +68,9 @@ const MDL_MODULES = [
   entryComponents: [JdbPlgToastComponent]
 })
 export class JdbPlgUiModule { 
-    /**
-//    * @deprecated Use `NgZorroAntdModule` instead.
-//    */
-//   static forRoot(): ModuleWithProviders {
-//     return {
-//       ngModule: JdbPlgUiModule
-//     };
-//   }
 }
 
+export { CommonMethodService } from './services/jdb-plg-base/common-method.service';
+export { FillTableService } from './services/jdb-plg-base/fill-table.service';
+export { JdbPlgBaseService } from './services/jdb-plg-base/jdb-plg-base.service';
 // TODO 暴露服务方式

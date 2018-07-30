@@ -16,6 +16,3 @@ export { DragDirective as ɵc } from './src/directive/drag.directive';
 export { OnlyNumberDirective as ɵn } from './src/directive/only-number.directive';
 export { AmountReformPipe as ɵl } from './src/pipe/amount-reform.pipe';
 export { ProvinceReformPipe as ɵk } from './src/pipe/province-reform.pipe';
-export { CommonMethodService as ɵp } from './src/services/jdb-plg-base/common-method.service';
-export { FillTableService as ɵq } from './src/services/jdb-plg-base/fill-table.service';
-export { JdbPlgBaseService as ɵo } from './src/services/jdb-plg-base/jdb-plg-base.service';
