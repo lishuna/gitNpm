@@ -1,10 +1,10 @@
 {
     "name": "@test-ui/core",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "",
-    "typings": "dist/jdb-plg-ui.d.ts",
-    "types": "dist/jdb-plg-ui.d.ts",
-    "main": "dist/bundles/jdb-plg-ui.umd.js",
+    "typings": "./dist/jdb-plg-ui.d.ts",
+    "types": "./dist/jdb-plg-ui.d.ts",
+    "main": "./dist/bundles/jdb-plg-ui.umd.js",
     "module": "./dist/esm5/jdb-plg-ui.js",
     "es2015": "./dist/esm2015/jdb-plg-ui.js",
     "scripts": {
@@ -14,11 +14,11 @@
     },
     "private": true,
     "files": [
-        "dist/**/*"
+        "dist"
     ],
     "repository": {
         "type": "git",
-        "url": "git@git.jdb-dev.com:plg/jdbBaseUICore.git"
+        "url": "git@github.com:lishuna/gitNpm.git"
     },
     "author": "",
     "license": "ISC",
