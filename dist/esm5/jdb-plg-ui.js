@@ -6257,6 +6257,17 @@ var AmountReformPipe = /** @class */ (function () {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+// export * from './components/jdb-plg-autocomplete/jdb-plg-autocomplete.component';
+// export { JdbPlgButtonComponent } from './components/jdb-plg-button/jdb-plg-button.component';
+// export * from './components/jdb-plg-dialog/jdb-plg-dialog.component';
+// export * from './components/jdb-plg-input/jdb-plg-input.component';
+// export * from './components/jdb-plg-pagination/jdb-plg-pagination.component';
+// export * from './components/jdb-plg-select/jdb-plg-select.component';
+// export * from './components/jdb-plg-tab/jdb-tab.component';
+// export * from './components/jdb-plg-table-error/jdb-plg-table-error.component';
+// export * from './components/jdb-plg-toast/jdb-plg-toast.component';
+// export * from './components/picture-viewer/picture-viewer.component';
+// export * from './components/show-picture/show-picture.component';
 var /** @type {?} */ MDL_MODULES = [
     ShowPictureComponent,
     PictureViewerComponent,
@@ -6311,5 +6322,5 @@ var JdbPlgUiModule = /** @class */ (function () {
  * @suppress {checkTypes} checked by tsc
  */
 
-export { JdbPlgUiModule, JdbPlgButtonComponent, JdbPlgDialogComponent, JdbPlgInputComponent, JdbPlgPaginationComponent, JdbPlgSelectComponent, JdbTabComponent, JdbPlgTableErrorComponent, JdbPlgToastComponent, PictureViewerComponent, ShowPictureComponent, DragDirective as ɵa, OnlyNumberDirective as ɵd, AmountReformPipe as ɵc, ProvinceReformPipe as ɵb, CommonMethodService as ɵf, FillTableService as ɵg, JdbPlgBaseService as ɵe };
+export { JdbPlgUiModule, JdbPlgButtonComponent as ɵe, JdbPlgDialogComponent as ɵf, JdbPlgInputComponent as ɵh, JdbPlgPaginationComponent as ɵd, JdbPlgSelectComponent as ɵg, JdbTabComponent as ɵi, JdbPlgTableErrorComponent as ɵj, JdbPlgToastComponent as ɵm, PictureViewerComponent as ɵb, ShowPictureComponent as ɵa, DragDirective as ɵc, OnlyNumberDirective as ɵn, AmountReformPipe as ɵl, ProvinceReformPipe as ɵk, CommonMethodService as ɵp, FillTableService as ɵq, JdbPlgBaseService as ɵo };
 //# sourceMappingURL=jdb-plg-ui.js.map

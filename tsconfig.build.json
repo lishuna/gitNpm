@@ -1,13 +1,14 @@
 {
     "extends": "./tsconfig.json",
     "compilerOptions": {
-        "outDir": "./publish/src",
+        "outDir": "./dist/src",
         "baseUrl": "./",
         "declaration": true,
         "importHelpers": true,
         "module": "es2015",
         "sourceMap": true,
         "target": "es2015",
+        "experimentalDecorators": true,
         "types": [
             "node"
         ]
