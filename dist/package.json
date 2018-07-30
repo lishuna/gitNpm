@@ -13,9 +13,6 @@
         "packagr": "ng-packagr -p ng-package.json"
     },
     "private": true,
-    "files": [
-        "dist"
-    ],
     "repository": {
         "type": "git",
         "url": "git@github.com:lishuna/gitNpm.git"
