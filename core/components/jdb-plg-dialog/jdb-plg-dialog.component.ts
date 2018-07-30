@@ -23,7 +23,7 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 @Component({
   selector: 'app-jdb-plg-dialog',
   templateUrl: './jdb-plg-dialog.component.html',
-  styleUrls: ['./jdb-plg-dialog.component.scss'],
+  // styleUrls:  ['./jdb-plg-dialog.component.scss'],
   animations: [
     trigger('optionsState', [
       state('showM', style({

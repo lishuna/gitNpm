@@ -22,7 +22,6 @@ var JdbPlgTableErrorComponent = /** @class */ (function () {
         { type: Component, args: [{
                     selector: 'app-jdb-plg-table-error',
                     template: "<div class=\"jdb-plg-table-error\"> {{tableErrorText}} </div>",
-                    styleUrls: ['./jdb-plg-table-error.component.scss']
                 },] },
     ];
     /** @nocollapse */

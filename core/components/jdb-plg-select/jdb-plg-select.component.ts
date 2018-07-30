@@ -24,7 +24,7 @@ import { Observable } from 'rxjs/Observable';
 @Component({
   selector: 'app-jdb-plg-select',
   templateUrl: './jdb-plg-select.component.html',
-  styleUrls: ['./jdb-plg-select.component.scss'],
+  // styleUrls:  ['./jdb-plg-select.component.scss'],
   providers: [
     {// 注册成为表单控件
       provide: NG_VALUE_ACCESSOR,

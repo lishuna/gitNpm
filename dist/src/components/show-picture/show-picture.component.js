@@ -28,7 +28,6 @@ var ShowPictureComponent = /** @class */ (function () {
         { type: Component, args: [{
                     selector: 'app-show-picture',
                     template: "<div> <div class=\"img-mask\" (click)=\"closeModel()\"> <!-- \u906E\u7F69\u5C42 --> </div> <div class=\"img-content\"> <span class=\"close\" (click)=\"closeModel()\"> <img src=\"/assets/images/close-x.png\" alt=\"\"> </span> <img [src]=\"pictureUrl\" alt=\"\" style=\"max-height: 600px;max-width: 800px;\"> </div> </div> ",
-                    styleUrls: ['./show-picture.component.scss']
                 },] },
     ];
     /** @nocollapse */

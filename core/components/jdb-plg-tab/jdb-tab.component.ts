@@ -17,7 +17,7 @@ import {
 @Component({
     selector: 'jdb-tab',
     templateUrl: './jdb-tab.component.html',
-    styleUrls: ['./jdb-tab.component.scss']
+    // styleUrls:  ['./jdb-tab.component.scss']
 })
 
 export class JdbTabComponent implements OnInit, OnDestroy {

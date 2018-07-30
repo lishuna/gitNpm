@@ -9,6 +9,7 @@ cp -r ./core __jdbui_components
 
 # 先将templateUrl替换成template片段
 node build-script/inline-template.js
+node build-script/inline-styles.js
 
 # 先用ngc将代码编译成es2015 输出路径是publish-es2015
 $(npm bin)/ngc -p tsconfig.build.json -t es2015 --outDir publish-es2015/src

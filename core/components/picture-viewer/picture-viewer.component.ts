@@ -22,7 +22,7 @@ import {
 @Component({
   selector: 'app-picture-viewer',
   templateUrl: './picture-viewer.component.html',
-  styleUrls: ['./picture-viewer.component.scss'],
+  // styleUrls:  ['./picture-viewer.component.scss'],
   animations: [
     trigger('imgMove', [
       /** 不显示 */

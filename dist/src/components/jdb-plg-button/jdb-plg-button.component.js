@@ -106,7 +106,6 @@ var JdbPlgButtonComponent = /** @class */ (function () {
         { type: Component, args: [{
                     selector: '[app-jdb-plg-button]',
                     template: "<i class=\"jdb-icon-loading action\" *ngIf=\"loading\"></i> <ng-content></ng-content>",
-                    styleUrls: ['./jdb-plg-button.component.scss']
                 },] },
     ];
     /** @nocollapse */

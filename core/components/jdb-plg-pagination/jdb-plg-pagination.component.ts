@@ -13,7 +13,7 @@ import {
 @Component({
   selector: 'app-jdb-plg-pagination',
   templateUrl: './jdb-plg-pagination.component.html',
-  styleUrls: ['./jdb-plg-pagination.component.scss']
+  // styleUrls:  ['./jdb-plg-pagination.component.scss']
 })
 export class JdbPlgPaginationComponent {
   _total: number; // 总条数

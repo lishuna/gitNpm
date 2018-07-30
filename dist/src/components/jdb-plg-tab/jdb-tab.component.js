@@ -199,7 +199,6 @@ var JdbTabComponent = /** @class */ (function () {
         { type: Component, args: [{
                     selector: 'jdb-tab',
                     template: "<div class=\"tab-wraper\"> <div class=\"tab-nav-wraper\"> <div class=\"tab-item\" *ngFor=\"let item of items;let i = index;\" [ngClass]=\"{'tab-selected':i == curTabIndex}\" title='{{item.title}}'> <div (click)=\"tabChange(i)\" class=\"tab-text\"> {{item.title}}</div> <span class=\"close-btn\" (click)=\"removeTab(i)\" *ngIf=\"i !== 0 && item.isCloseFlag != true\">&times;</span> </div> </div> <div class=\"tab-content-wraper\"> <div #tabContent class=\"place-holder\"></div> </div> </div> ",
-                    styleUrls: ['./jdb-tab.component.scss']
                 },] },
     ];
     /** @nocollapse */

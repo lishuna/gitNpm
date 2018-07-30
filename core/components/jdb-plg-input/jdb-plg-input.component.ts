@@ -4,7 +4,7 @@ import { NgModel,ControlValueAccessor,NG_VALUE_ACCESSOR } from '@angular/forms';
 @Component({
     selector: 'app-jdb-plg-input',
     templateUrl: './jdb-plg-input.component.html',
-    styleUrls: ['./jdb-plg-input.component.scss'],
+    // styleUrls:  ['./jdb-plg-input.component.scss'],
     encapsulation: ViewEncapsulation.None,
     providers: [
     {

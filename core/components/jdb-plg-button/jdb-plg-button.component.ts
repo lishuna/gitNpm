@@ -6,7 +6,7 @@ export type buttonType = 'primary' | 'gray' | 'danger' | 'buleline' | 'white';
 @Component({
   selector: '[app-jdb-plg-button]',
   templateUrl: './jdb-plg-button.component.html',
-  styleUrls: ['./jdb-plg-button.component.scss']
+ // styleUrls:  ['./jdb-plg-button.component.scss']
 })
 
 export class JdbPlgButtonComponent implements OnInit {
