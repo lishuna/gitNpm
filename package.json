@@ -10,7 +10,10 @@
         "build": "sh ./build.sh",
         "packagr": "ng-packagr -p ng-package.json"
     },
-    "private": false,
+    "private": true,
+    "files": [
+        "dist/**/*"
+    ],
     "repository": {
         "type": "git",
         "url": "git@git.jdb-dev.com:plg/jdbBaseUICore.git"
