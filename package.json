@@ -14,7 +14,7 @@
     },
     "private": true,
     "files": [
-        "dist/**/*"
+        "dist"
     ],
     "repository": {
         "type": "git",
