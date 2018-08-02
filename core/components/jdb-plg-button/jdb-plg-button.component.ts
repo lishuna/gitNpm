@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Renderer2, HostListener, ElementRef } from '@angular/core';
-
+import { JdbPlgBaseService } from '../../services/jdb-plg-base/jdb-plg-base.service';
 export type buttonSize = 'small' | 'large' | 'default';
 export type buttonType = 'primary' | 'gray' | 'danger' | 'buleline' | 'white';
 
@@ -55,7 +55,7 @@ export class JdbPlgButtonComponent implements OnInit {
     this._setClassMap(this.loading);
   }
 
-  constructor(private _elementRef: ElementRef, private _renderer: Renderer2) {
+  constructor(private _elementRef: ElementRef, private _renderer: Renderer2,public jdbPlgBaseService: JdbPlgBaseService) {
 
     this._el = this._elementRef.nativeElement;
 

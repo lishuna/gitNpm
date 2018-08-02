@@ -1,6 +1,6 @@
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {Injectable, ComponentFactoryResolver} from '@angular/core';
-import {Http, Headers, Response, RequestOptions, RequestMethod, URLSearchParams} from '@angular/http';
+import {Http, Headers, Response, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 // import {environment} from '../../../../../environments/environment';
 import {JdbPlgToastComponent} from '../../components/jdb-plg-toast/jdb-plg-toast.component';

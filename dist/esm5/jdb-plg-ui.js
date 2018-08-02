@@ -1,2958 +1,14 @@
-import { Component, Input, ViewContainerRef, ViewChild, ComponentFactoryResolver, Injector, Output, EventEmitter, ElementRef, Renderer, animate, style, transition, trigger, state, HostListener, Directive, Renderer2, TemplateRef, forwardRef, ContentChild, ViewEncapsulation, Injectable, NgModule, Version, Pipe } from '@angular/core';
-import { __assign, __extends } from 'tslib';
-import { trigger as trigger$1, state as state$1, style as style$1, animate as animate$1, transition as transition$1 } from '@angular/animations';
-import { NG_VALUE_ACCESSOR, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Injectable, NgModule, Version, Component, Input, ViewContainerRef, ViewChild, ComponentFactoryResolver, Injector, Output, EventEmitter, ElementRef, Renderer, animate, style, transition, trigger, state, HostListener, Directive, Renderer2, TemplateRef, forwardRef, ContentChild, ViewEncapsulation, Pipe } from '@angular/core';
+import { __extends, __assign } from 'tslib';
 import { Observable } from 'rxjs/Observable';
-import '@angular/platform-browser';
+import { ɵgetDOM } from '@angular/platform-browser';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { Observable as Observable$1 } from 'rxjs/Rx';
 import { Router } from '@angular/router';
+import { trigger as trigger$1, state as state$1, style as style$1, animate as animate$1, transition as transition$1 } from '@angular/animations';
+import { NG_VALUE_ACCESSOR, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-var JdbPlgToastComponent = /** @class */ (function () {
-    function JdbPlgToastComponent() {
-        this.msg = "";
-    }
-    /**
-     * @return {?}
-     */
-    JdbPlgToastComponent.prototype.ngOnInit = /**
-     * @return {?}
-     */
-    function () {
-    };
-    JdbPlgToastComponent.decorators = [
-        { type: Component, args: [{
-                    selector: 'app-jdb-plg-toast',
-                    template: "<div class=\"toast-wraper\"> {{msg}} </div> ",
-                },] },
-    ];
-    /** @nocollapse */
-    JdbPlgToastComponent.ctorParameters = function () { return []; };
-    JdbPlgToastComponent.propDecorators = {
-        "msg": [{ type: Input },],
-    };
-    return JdbPlgToastComponent;
-}());
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-var JdbTabComponent = /** @class */ (function () {
-    function JdbTabComponent(componentFactoryResolver, _injector) {
-        this.componentFactoryResolver = componentFactoryResolver;
-        this._injector = _injector;
-        this.onTabChange = new EventEmitter();
-        this.onTabRemove = new EventEmitter();
-        this.onTopComMsg = new EventEmitter();
-        this.items = [];
-        this.tabComs = [];
-        this.curTabIndex = 0;
-        this.tabIdComMap = {};
-    }
-    /**
-     * @return {?}
-     */
-    JdbTabComponent.prototype.ngOnInit = /**
-     * @return {?}
-     */
-    function () {
-    };
-    /**
-     *
-     * @param ChildComponent
-     * @param attrs:{
-     *     propery:value
-     * ]
-     * title:string
-     * isCloseFlag
-     */
-    /**
-     *
-     * @param {?} ChildComponent
-     * @param {?} attrs
-     * @param {?} title
-     * @param {?=} comId
-     * @param {?=} isCloseFlag
-     * @return {?}
-     */
-    JdbTabComponent.prototype.addItem = /**
-     *
-     * @param {?} ChildComponent
-     * @param {?} attrs
-     * @param {?} title
-     * @param {?=} comId
-     * @param {?=} isCloseFlag
-     * @return {?}
-     */
-    function (ChildComponent, attrs, title, comId, isCloseFlag) {
-        var _this = this;
-        if (comId === void 0) { comId = ""; }
-        if (isCloseFlag === void 0) { isCloseFlag = false; }
-        if (comId && this.tabIdComMap[comId]) {
-            var /** @type {?} */ com = this.tabIdComMap[comId];
-            this.tabChange(com.index);
-            return;
-        }
-        var /** @type {?} */ childComponent = this.componentFactoryResolver.resolveComponentFactory(ChildComponent);
-        var /** @type {?} */ comInstance = this.target.createComponent(childComponent);
-        var /** @type {?} */ keys = Object.keys(attrs);
-        this.items.push({
-            title: title,
-            isCloseFlag: isCloseFlag
-        });
-        keys.forEach(function (value) {
-            comInstance.instance[value] = attrs[value];
-        });
-        this.tabComs.push(comInstance);
-        if (this.items.length > 1) {
-            this.setOneComHide(this.curTabIndex);
-        }
-        this.tabSubs = comInstance.instance['onTopComMsg'] = new EventEmitter();
-        this.tabSubs.subscribe(function (value) {
-            _this.onTopComMsg.emit(value);
-        });
-        this.curTabIndex = this.items.length - 1;
-        if (comId) {
-            this.tabIdComMap[comId] = {
-                index: this.curTabIndex,
-                comInstance: comInstance.instance
-            };
-        }
-        return comInstance;
-    };
-    /**
-     * @param {?} tabIndex
-     * @return {?}
-     */
-    JdbTabComponent.prototype.setOneComHide = /**
-     * @param {?} tabIndex
-     * @return {?}
-     */
-    function (tabIndex) {
-        this.tabComs[tabIndex].location.nativeElement.style.display = "none";
-    };
-    /**
-     * @param {?} tabIndex
-     * @return {?}
-     */
-    JdbTabComponent.prototype.setOneComShow = /**
-     * @param {?} tabIndex
-     * @return {?}
-     */
-    function (tabIndex) {
-        this.tabComs[tabIndex].location.nativeElement.style.display = "block";
-    };
-    /**
-     * @param {?} index
-     * @return {?}
-     */
-    JdbTabComponent.prototype.tabChange = /**
-     * @param {?} index
-     * @return {?}
-     */
-    function (index) {
-        if (this.curTabIndex === index) {
-            return;
-        }
-        this.setOneComHide(this.curTabIndex);
-        this.setOneComShow(index);
-        this.curTabIndex = index;
-        this.onTabChange.emit(index);
-        this.tabComs[index].instance.tabRefresh && this.tabComs[index].instance.tabRefresh({});
-        // this.tabComs[index].destroy();
-    };
-    /**
-     * @param {?} index
-     * @return {?}
-     */
-    JdbTabComponent.prototype.setOneTabShow = /**
-     * @param {?} index
-     * @return {?}
-     */
-    function (index) {
-        this.tabChange(index);
-    };
-    /**
-     * @param {?} index
-     * @return {?}
-     */
-    JdbTabComponent.prototype.removeTab = /**
-     * @param {?} index
-     * @return {?}
-     */
-    function (index) {
-        this.tabComs[index].destroy();
-        this.tabComs.splice(index, 1);
-        this.items.splice(index, 1);
-        if (index <= this.curTabIndex) {
-            this.curTabIndex--;
-        }
-        if (this.curTabIndex < 0) {
-            this.curTabIndex = 0;
-        }
-        this.setOneComShow(this.curTabIndex);
-        this.onTabRemove.emit(index);
-        var /** @type {?} */ tabIdComMap = this.tabIdComMap;
-        for (var /** @type {?} */ key in tabIdComMap) {
-            if (tabIdComMap[key].index == index) {
-                delete tabIdComMap[key];
-                break;
-            }
-        }
-    };
-    /**
-     * @param {?} id
-     * @return {?}
-     */
-    JdbTabComponent.prototype.removeTabById = /**
-     * @param {?} id
-     * @return {?}
-     */
-    function (id) {
-        var /** @type {?} */ tabIdComMap = this.tabIdComMap;
-        for (var /** @type {?} */ key in tabIdComMap) {
-            if (key == id) {
-                this.removeTab(tabIdComMap[key]['index']);
-                break;
-            }
-        }
-    };
-    /**
-     * @return {?}
-     */
-    JdbTabComponent.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () {
-        if (this.target) {
-            // this.target.destroy();
-            this.target.clear();
-        }
-    };
-    JdbTabComponent.decorators = [
-        { type: Component, args: [{
-                    selector: 'jdb-tab',
-                    template: "<div class=\"tab-wraper\"> <div class=\"tab-nav-wraper\"> <div class=\"tab-item\" *ngFor=\"let item of items;let i = index;\" [ngClass]=\"{'tab-selected':i == curTabIndex}\" title='{{item.title}}'> <div (click)=\"tabChange(i)\" class=\"tab-text\"> {{item.title}}</div> <span class=\"close-btn\" (click)=\"removeTab(i)\" *ngIf=\"i !== 0 && item.isCloseFlag != true\">&times;</span> </div> </div> <div class=\"tab-content-wraper\"> <div #tabContent class=\"place-holder\"></div> </div> </div> ",
-                },] },
-    ];
-    /** @nocollapse */
-    JdbTabComponent.ctorParameters = function () { return [
-        { type: ComponentFactoryResolver, },
-        { type: Injector, },
-    ]; };
-    JdbTabComponent.propDecorators = {
-        "target": [{ type: ViewChild, args: ['tabContent', { read: ViewContainerRef },] },],
-        "onTabChange": [{ type: Output },],
-        "onTabRemove": [{ type: Output },],
-        "onTopComMsg": [{ type: Output },],
-    };
-    return JdbTabComponent;
-}());
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-var ShowPictureComponent = /** @class */ (function () {
-    function ShowPictureComponent() {
-        this.update = new EventEmitter();
-    }
-    /**
-     * @return {?}
-     */
-    ShowPictureComponent.prototype.ngOnInit = /**
-     * @return {?}
-     */
-    function () {
-    };
-    /**
-     * @return {?}
-     */
-    ShowPictureComponent.prototype.closeModel = /**
-     * @return {?}
-     */
-    function () {
-        this.update.emit({ status: false });
-    };
-    ShowPictureComponent.decorators = [
-        { type: Component, args: [{
-                    selector: 'app-show-picture',
-                    template: "<div> <div class=\"img-mask\" (click)=\"closeModel()\"> <!-- \u906E\u7F69\u5C42 --> </div> <div class=\"img-content\"> <span class=\"close\" (click)=\"closeModel()\"> <img src=\"/assets/images/close-x.png\" alt=\"\"> </span> <img [src]=\"pictureUrl\" alt=\"\" style=\"max-height: 600px;max-width: 800px;\"> </div> </div> ",
-                },] },
-    ];
-    /** @nocollapse */
-    ShowPictureComponent.ctorParameters = function () { return []; };
-    ShowPictureComponent.propDecorators = {
-        "pictureUrl": [{ type: Input },],
-        "update": [{ type: Output },],
-    };
-    return ShowPictureComponent;
-}());
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-var PictureViewerComponent = /** @class */ (function () {
-    function PictureViewerComponent(renderer) {
-        this.renderer = renderer;
-        this.pictureList = [];
-        this.update = new EventEmitter();
-        // 设置容器的默认宽高，可适配 可配置属性
-        this.maxWidth = 800;
-        this.maxHeight = 600;
-        this.jdbShowType = 1;
-        this._jdbMaster = true;
-        this._jdbClear = true;
-        this.dragStatus = false;
-        this.current = 0;
-        this.imgOperate = {
-            num: 1,
-            degnum: 0
-        };
-    }
-    Object.defineProperty(PictureViewerComponent.prototype, "jdbMaster", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._jdbMaster;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._jdbMaster = this.toBoolean(value);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(PictureViewerComponent.prototype, "jdbClear", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._jdbClear;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._jdbClear = this.toBoolean(value);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(PictureViewerComponent.prototype, "jdbCurrent", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this.current;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            if (value > this.pictureList.length || value < 0) {
-                this.current = 0;
-                return;
-            }
-            this.current = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * @return {?}
-     */
-    PictureViewerComponent.prototype.ngOnInit = /**
-     * @return {?}
-     */
-    function () {
-        this.elem = this.imgBox.nativeElement.children; // 所有的li
-    };
-    /**
-     * @return {?}
-     */
-    PictureViewerComponent.prototype.ngOnChanges = /**
-     * @return {?}
-     */
-    function () {
-        var _this = this;
-        if (this.pictureList) {
-            this.pictureList.forEach(function (element, index) {
-                _this.resetPosition(index);
-            });
-        }
-    };
-    // 设置元素样式
-    /**
-     * @return {?}
-     */
-    PictureViewerComponent.prototype.ngAfterViewInit = /**
-     * @return {?}
-     */
-    function () {
-        var /** @type {?} */ imgContent = this.imgContent.nativeElement;
-        this.renderer.setElementStyle(imgContent, 'height', this.maxHeight + 'px');
-        this.renderer.setElementStyle(imgContent, 'width', this.maxWidth + 'px');
-        if (this.jdbShowType == 1) {
-            this.renderer.setElementStyle(imgContent, 'margin-left', -this.maxWidth / 2 + 'px');
-            this.renderer.setElementStyle(imgContent, 'margin-top', -this.maxHeight / 2 + 'px');
-        }
-    };
-    // 重置图片位置
-    /**
-     * @param {?} index
-     * @return {?}
-     */
-    PictureViewerComponent.prototype.resetPosition = /**
-     * @param {?} index
-     * @return {?}
-     */
-    function (index) {
-        var _this = this;
-        var /** @type {?} */ image = new Image();
-        image.onload = function () {
-            // 获取当前加载图片宽高
-            var /** @type {?} */ w = image.width;
-            var /** @type {?} */ h = image.height;
-            var /** @type {?} */ hRatio;
-            var /** @type {?} */ wRatio;
-            // 设置默认比例以及容器宽高
-            var /** @type {?} */ imgRate = w / h; // 图片宽高比
-            // const maxWidth = 800;
-            // const maxHeight = 600;
-            wRatio = _this.maxWidth / w;
-            hRatio = _this.maxHeight / h;
-            if (wRatio > 1 && hRatio > 1) {
-                // 两者比例均大于1表示图为小图，宽高未达到800*600,则取原图大小
-                w = w;
-                h = h;
-            }
-            else if (wRatio < 1 && hRatio < 1) {
-                // 两者比例均小于1表示图为大图，宽高达到800*600,则取容器大小
-                if (imgRate > 1) {
-                    // 宽图
-                    w = _this.maxWidth;
-                    h = w / imgRate;
-                }
-                else if (imgRate < 1) {
-                    // 长图
-                    h = _this.maxHeight;
-                    w = h * imgRate;
-                }
-            }
-            else if (wRatio > 1 && hRatio < 1) {
-                // 表示为长图片，则高为600，宽等比例缩放取值
-                h = _this.maxHeight;
-                w = w * hRatio;
-            }
-            else if (wRatio < 1 && hRatio > 1) {
-                // 表示为宽图片，则宽为800，高等比例缩放取值
-                h = h * wRatio;
-                w = _this.maxWidth;
-            }
-            // 设置图片展示宽高
-            // 设置图片展示宽高
-            _this.renderer.setElementStyle(_this.elem[index].children[0], 'height', h + 'px');
-            _this.renderer.setElementStyle(_this.elem[index].children[0], 'width', w + 'px');
-            if (w === _this.maxWidth && h === _this.maxHeight) {
-                // 设置图片位置使其垂直水平居中
-                // 设置图片位置使其垂直水平居中
-                _this.renderer.setElementStyle(_this.elem[index].children[0], 'top', '0px');
-                _this.renderer.setElementStyle(_this.elem[index].children[0], 'left', '0px');
-            }
-            else {
-                // 设置图片位置使其垂直水平居中
-                // 设置图片位置使其垂直水平居中
-                _this.renderer.setElementStyle(_this.elem[index].children[0], 'top', (_this.maxHeight - h) / 2 + 'px');
-                _this.renderer.setElementStyle(_this.elem[index].children[0], 'left', (_this.maxWidth - w) / 2 + 'px');
-            }
-        };
-        image.src = this.pictureList[index].imgUrl;
-    };
-    // 切换动画
-    /**
-     * @param {?} index
-     * @return {?}
-     */
-    PictureViewerComponent.prototype.ImgState = /**
-     * @param {?} index
-     * @return {?}
-     */
-    function (index) {
-        if (this.pictureList && this.pictureList.length) {
-            if (this.current === 0) {
-                return index === 0 ? 'on' :
-                    index === 1 ? 'next' :
-                        index === this.pictureList.length - 1 ? 'prev' :
-                            'off';
-            }
-            else if (this.current === this.pictureList.length - 1) {
-                return index === this.pictureList.length - 1 ? 'on' :
-                    index === this.pictureList.length - 2 ? 'prev' :
-                        index === 0 ? 'next' :
-                            'off';
-            }
-            switch (index - this.current) {
-                case 0:
-                    return 'on';
-                case 1:
-                    return 'next';
-                case -1:
-                    return 'prev';
-                default:
-                    return 'off';
-            }
-        }
-        else {
-            return 'off';
-        }
-    };
-    // 下一张图
-    /**
-     * @return {?}
-     */
-    PictureViewerComponent.prototype.Next = /**
-     * @return {?}
-     */
-    function () {
-        this.resetImgData();
-        this.current = (this.current + 1) % this.pictureList.length;
-        this.resetPosition(this.current - 1);
-        // 修改状态，使拖动图片回到原来位置
-        // this.dragStatus = true;
-    };
-    // 上一张图
-    /**
-     * @return {?}
-     */
-    PictureViewerComponent.prototype.Prev = /**
-     * @return {?}
-     */
-    function () {
-        this.resetImgData();
-        this.current = this.current - 1 < 0 ? this.pictureList.length - 1 : this.current - 1;
-        this.resetPosition(this.current + 1);
-        // 修改状态，使拖动图片回到原来位置
-        // this.dragStatus = true;
-    };
-    // 关闭图片查看器 __关闭弹框后再次打开所有拖拽后的位置都会自动归为，因为触发了onChanges方法
-    /**
-     * @return {?}
-     */
-    PictureViewerComponent.prototype.closeModel = /**
-     * @return {?}
-     */
-    function () {
-        this.resetImgData();
-        this.update.emit({ status: false });
-    };
-    // 放大 50% 100% 200% 400%
-    /**
-     * @return {?}
-     */
-    PictureViewerComponent.prototype.scaleBig = /**
-     * @return {?}
-     */
-    function () {
-        this.imgOperate.num = this.imgOperate.num * 2;
-        if (this.imgOperate.num > 4) {
-            this.imgOperate.num = 4;
-        }
-        var /** @type {?} */ rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
-        this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
-    };
-    // 缩小
-    /**
-     * @return {?}
-     */
-    PictureViewerComponent.prototype.scaleSmall = /**
-     * @return {?}
-     */
-    function () {
-        this.imgOperate.num = this.imgOperate.num / 2;
-        if (this.imgOperate.num < 1) {
-            this.imgOperate.num = 0.5;
-        }
-        var /** @type {?} */ rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
-        this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
-    };
-    // 逆时针旋转
-    /**
-     * @return {?}
-     */
-    PictureViewerComponent.prototype.routateNi = /**
-     * @return {?}
-     */
-    function () {
-        this.imgOperate.degnum++;
-        var /** @type {?} */ rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
-        this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
-    };
-    // 顺时针旋转
-    /**
-     * @return {?}
-     */
-    PictureViewerComponent.prototype.routateShun = /**
-     * @return {?}
-     */
-    function () {
-        this.imgOperate.degnum--;
-        var /** @type {?} */ rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
-        this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
-    };
-    // 重置图片数据
-    /**
-     * @return {?}
-     */
-    PictureViewerComponent.prototype.resetImgData = /**
-     * @return {?}
-     */
-    function () {
-        this.imgOperate = {
-            num: 1,
-            degnum: 0
-        };
-        var /** @type {?} */ rate = 'scale(1,1) rotate(0deg)';
-        this.renderer.setElementStyle(this.elem[this.current].children[0], 'transition', 'transform 0.2s linear 0.4s');
-        this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
-    };
-    // 转换为boolean,即实现有这个字段就认为为true,没有即为false
-    /**
-     * @param {?} value
-     * @return {?}
-     */
-    PictureViewerComponent.prototype.toBoolean = /**
-     * @param {?} value
-     * @return {?}
-     */
-    function (value) {
-        return value === '' || (value && value !== 'false');
-    };
-    /**
-     * @return {?}
-     */
-    PictureViewerComponent.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () {
-        this.pictureList = null;
-        this.imgBox = null;
-        this.imgContent = null;
-        this.current = null;
-    };
-    PictureViewerComponent.decorators = [
-        { type: Component, args: [{
-                    selector: 'app-picture-viewer',
-                    template: "<div class=\"picture-viewer\"> <div class=\"img-mask\" *ngIf=\"_jdbMaster\" (click)=\"closeModel()\"> <!-- \u906E\u7F69\u5C42 --> </div> <div #imgContent [ngClass]=\"{'img-content-componet':jdbShowType==2}\" class=\"img-content\"> <!-- \u53F3\u4E0A\u89D2\u5173\u95ED\u6309\u94AE --> <div class=\"close\" *ngIf=\"_jdbClear\" (click)=\"closeModel()\"> <span class=\"icon-close\"></span> </div> <!-- \u56FE\u7247box --> <ul class=\"img-box\" #img> <!-- <li *ngFor=\"let item of pictureList;let i=index\" [@imgMove]=\"ImgState(i)\"> <img appDragDirective \u00A0[src]=\"item.imgUrl\" alt=\"\" style=\"max-height: 600px;max-width: 800px;\"> </li> --> </ul> <!-- \u4E0A\u4E00\u9875\u4E0B\u4E00\u9875 --> <div [hidden]=\"current==0\" class=\"prev-page\" (click)=\"Prev()\"> <span class=\"icon-pagination-prev\"></span> </div> <div [hidden]=\"current==pictureList.length-1\" class=\"next-page\" (click)=\"Next()\"> <span class=\"icon-pagination-next\"></span> </div> <!-- \u53F3\u4E0B\u89D2\u9875\u7801 --> <div class=\"img-index\">{{current+1}}/{{pictureList.length}}</div> <!-- \u7F29\u653E\u65CB\u8F6C\u6309\u94AE\u7EC4 --> <div class=\"btn-box\"> <span [ngClass]=\"{'hover-disabled':imgOperate.num===4}\" class=\"icon-picture-zoom-in scale-big\" (click)=\"scaleBig()\"></span> <span [ngClass]=\"{'hover-disabled':imgOperate.num==0.5}\" class=\"icon-picture-zoom-out  scale-small\" (click)=\"scaleSmall()\"></span> <span class=\"icon-picture-counterclockwise routate-ni\" (click)=\"routateNi()\"></span> <span class=\"icon-picture-clockwise routate-shun\" (click)=\"routateShun()\"></span> </div> </div> </div>",
-                    // styleUrls:  ['./picture-viewer.component.scss'],
-                    animations: [
-                        trigger('imgMove', [
-                            /** 不显示 */
-                            state('off', style({ 'display': 'none', 'z-index': '0', 'transform': 'translateX(0)' })),
-                            /** 上一张图片 */
-                            state('prev', style({
-                                'z-index': '1',
-                                'transform': 'translateX(-100%)'
-                            })),
-                            /** 下一张图片 */
-                            state('next', style({ 'z-index': '2', 'transform': 'translateX(100%)' })),
-                            /** 当前图片 */
-                            state('on', style({ 'z-index': '3', 'transform': 'translateX(0)' })),
-                            transition('prev=>on', [
-                                animate('0.3s ease-in')
-                            ]),
-                            transition('next=>on', [
-                                animate('0.3s ease-in')
-                            ]),
-                            transition('on=>prev', [
-                                animate('0.3s ease-in')
-                            ]),
-                            transition('on=>next', [
-                                animate('0.3s ease-in')
-                            ])
-                        ])
-                    ]
-                },] },
-    ];
-    /** @nocollapse */
-    PictureViewerComponent.ctorParameters = function () { return [
-        { type: Renderer, },
-    ]; };
-    PictureViewerComponent.propDecorators = {
-        "pictureList": [{ type: Input },],
-        "update": [{ type: Output },],
-        "imgBox": [{ type: ViewChild, args: ['img',] },],
-        "imgContent": [{ type: ViewChild, args: ['imgContent',] },],
-        "maxWidth": [{ type: Input },],
-        "maxHeight": [{ type: Input },],
-        "jdbShowType": [{ type: Input },],
-        "jdbMaster": [{ type: Input },],
-        "jdbClear": [{ type: Input },],
-        "jdbCurrent": [{ type: Input },],
-    };
-    return PictureViewerComponent;
-}());
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-var DragDirective = /** @class */ (function () {
-    function DragDirective(elem, render) {
-        //
-        this.elem = elem;
-        this.render = render;
-        this.isDown = false;
-    }
-    /**
-     * @param {?} event
-     * @return {?}
-     */
-    DragDirective.prototype.onMousedown = /**
-     * @param {?} event
-     * @return {?}
-     */
-    function (event) {
-        var /** @type {?} */ wRate = localStorage.getItem('dragWidth');
-        var /** @type {?} */ hRate = localStorage.getItem('dragHeight');
-        this.isDown = true;
-        this.disLeft = this.elem.nativeElement.offsetLeft;
-        this.disTop = this.elem.nativeElement.offsetTop;
-        this.disX = event.clientX;
-        this.disY = event.clientY;
-        event.target.style.cursor = 'move';
-        // event.preventDefault();
-    };
-    /**
-     * @param {?} event
-     * @return {?}
-     */
-    DragDirective.prototype.onMousemove = /**
-     * @param {?} event
-     * @return {?}
-     */
-    function (event) {
-        event.preventDefault();
-        // 判断该元素是否被点击了。
-        if (this.isDown) {
-            var /** @type {?} */ newdisX = event.clientX - this.disX;
-            var /** @type {?} */ newdisY = event.clientY - this.disY;
-            this.elem.nativeElement.style.left = newdisX + this.disLeft + 'px';
-            this.elem.nativeElement.style.top = newdisY + this.disTop + 'px';
-        }
-        return false;
-    };
-    /**
-     * @return {?}
-     */
-    DragDirective.prototype.onMouseup = /**
-     * @return {?}
-     */
-    function () {
-        // 只用当元素移动过了，离开函数体才会触发。
-        if (this.isDown) {
-            this.isDown = false;
-            this.disLeft = this.elem.nativeElement.offsetLeft;
-            this.disTop = this.elem.nativeElement.offsetTop;
-        }
-    };
-    /**
-     * @return {?}
-     */
-    DragDirective.prototype.onMouseleave = /**
-     * @return {?}
-     */
-    function () {
-        this.isDown = false;
-    };
-    /**
-     * @return {?}
-     */
-    DragDirective.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () {
-        //Called once, before the instance is destroyed.
-        //Add 'implements OnDestroy' to the class.
-    };
-    DragDirective.decorators = [
-        { type: Directive, args: [{
-                    selector: 'img[appDragDirective]'
-                },] },
-    ];
-    /** @nocollapse */
-    DragDirective.ctorParameters = function () { return [
-        { type: ElementRef, },
-        { type: Renderer, },
-    ]; };
-    DragDirective.propDecorators = {
-        "onMousedown": [{ type: HostListener, args: ['mousedown', ['$event'],] },],
-        "onMousemove": [{ type: HostListener, args: ['mousemove', ['$event'],] },],
-        "onMouseup": [{ type: HostListener, args: ['mouseup', ['$event'],] },],
-        "onMouseleave": [{ type: HostListener, args: ['mouseleave', ['$event'],] },],
-    };
-    return DragDirective;
-}());
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-var JdbPlgPaginationComponent = /** @class */ (function () {
-    function JdbPlgPaginationComponent(el, renderer2) {
-        this.el = el;
-        this.renderer2 = renderer2;
-        this._current = 1;
-        this._pageSize = 10;
-        this._firstIndex = 1;
-        this._lastIndex = Infinity;
-        this._showTotal = false;
-        this._showPageSize = false;
-        this._showQuickJump = false;
-        this.pages = [];
-        // _options = [10, 20, 30, 40, 50]; // select默认数组
-        // select默认数组
-        this._options = [
-            { value: 10, text: '10条/页' },
-            { value: 20, text: '20条/页' },
-            { value: 30, text: '30条/页' },
-            { value: 40, text: '40条/页' },
-            { value: 50, text: '50条/页' }
-        ];
-        this._jdbSimple = false;
-        this.jdbPageSizeChange = new EventEmitter();
-        this.jdbPageIndexChange = new EventEmitter();
-    }
-    Object.defineProperty(JdbPlgPaginationComponent.prototype, "jdbShowTotal", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._showTotal;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._showTotal = this.toBoolean(value);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgPaginationComponent.prototype, "jdbTotal", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._total;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            // 若传入值和当前total一致，则不触发操作
-            if (value === this._total) {
-                return;
-            }
-            this._total = value;
-            this.setPageNo();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgPaginationComponent.prototype, "jdbPageIndex", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._current;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            if (this._current === value) {
-                return;
-            }
-            if (value > this._lastIndex || value < this._firstIndex) {
-                return;
-            }
-            this._current = Number(value);
-            this.setPageNo();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgPaginationComponent.prototype, "jdbShowPageSize", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._showPageSize;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._showPageSize = this.toBoolean(value);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgPaginationComponent.prototype, "jdbPageSize", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._pageSize;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            if (value === this._pageSize) {
-                return;
-            }
-            this._pageSize = value;
-            this.setPageNo();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgPaginationComponent.prototype, "jdbSizeOptions", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._options;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            // 若传入值和当前total一致，则不触发操作
-            if (value === this._options) {
-                return;
-            }
-            // 判断是否为数组
-            if (Object.prototype.toString.call(value) === '[object Array]') {
-                var /** @type {?} */ optionsArr_1 = [];
-                value.forEach(function (elem) {
-                    var /** @type {?} */ obj = {
-                        value: elem,
-                        text: elem + '条/页'
-                    };
-                    optionsArr_1.push(obj);
-                });
-                this._options = optionsArr_1;
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgPaginationComponent.prototype, "jdbShowQuickJump", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._showQuickJump;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._showQuickJump = this.toBoolean(value);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgPaginationComponent.prototype, "jdbSimple", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this.jdbSimple;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._jdbSimple = this.toBoolean(value);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    // 创建页码
-    /**
-     * @return {?}
-     */
-    JdbPlgPaginationComponent.prototype.setPageNo = /**
-     * @return {?}
-     */
-    function () {
-        // 向上取整
-        this._lastIndex = Math.ceil(this._total / this._pageSize);
-        // 如果当前页码大于尾页，则等于尾页
-        // if (this._current > this._lastIndex) {
-        //   this.jdbPageIndex = this._lastIndex;
-        //   this.jdbPageIndexChange.emit(this.jdbPageIndex);
-        // }
-        var /** @type {?} */ tmpPages = [];
-        if (this._lastIndex <= 9) {
-            // 若总页数不超过9，则全部展示在页面上
-            for (var /** @type {?} */ i = 2; i <= this._lastIndex - 1; i++) {
-                tmpPages.push({
-                    index: i
-                });
-            }
-        }
-        else {
-            var /** @type {?} */ current = +this._current;
-            var /** @type {?} */ left = Math.max(2, current - 2);
-            var /** @type {?} */ right = Math.min(current + 2, this._lastIndex - 1);
-            // 特殊处理正数第五个数和倒数第五个数
-            if (current === 5) {
-                left = 2;
-            }
-            else if (current === this._lastIndex - 4) {
-                right = this._lastIndex - 1;
-            }
-            if (current - 1 <= 3) {
-                right = 7;
-            }
-            if (this._lastIndex - current <= 3) {
-                left = this._lastIndex - 6;
-            }
-            for (var /** @type {?} */ i = left; i <= right; i++) {
-                tmpPages.push({ index: i });
-            }
-        }
-        this.pages = tmpPages;
-    };
-    // status为true表示页码切换，num表示页码，false表示条数切换，num表示条数
-    /**
-     * @param {?} status
-     * @param {?} num
-     * @return {?}
-     */
-    JdbPlgPaginationComponent.prototype.dataChange = /**
-     * @param {?} status
-     * @param {?} num
-     * @return {?}
-     */
-    function (status, num) {
-        if (status) {
-            if (num === this._firstIndex - 1 || num === this._lastIndex + 1) {
-                return;
-            }
-            // 清空输入框内容
-            this.quickJumpPage = '';
-            this.jdbPageIndex = num;
-            this.jdbPageIndexChange.emit(this.jdbPageIndex);
-        }
-        else {
-            // 清空输入框内容
-            this.quickJumpPage = '';
-            this.jdbPageSize = num;
-            this.jdbPageSizeChange.emit(num);
-            // 切换页数之后需要将页码重置为1
-            this.jdbPageIndex = 1;
-            this.jdbPageIndexChange.emit(this.jdbPageIndex);
-            this.setPageNo();
-        }
-        // this.setPageNo();
-    };
-    // 点击跳转按钮快速跳转
-    /**
-     * @return {?}
-     */
-    JdbPlgPaginationComponent.prototype.quickJump = /**
-     * @return {?}
-     */
-    function () {
-        // 若是输入的页码大于最后一页页码，即超出范围不存在，则清空页码，并使输入框获取焦点
-        if (this.quickJumpPage > this._lastIndex) {
-            this.inputJump.nativeElement.focus();
-            this.quickJumpPage = '';
-            return;
-        }
-        // 若输入为空，则不能跳转
-        if (!this.quickJumpPage) {
-            return;
-        }
-        this.jdbPageIndex = this.quickJumpPage;
-        this.jdbPageIndexChange.emit(this.jdbPageIndex);
-    };
-    // 点击左箭头(为什么使用条数除以2呢)
-    /**
-     * @param {?} pageSize
-     * @return {?}
-     */
-    JdbPlgPaginationComponent.prototype.jumpBefore = /**
-     * @param {?} pageSize
-     * @return {?}
-     */
-    function (pageSize) {
-        this.dataChange(true, this._current - Math.round(pageSize / 2));
-    };
-    // 点击右箭头
-    /**
-     * @param {?} pageSize
-     * @return {?}
-     */
-    JdbPlgPaginationComponent.prototype.jumpAfter = /**
-     * @param {?} pageSize
-     * @return {?}
-     */
-    function (pageSize) {
-        this.dataChange(true, this._current + Math.round(pageSize / 2));
-    };
-    // 转换为boolean,即实现有这个字段就认为为true,没有即为false
-    /**
-     * @param {?} value
-     * @return {?}
-     */
-    JdbPlgPaginationComponent.prototype.toBoolean = /**
-     * @param {?} value
-     * @return {?}
-     */
-    function (value) {
-        return value === '' || (value && value !== 'false');
-    };
-    // 校验是否为纯数字
-    /**
-     * @param {?} obj
-     * @return {?}
-     */
-    JdbPlgPaginationComponent.prototype.isNumber = /**
-     * @param {?} obj
-     * @return {?}
-     */
-    function (obj) {
-        var /** @type {?} */ reg = /^[0-9]*$/;
-        return reg.test(obj);
-    };
-    JdbPlgPaginationComponent.decorators = [
-        { type: Component, args: [{
-                    selector: 'app-jdb-plg-pagination',
-                    template: "<div class=\"jdb-plg-pagination\"> <!-- \u603B\u6761\u6570 --> <span *ngIf=\"_showTotal\" class=\"total-box\"> \u5171{{_total}}\u6761 </span> <div class=\"operate-box\"> <!-- \u6761\u6570\u5207\u6362 --> <div class=\"jdb-plg-pagination-options\" *ngIf=\"_showPageSize\"> <app-jdb-plg-select (ngModelChange)=\"dataChange(false,$event)\" [jdbSize]=\"'small'\" [jdbWidth]=\"'90px'\" [(ngModel)]=\"_pageSize\" [jdbSelectList]=\"_options\"></app-jdb-plg-select> </div> <!-- \u57FA\u672C\u5206\u9875\u6837\u5F0F --> <ul *ngIf=\"!_jdbSimple\" class=\"base-pagination\"> <!-- \u4E0A\u4E00\u9875\u6309\u94AE --> <li class=\"jdb-plg-pagination-prev\" title=\"\u4E0A\u4E00\u9875\" [ngClass]=\"{'disabled':_current===_firstIndex}\" (click)=\"dataChange(true,_current-1)\"> <span class=\"jdbIcon icon-pagination-prev\"></span> </li> <!-- \u9996\u9875\u6309\u94AE --> <li class=\"jdb-plg-pagination-first\" title=\"\u9996\u9875\" [ngClass]=\"{'active':_current===_firstIndex}\" (click)=\"dataChange(true,_firstIndex)\"> {{_firstIndex}} </li> <!-- \u7701\u7565\u53F7 --> <li class=\"jdb-plg-pagination-forward\" *ngIf=\"(_lastIndex >9)&&(_current-4>_firstIndex)\" (click)=\"jumpBefore(_pageSize)\"> <span class=\"icon-pagination-more\"></span> <span class=\"icon-pagination-jump-prev\"></span> </li> <!-- \u6309\u94AE --> <li class=\"jdb-plg-pagination-pager\" *ngFor=\"let page of pages\" [ngClass]=\"{'active':_current===page.index}\" (click)=\"dataChange(true,page.index)\"> {{page.index}} </li> <!-- \u7701\u7565\u53F7 --> <li class=\"jdb-plg-pagination-backward\" *ngIf=\"(_lastIndex >9)&&(_current+4<_lastIndex)\" (click)=\"jumpAfter(_pageSize)\"> <span class=\"icon-pagination-more\"></span> <span class=\"icon-pagination-jump-next\"></span> </li> <!-- \u5C3E\u9875\u6309\u94AE --> <li class=\"jdb-plg-pagination-last\" *ngIf=\"(_lastIndex>0)&&(_lastIndex!==_firstIndex)\" title=\"\u5C3E\u9875\" [ngClass]=\"{'active':_current===_lastIndex}\" (click)=\"dataChange(true,_lastIndex)\"> {{_lastIndex}} </li> <!-- \u4E0B\u4E00\u9875\u6309\u94AE --> <li class=\"jdb-plg-pagination-next\" title=\"\u4E0B\u4E00\u9875\" [ngClass]=\"{'disabled':_current===_lastIndex}\" (click)=\"dataChange(true,_current+1)\"> <span class=\"jdbIcon icon-pagination-next\"></span> </li> </ul> <!-- \u7B80\u5355\u5206\u9875\u6837\u5F0F --> <div class=\"simple-pagination\" *ngIf=\"_jdbSimple\"> <div class=\"left-box\"> <span class=\"icon-pagination-first\" [ngClass]=\"{'disabled':_current===_firstIndex}\" (click)=\"dataChange(true,_firstIndex)\"></span> <span class=\"icon-pagination-prev\" [ngClass]=\"{'disabled':_current===_firstIndex}\" (click)=\"dataChange(true,_current-1)\"></span> </div> <div class=\"center-box\"> {{_current}} / {{_lastIndex}} </div> <div class=\"right-box\"> <span class=\"icon-pagination-next\" [ngClass]=\"{'disabled':_current===_lastIndex}\" (click)=\"dataChange(true,_current+1)\"></span> <span class=\"icon-pagination-last\" [ngClass]=\"{'disabled':_current===_lastIndex}\" (click)=\"dataChange(true,_lastIndex)\"></span> </div> </div> <!-- \u5FEB\u901F\u8DF3\u8F6C --> <div *ngIf=\"_showQuickJump\" class=\"quick-jumper\"> \u7B2C <input #inputJump type=\"text\" [(ngModel)]=\"quickJumpPage\" (keyup.enter)=\"quickJump()\" appOnlyNumber=\"true\"> \u9875 <button (click)=\"quickJump()\">\u8DF3\u8F6C</button> </div> </div> </div>",
-                },] },
-    ];
-    /** @nocollapse */
-    JdbPlgPaginationComponent.ctorParameters = function () { return [
-        { type: ElementRef, },
-        { type: Renderer2, },
-    ]; };
-    JdbPlgPaginationComponent.propDecorators = {
-        "jdbPageSizeChange": [{ type: Output },],
-        "jdbPageIndexChange": [{ type: Output },],
-        "inputJump": [{ type: ViewChild, args: ['inputJump',] },],
-        "jdbShowTotal": [{ type: Input },],
-        "jdbTotal": [{ type: Input },],
-        "jdbPageIndex": [{ type: Input },],
-        "jdbShowPageSize": [{ type: Input },],
-        "jdbPageSize": [{ type: Input },],
-        "jdbSizeOptions": [{ type: Input },],
-        "jdbShowQuickJump": [{ type: Input },],
-        "jdbSimple": [{ type: Input },],
-    };
-    return JdbPlgPaginationComponent;
-}());
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-var JdbPlgButtonComponent = /** @class */ (function () {
-    function JdbPlgButtonComponent(_elementRef, _renderer) {
-        this._elementRef = _elementRef;
-        this._renderer = _renderer;
-        this._prefixCls = 'jdb-plg-btn';
-        this._el = this._elementRef.nativeElement;
-        this.nativeElement = this._elementRef.nativeElement;
-        this._renderer.addClass(this._el, this._prefixCls);
-    }
-    Object.defineProperty(JdbPlgButtonComponent.prototype, "jdbSize", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this.size;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            if (!value) {
-                value = 'default';
-            }
-            this.size = value;
-            // this._renderer.addClass(this._el, this.size);
-            this._setClassMap(this.loading);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgButtonComponent.prototype, "jdbType", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this.type;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            if (!value) {
-                value = 'primary';
-            }
-            this.type = value;
-            // this._renderer.addClass(this._el, this.type);
-            this._setClassMap(this.loading);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgButtonComponent.prototype, "jdbLoading", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this.loading;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            value = value === '' || (value && value !== 'false');
-            this.loading = value;
-            this._setClassMap(this.loading);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * @param {?} loading
-     * @return {?}
-     */
-    JdbPlgButtonComponent.prototype._setClassMap = /**
-     * @param {?} loading
-     * @return {?}
-     */
-    function (loading) {
-        this._renderer.removeClass(this._el, 'undefined');
-        this._renderer.addClass(this._el, this.size);
-        this._renderer.addClass(this._el, this.type);
-        if (loading) {
-            this._renderer.addClass(this._el, 'loading_disable');
-        }
-        else {
-            this._renderer.removeClass(this._el, 'loading_disable');
-        }
-    };
-    /**
-     * @return {?}
-     */
-    JdbPlgButtonComponent.prototype.ngOnInit = /**
-     * @return {?}
-     */
-    function () {
-    };
-    JdbPlgButtonComponent.decorators = [
-        { type: Component, args: [{
-                    selector: '[app-jdb-plg-button]',
-                    template: "<i class=\"jdb-icon-loading action\" *ngIf=\"loading\"></i> <ng-content></ng-content>",
-                },] },
-    ];
-    /** @nocollapse */
-    JdbPlgButtonComponent.ctorParameters = function () { return [
-        { type: ElementRef, },
-        { type: Renderer2, },
-    ]; };
-    JdbPlgButtonComponent.propDecorators = {
-        "jdbSize": [{ type: Input },],
-        "jdbType": [{ type: Input },],
-        "jdbLoading": [{ type: Input },],
-    };
-    return JdbPlgButtonComponent;
-}());
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-var JdbPlgDialogComponent = /** @class */ (function () {
-    function JdbPlgDialogComponent(resolver) {
-        this.resolver = resolver;
-        this._customClass = '';
-        this._maskClass = '';
-        this._visible = false;
-        this._title = '';
-        this._closeable = true;
-        this._animationStatus = '11';
-        this._width = '400px';
-        this._footerHide = false;
-        this._isConfirm = false;
-        this._okText = '';
-        this._cancelText = '';
-        this._RogerText = '';
-        this._state = 'hideM';
-        this.MvisibileChange = new EventEmitter();
-        this.MOnOk = new EventEmitter();
-        this.MOnCancel = new EventEmitter();
-    }
-    Object.defineProperty(JdbPlgDialogComponent.prototype, "Mvisible", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._visible;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            var /** @type {?} */ visible = this.toBoolean(value);
-            if (this._visible === visible) {
-                return;
-            }
-            this._visible = visible;
-            this.MvisibileChange.emit(this._visible);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgDialogComponent.prototype, "MfooterHiden", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._footerHide;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            var /** @type {?} */ visible = this.toBoolean(value);
-            if (this._visible === visible) {
-                return;
-            }
-            this._footerHide = visible;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgDialogComponent.prototype, "Mtitle", {
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            if (value instanceof TemplateRef) {
-                this._titleTpl = value;
-            }
-            else {
-                this._title = value;
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgDialogComponent.prototype, "Mcontent", {
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            if (value instanceof TemplateRef) {
-                this._contentTpl = value;
-            }
-            else {
-                this._content = value;
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgDialogComponent.prototype, "Mfooter", {
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            if (value instanceof TemplateRef) {
-                this._footerTpl = value;
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgDialogComponent.prototype, "Mwidth", {
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._width = typeof value === 'number' ? value + 'px' : value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    // 定位modal位置和样式
-    /**
-     * @return {?}
-     */
-    JdbPlgDialogComponent.prototype.setStyle = /**
-     * @return {?}
-     */
-    function () {
-        var /** @type {?} */ el = this.contentEl.nativeElement;
-        this._bodyStyleMap = __assign({ width: this._width });
-    };
-    /**
-     * @param {?} e
-     * @return {?}
-     */
-    JdbPlgDialogComponent.prototype.onEsc = /**
-     * @param {?} e
-     * @return {?}
-     */
-    function (e) {
-        this.clickCancel(e);
-    };
-    Object.defineProperty(JdbPlgDialogComponent.prototype, "Mclass", {
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._customClass = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgDialogComponent.prototype, "MOkText", {
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._okText = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgDialogComponent.prototype, "McancelText", {
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._cancelText = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgDialogComponent.prototype, "MRogerText", {
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._isConfirm = true;
-            this._RogerText = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * @return {?}
-     */
-    JdbPlgDialogComponent.prototype.ngOnInit = /**
-     * @return {?}
-     */
-    function () {
-        this.setStyle();
-    };
-    /**
-     * @param {?} component
-     * @return {?}
-     */
-    JdbPlgDialogComponent.prototype.createDynamicComponent = /**
-     * @param {?} component
-     * @return {?}
-     */
-    function (component) {
-        var /** @type {?} */ factory = this.resolver.resolveComponentFactory(/** @type {?} */ (this._content));
-        this.bodyEl.createComponent(factory);
-    };
-    /**
-     * @return {?}
-     */
-    JdbPlgDialogComponent.prototype.ngAfterViewInit = /**
-     * @return {?}
-     */
-    function () {
-    };
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
-    JdbPlgDialogComponent.prototype.ngOnChanges = /**
-     * @param {?} changes
-     * @return {?}
-     */
-    function (changes) {
-        var _this = this;
-        if (this._visible) {
-            this._state = 'showM';
-            setTimeout(function () {
-                _this.contentEl.nativeElement.parentNode.focus();
-            }, 200);
-        }
-        else {
-            this._state = 'hideM';
-        }
-    };
-    /**
-     * @param {?} e
-     * @return {?}
-     */
-    JdbPlgDialogComponent.prototype.clickCancel = /**
-     * @param {?} e
-     * @return {?}
-     */
-    function (e) {
-        this._visible = false;
-        this._state = 'hideM';
-        this.MOnCancel.emit(e);
-    };
-    /**
-     * @param {?} e
-     * @return {?}
-     */
-    JdbPlgDialogComponent.prototype.clickOk = /**
-     * @param {?} e
-     * @return {?}
-     */
-    function (e) {
-        if (this.MOnOk) {
-            this.MOnOk.emit(e);
-        }
-        else {
-            this._visible = false;
-            this._state = 'hideM';
-        }
-    };
-    /**
-     * @param {?} e
-     * @return {?}
-     */
-    JdbPlgDialogComponent.prototype.closeModal = /**
-     * @param {?} e
-     * @return {?}
-     */
-    function (e) {
-        if ((/** @type {?} */ (e.target)).getAttribute('role') === 'dialog') {
-            this.clickCancel(e);
-            this._state = 'hideM';
-        }
-    };
-    /**
-     * @param {?} value
-     * @return {?}
-     */
-    JdbPlgDialogComponent.prototype.toBoolean = /**
-     * @param {?} value
-     * @return {?}
-     */
-    function (value) {
-        return value === '' || (value && value !== false);
-    };
-    JdbPlgDialogComponent.decorators = [
-        { type: Component, args: [{
-                    selector: 'app-jdb-plg-dialog',
-                    template: "<div [ngClass]=\"_customClass\"> <div class=\"_maskClass\" [ngClass]=\"{'hid':!_visible}\" [style.zIndex]=\"1000\"></div> <div class=\"jdb-modal\" tabindex=\"-1\" role=\"dialog\" [ngClass]=\"{'hid':!_visible}\" [ngStyle]=\"{'dispaly':!_visible}\" (click)=\"closeModal($event)\" class=\"_wrapClass\" [ngClass]=\"_wrapClass\" [style.zIndex]=\"1000\" [attr.aria-modalId]=\"modalId\"> <div #modal_content class=\"modal\" [@optionsState]=\"_state\" [ngStyle]=\"_bodyStyleMap\"> <div class=\"modal-content\"> <ng-template [ngIf]=\"_closeable\"> <button class=\"modal-close\" (click)=\"clickCancel($event)\"> <!-- <span class=\"modal-close-x\"></span> --> <span class=\"icon-close\"></span> </button> </ng-template> <div class=\"modal-header\" *ngIf=\"_title||_titleTpl\"> <div class=\"modal-title\" [attr.id]=\"modalId\"> <ng-template #defaultTitle> {{_title}} </ng-template> <ng-template [ngTemplateOutlet]=\"_titleTpl||defaultTitle\"> </ng-template> </div> </div> <div class=\"modal-body\"> <ng-template #defaultContent>{{_content}}</ng-template> <ng-template [ngTemplateOutlet]=\"_contentTpl||defaultContent\"></ng-template> <ng-template #modal_component></ng-template> </div> <div class=\"modal-footer\" *ngIf=\"!_footerHide\"> <ng-template #defalutFooter> <button *ngIf=\"!_isConfirm\" app-jdb-plg-button [jdbSize]=\"'default'\" [jdbType]=\"'white'\" (click)=\"clickCancel($event)\"><span>{{_cancelText||'\u53D6\u6D88'}}</span></button> <button *ngIf=\"!_isConfirm\" class=\"right-btn\" app-jdb-plg-button [jdbSize]=\"'default'\" [jdbType]=\"'primary'\" (click)=\"clickOk($event)\"><span>{{_okText||'\u786E\u8BA4'}}</span></button> <button *ngIf=\"_isConfirm\" class=\"right-btn\" app-jdb-plg-button [jdbSize]=\"'default'\" [jdbType]=\"'primary'\" (click)=\"clickOk($event)\" (click)=\"clickOk($event)\"><span>{{_RogerText}}</span></button> </ng-template> <ng-template [ngTemplateOutlet]=\"_footerTpl||defalutFooter\"></ng-template> </div> <div tabindex=\"0\" style=\"width:0px;height:0px;overflow:hidden;\">aaa</div> </div> </div> </div> </div>",
-                    // styleUrls:  ['./jdb-plg-dialog.component.scss'],
-                    animations: [
-                        trigger$1('optionsState', [
-                            state$1('showM', style$1({
-                                transform: 'translate(-50%, -50%)',
-                                opacity: '1',
-                            })),
-                            state$1('hideM', style$1({
-                                transform: 'translate(-50%, -80%)',
-                                opacity: '0',
-                            })),
-                            transition$1('showM <=> hideM', animate$1('200ms ease-out'))
-                        ])
-                    ]
-                },] },
-    ];
-    /** @nocollapse */
-    JdbPlgDialogComponent.ctorParameters = function () { return [
-        { type: ComponentFactoryResolver, },
-    ]; };
-    JdbPlgDialogComponent.propDecorators = {
-        "contentEl": [{ type: ViewChild, args: ['modal_content',] },],
-        "bodyEl": [{ type: ViewChild, args: ['modal_component', { read: ViewContainerRef },] },],
-        "MvisibileChange": [{ type: Output },],
-        "MOnOk": [{ type: Output },],
-        "MOnCancel": [{ type: Output },],
-        "Mvisible": [{ type: Input },],
-        "MfooterHiden": [{ type: Input },],
-        "Mtitle": [{ type: Input },],
-        "Mcontent": [{ type: Input },],
-        "Mfooter": [{ type: Input },],
-        "Mwidth": [{ type: Input },],
-        "onEsc": [{ type: HostListener, args: ['keydown.esc', ['$event'],] },],
-        "Mclass": [{ type: Input },],
-        "MOkText": [{ type: Input },],
-        "McancelText": [{ type: Input },],
-        "MRogerText": [{ type: Input },],
-    };
-    return JdbPlgDialogComponent;
-}());
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-var OnlyNumberDirective = /** @class */ (function () {
-    function OnlyNumberDirective(el) {
-        this.el = el;
-        this.regexStr = '^[0-9]*$';
-    }
-    /**
-     * @param {?} event
-     * @return {?}
-     */
-    OnlyNumberDirective.prototype.onKeyDown = /**
-     * @param {?} event
-     * @return {?}
-     */
-    function (event) {
-        var /** @type {?} */ e = /** @type {?} */ (event);
-        if (this.appOnlyNumber) {
-            if ([46, 8, 9, 27, 13, 110, 190].indexOf(e.keyCode) !== -1 ||
-                // Allow: Ctrl+A
-                (e.keyCode === 65 && e.ctrlKey === true) ||
-                // Allow: Ctrl+C
-                (e.keyCode === 67 && e.ctrlKey === true) ||
-                // Allow: Ctrl+V
-                (e.keyCode === 86 && e.ctrlKey === true) ||
-                // Allow: Ctrl+X
-                (e.keyCode === 88 && e.ctrlKey === true) ||
-                // Allow: home, end, left, right
-                (e.keyCode >= 35 && e.keyCode <= 39)) {
-                // let it happen, don't do anything
-                return;
-            }
-            var /** @type {?} */ ch = String.fromCharCode(e.keyCode);
-            var /** @type {?} */ regEx = new RegExp(this.regexStr);
-            if (regEx.test(ch)) {
-                return;
-            }
-            else {
-                e.preventDefault();
-            }
-        }
-    };
-    /**
-     * @param {?} event
-     * @return {?}
-     */
-    OnlyNumberDirective.prototype.onKeyUp = /**
-     * @param {?} event
-     * @return {?}
-     */
-    function (event) {
-        this.el.nativeElement.value = this.el.nativeElement.value.replace(/\D/g, '');
-    };
-    OnlyNumberDirective.decorators = [
-        { type: Directive, args: [{
-                    selector: '[appOnlyNumber]'
-                },] },
-    ];
-    /** @nocollapse */
-    OnlyNumberDirective.ctorParameters = function () { return [
-        { type: ElementRef, },
-    ]; };
-    OnlyNumberDirective.propDecorators = {
-        "appOnlyNumber": [{ type: Input },],
-        "onKeyDown": [{ type: HostListener, args: ['keydown', ['$event'],] },],
-        "onKeyUp": [{ type: HostListener, args: ['keyup', ['$event'],] },],
-    };
-    return OnlyNumberDirective;
-}());
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-var JdbPlgSelectComponent = /** @class */ (function () {
-    function JdbPlgSelectComponent(renderer2, renderer) {
-        this.renderer2 = renderer2;
-        this.renderer = renderer;
-        this._size = 'middle';
-        this._optionText = 'text';
-        this._optionValue = 'value';
-        this.isShowClear = false;
-        this._jdbClear = false;
-        this._jdbDisabled = false;
-        this._jdbMode = 'chooseOne';
-        this._placeHolder = '请选择';
-        this._chooseMoreArray = [];
-        this._classMap = {};
-        this.savaHeight = true;
-        this.spaceFlex = true;
-        this._showImgBox = false;
-        this._jdbItemDisabled = 'disabled';
-        this._jdbSureDisabled = 2;
-        this._jdbNoDisabled = 1;
-        // 自定义类名
-        this.jdbClassName = '';
-        this.show = false;
-        this.ngModelValue = '';
-        this.onChange = function () { return null; };
-    }
-    Object.defineProperty(JdbPlgSelectComponent.prototype, "jdbItemDisabled", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._jdbItemDisabled;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._jdbItemDisabled = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgSelectComponent.prototype, "jdbSureDisabled", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._jdbSureDisabled;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._jdbSureDisabled = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgSelectComponent.prototype, "jdbPlaceHolder", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._placeHolder;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._placeHolder = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgSelectComponent.prototype, "jdbClear", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._jdbClear;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._jdbClear = this.toBoolean(value);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgSelectComponent.prototype, "jdbSelectList", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._selectList;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            var _this = this;
-            this._selectList = value;
-            // 循环数组，判断是否需要展示带有图片下拉框
-            if (this._selectList) {
-                this._selectList.forEach(function (element) {
-                    if (element.imgUrl) {
-                        _this._showImgBox = true;
-                    }
-                });
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgSelectComponent.prototype, "jdbSize", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._size;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._size = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgSelectComponent.prototype, "jdbWidth", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._width;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._width = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgSelectComponent.prototype, "jdbOptionText", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._optionText;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._optionText = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgSelectComponent.prototype, "jdbOptionValue", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._optionValue;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._optionValue = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgSelectComponent.prototype, "jdbDisabled", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._jdbDisabled;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._jdbDisabled = this.toBoolean(value);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgSelectComponent.prototype, "jdbMode", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._jdbMode;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._jdbMode = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * @return {?}
-     */
-    JdbPlgSelectComponent.prototype.ngOnInit = /**
-     * @return {?}
-     */
-    function () {
-    };
-    // tslint:disable-next-line:use-life-cycle-interface
-    /**
-     * @return {?}
-     */
-    JdbPlgSelectComponent.prototype.ngAfterViewInit = /**
-     * @return {?}
-     */
-    function () {
-        var _this = this;
-        // 点击除下拉框以外位置，下拉框隐藏
-        this.renderer2.listen('document', 'click', function () {
-            _this.show = false;
-            _this.renderer.setElementClass(_this.inputDom.nativeElement, 'jdb-plg-select-active', _this.show);
-        });
-        if (this._jdbClear && !this._jdbDisabled) {
-            // 监听输入框元素，若有内容时则滑上显示x
-            this.renderer2.listen(this.inputDom.nativeElement, 'mouseenter', function () {
-                // 若输入框不存在内容，则不做任何操作
-                if (_this._jdbMode === 'chooseOne' || _this._jdbMode === 'chooseNum') {
-                    if (!_this.inputText || _this.show) {
-                        return;
-                    }
-                }
-                else if (_this._jdbMode === 'chooseMore') {
-                    if (_this.inputText.length === 0 || _this.show) {
-                        return;
-                    }
-                }
-                _this.isShowClear = true;
-                _this.renderer.setElementClass(_this.inputDom.nativeElement, 'jdb-plg-select-active', _this.show);
-            });
-            this.renderer2.listen(this.inputDom.nativeElement, 'mouseleave', function () {
-                // 若输入框不存在内容，则不做任何操作
-                if (_this._jdbMode === 'chooseOne' || _this._jdbMode === 'chooseNum') {
-                    if (!_this.inputText || _this.show) {
-                        return;
-                    }
-                }
-                else if (_this._jdbMode === 'chooseMore') {
-                    if (_this.inputText.length === 0 || _this.show) {
-                        return;
-                    }
-                }
-                _this.isShowClear = false;
-                _this.renderer.setElementClass(_this.inputDom.nativeElement, 'jdb-plg-select-active', _this.show);
-            });
-        }
-    };
-    /**
-     * @return {?}
-     */
-    JdbPlgSelectComponent.prototype.ngOnChanges = /**
-     * @return {?}
-     */
-    function () {
-        if (this._jdbMode === 'chooseOne') {
-            this.inputText = '';
-        }
-        else if (this._jdbMode === 'chooseMore') {
-            this.inputText = [];
-        }
-        else if (this._jdbMode === 'chooseNum') {
-            this.inputText = 0;
-        }
-        this.setClassMap();
-    };
-    /**
-     * @return {?}
-     */
-    JdbPlgSelectComponent.prototype.setClassMap = /**
-     * @return {?}
-     */
-    function () {
-        var _a, _b;
-        if (this._jdbMode === 'chooseMore') {
-            this._classMap = (_a = {},
-                _a["" + this._size] = true,
-                _a["jdb-plg-select-bottom-" + this._size] = this.inputText.length !== 0,
-                _a['jdb-plg-select-disabled'] = this._jdbDisabled,
-                _a[this.jdbClassName] = true,
-                _a);
-        }
-        else {
-            this._classMap = (_b = {},
-                _b["" + this._size] = true,
-                _b['jdb-plg-select-disabled'] = this._jdbDisabled,
-                _b[this.jdbClassName] = true,
-                _b);
-        }
-    };
-    // 点击x，清空内容
-    /**
-     * @param {?} e
-     * @return {?}
-     */
-    JdbPlgSelectComponent.prototype.clearInputText = /**
-     * @param {?} e
-     * @return {?}
-     */
-    function (e) {
-        e.stopPropagation();
-        if (this._jdbMode === 'chooseOne') {
-            this.inputText = '';
-        }
-        else if (this._jdbMode === 'chooseMore') {
-            this.inputText = [];
-            this._chooseMoreArray = [];
-        }
-        else if (this._jdbMode === 'chooseNum') {
-            this.inputText = 0;
-            this._chooseMoreArray = [];
-        }
-        this.isShowClear = !this.isShowClear;
-        // 清空后输入需要重新告知父组件
-        this.ngModelValue = '';
-        this.onChange('');
-        this.setClassMap();
-    };
-    // 点击输入框下拉菜单显隐
-    /**
-     * @param {?} e
-     * @return {?}
-     */
-    JdbPlgSelectComponent.prototype.dialogShow = /**
-     * @param {?} e
-     * @return {?}
-     */
-    function (e) {
-        e.stopPropagation();
-        // 若外侧组件告知禁用，则点击没有任何效果
-        if (this._jdbDisabled) {
-            return;
-        }
-        this.isShowClear = false;
-        this.show = !this.show;
-        this.renderer.setElementClass(this.inputDom.nativeElement, 'jdb-plg-select-active', this.show);
-        this.optionPosition(this.optionList.nativeElement.clientHeight);
-    };
-    // 浮层出现是在输入框上方还是下方
-    /**
-     * @param {?} listHeight
-     * @return {?}
-     */
-    JdbPlgSelectComponent.prototype.optionPosition = /**
-     * @param {?} listHeight
-     * @return {?}
-     */
-    function (listHeight) {
-        var /** @type {?} */ offetTop = this.getTop(this.inputDom.nativeElement); // 元素offetTop
-        var /** @type {?} */ scrollTop = this.getScrollTop(this.inputDom.nativeElement.parentElement);
-        var /** @type {?} */ clientHeight = document.documentElement.clientHeight || document.body.clientHeight; // 屏幕高度
-        var /** @type {?} */ elemHeight = this.inputDom.nativeElement.clientHeight; // 元素高度
-        var /** @type {?} */ paddingHeight;
-        if (this.jdbSize === 'small') {
-            paddingHeight = 2;
-        }
-        else if (this.jdbSize === 'large') {
-            paddingHeight = 9;
-        }
-        else if (this.jdbSize === 'middle') {
-            paddingHeight = 5;
-        }
-        var /** @type {?} */ flexHeight = clientHeight - offetTop - elemHeight - paddingHeight + scrollTop; // 剩余高度
-        if (flexHeight < listHeight) {
-            // 空间不足
-            this.spaceFlex = false;
-            this.renderer.setElementStyle(this.optionList.nativeElement, 'transform-origin', '100% 100%');
-            if (listHeight < 188) {
-                this.renderer.setElementStyle(this.optionList.nativeElement, 'top', -listHeight - 5 + 'px');
-            }
-            else {
-                this.renderer.setElementStyle(this.optionList.nativeElement, 'top', -190 - paddingHeight + 'px');
-            }
-        }
-        else {
-            this.spaceFlex = true;
-            this.renderer.setElementStyle(this.optionList.nativeElement, 'top', '');
-            this.renderer.setElementStyle(this.optionList.nativeElement, 'transform-origin', '0% 0%');
-        }
-    };
-    // ControlValueAccessor 自定义表单 与父组件的ngModel绑定起来
-    /**
-     * @param {?} value
-     * @return {?}
-     */
-    JdbPlgSelectComponent.prototype.writeValue = /**
-     * @param {?} value
-     * @return {?}
-     */
-    function (value) {
-        this.ngModelValue = value;
-        // 若有初始项，则需要处理一下
-        // if (this._jdbMode === 'chooseOne') {
-        //   this.forOneStart(value);
-        // } else if (this._jdbMode === 'chooseMore') {
-        //   this.forMoreStart(value);
-        //   this.setClassMap();
-        // } else if (this._jdbMode === 'chooseNum') {
-        //   this.forNumStart(value);
-        // }
-        if (value === null || value === '' || value === undefined) {
-            // 若传入值为null，则清空数据
-            if (this._jdbMode === 'chooseMore') {
-                this.inputText = [];
-            }
-            else {
-                this.inputText = '';
-            }
-        }
-        else {
-            if (this._jdbMode === 'chooseOne') {
-                this.forOneStart(value);
-            }
-            else if (this._jdbMode === 'chooseMore') {
-                this.forMoreStart(value);
-                this.setClassMap();
-            }
-            else if (this._jdbMode === 'chooseNum') {
-                this.forNumStart(value);
-            }
-        }
-    };
-    /**
-     * @param {?} fn
-     * @return {?}
-     */
-    JdbPlgSelectComponent.prototype.registerOnChange = /**
-     * @param {?} fn
-     * @return {?}
-     */
-    function (fn) {
-        this.onChange = fn;
-    };
-    /**
-     * @param {?} fn
-     * @return {?}
-     */
-    JdbPlgSelectComponent.prototype.registerOnTouched = /**
-     * @param {?} fn
-     * @return {?}
-     */
-    function (fn) {
-    };
-    /**
-     * @param {?} isDisabled
-     * @return {?}
-     */
-    JdbPlgSelectComponent.prototype.setDisabledState = /**
-     * @param {?} isDisabled
-     * @return {?}
-     */
-    function (isDisabled) {
-    };
-    // 单选，若有初始选项，则遍历数组
-    /**
-     * @param {?} value
-     * @return {?}
-     */
-    JdbPlgSelectComponent.prototype.forOneStart = /**
-     * @param {?} value
-     * @return {?}
-     */
-    function (value) {
-        var _this = this;
-        this._selectList.forEach(function (elem) {
-            if (elem[_this._optionValue] === value) {
-                _this.inputText = elem[_this._optionText];
-            }
-        });
-    };
-    // 多选，若有初始值则遍历数组
-    /**
-     * @param {?} value
-     * @return {?}
-     */
-    JdbPlgSelectComponent.prototype.forMoreStart = /**
-     * @param {?} value
-     * @return {?}
-     */
-    function (value) {
-        var _this = this;
-        value = value.split(',');
-        value.forEach(function (item) {
-            _this._selectList.forEach(function (elem) {
-                if (elem[_this._optionValue] === item) {
-                    // inputText为输入框中展示的内容
-                    var /** @type {?} */ text = _this._optionText;
-                    var /** @type {?} */ value_1 = _this._optionValue;
-                    _this.inputText.push({
-                        text: elem[_this._optionText],
-                        value: elem[_this._optionValue]
-                    });
-                    // this._chooseMoreArray为传出去的数据
-                    // this._chooseMoreArray为传出去的数据
-                    _this._chooseMoreArray.push(elem[_this._optionValue]);
-                    return;
-                }
-            });
-        });
-    };
-    // 选几项
-    /**
-     * @param {?} value
-     * @return {?}
-     */
-    JdbPlgSelectComponent.prototype.forNumStart = /**
-     * @param {?} value
-     * @return {?}
-     */
-    function (value) {
-        var _this = this;
-        value = value.split(',');
-        value.forEach(function (item) {
-            _this._selectList.forEach(function (elem) {
-                if (elem[_this._optionValue] === item) {
-                    _this.inputText++;
-                    _this._chooseMoreArray.push(elem[_this._optionValue]);
-                    return;
-                }
-            });
-        });
-    };
-    // 单选某一元素点击
-    /**
-     * @param {?} e
-     * @param {?} item
-     * @return {?}
-     */
-    JdbPlgSelectComponent.prototype.item = /**
-     * @param {?} e
-     * @param {?} item
-     * @return {?}
-     */
-    function (e, item) {
-        // 阻止事件冒泡
-        e.stopPropagation();
-        // 判断show是否为true
-        if (!this.show) {
-            return;
-        }
-        // 判断该项是否可点击
-        if (item[this._jdbItemDisabled] === this._jdbSureDisabled) {
-            return;
-        }
-        this.inputText = item[this._optionText];
-        this.show = !this.show;
-        this.renderer.setElementClass(this.inputDom.nativeElement, 'jdb-plg-select-active', this.show);
-        this.ngModelValue = item[this._optionValue];
-        this.onChange(item[this._optionValue]);
-    };
-    // 多选元素点击
-    /**
-     * @param {?} e
-     * @param {?} item
-     * @return {?}
-     */
-    JdbPlgSelectComponent.prototype.chooseMore = /**
-     * @param {?} e
-     * @param {?} item
-     * @return {?}
-     */
-    function (e, item) {
-        var _this = this;
-        var /** @type {?} */ flag = false;
-        // 阻止事件冒泡
-        e.stopPropagation();
-        // 判断show是否为true
-        if (!this.show) {
-            return;
-        }
-        // 判断该项是否可点击
-        if (item[this._jdbItemDisabled] === this._jdbSureDisabled) {
-            return;
-        }
-        // 判断是否存在
-        this.inputText.forEach(function (element, index) {
-            if (element[_this._optionValue] === item[_this._optionValue]) {
-                flag = true;
-                return;
-            }
-        });
-        if (flag) {
-            this.deleteMoreItem(e, item);
-            return;
-        }
-        // inputText为输入框中展示的内容
-        var /** @type {?} */ text = this._optionText;
-        var /** @type {?} */ value = this._optionValue;
-        this.inputText.push({
-            text: item[this._optionText],
-            value: item[this._optionValue]
-        });
-        // this._chooseMoreArray为传出去的数据
-        this._chooseMoreArray.push(item[this._optionValue]);
-        this.ngModelValue = this._chooseMoreArray.toString();
-        this.onChange(this._chooseMoreArray);
-        this.show = true;
-        this.setClassMap();
-    };
-    // 选中多少项li点击
-    /**
-     * @param {?} e
-     * @param {?} item
-     * @return {?}
-     */
-    JdbPlgSelectComponent.prototype.numClick = /**
-     * @param {?} e
-     * @param {?} item
-     * @return {?}
-     */
-    function (e, item) {
-        var _this = this;
-        var /** @type {?} */ flag = false;
-        // 阻止事件冒泡
-        e.stopPropagation();
-        // 判断show是否为true
-        if (!this.show) {
-            return;
-        }
-        // 判断该项是否可点击
-        if (item[this._jdbItemDisabled] === this._jdbSureDisabled) {
-            return;
-        }
-        // 判断是否点击过
-        this._chooseMoreArray.forEach(function (element, index) {
-            if (element === item[_this._optionValue]) {
-                flag = true;
-                _this._chooseMoreArray.splice(index, 1);
-                return;
-            }
-        });
-        if (flag) {
-            this.inputText--;
-            return;
-        }
-        this.inputText++;
-        this.show = true;
-        this._chooseMoreArray.push(item[this._optionValue]);
-        this.ngModelValue = this._chooseMoreArray.toString();
-        this.onChange(this._chooseMoreArray);
-    };
-    // 判断某一项是否存在于inputText中
-    /**
-     * @param {?} item
-     * @return {?}
-     */
-    JdbPlgSelectComponent.prototype.moreIndex = /**
-     * @param {?} item
-     * @return {?}
-     */
-    function (item) {
-        var _this = this;
-        var /** @type {?} */ flag = false;
-        this._chooseMoreArray.forEach(function (element, index) {
-            if (element === item[_this._optionValue]) {
-                flag = true;
-                return;
-            }
-        });
-        return flag;
-    };
-    // 删除某一项
-    /**
-     * @param {?} e
-     * @param {?} item
-     * @return {?}
-     */
-    JdbPlgSelectComponent.prototype.deleteMoreItem = /**
-     * @param {?} e
-     * @param {?} item
-     * @return {?}
-     */
-    function (e, item) {
-        var _this = this;
-        e.stopPropagation();
-        if (this._jdbDisabled) {
-            return;
-        }
-        this.inputText.forEach(function (element, index) {
-            if (element[_this._optionValue] === item[_this._optionValue]) {
-                _this.inputText.splice(index, 1);
-                return;
-            }
-        });
-        this._chooseMoreArray.forEach(function (element, index) {
-            if (element === item[_this._optionValue]) {
-                _this._chooseMoreArray.splice(index, 1);
-                return;
-            }
-        });
-        this.ngModelValue = this._chooseMoreArray.toString();
-        this.onChange(this._chooseMoreArray);
-        this.setClassMap();
-    };
-    // 转换为boolean,即实现有这个字段就认为为true,没有即为false
-    /**
-     * @param {?} value
-     * @return {?}
-     */
-    JdbPlgSelectComponent.prototype.toBoolean = /**
-     * @param {?} value
-     * @return {?}
-     */
-    function (value) {
-        return value === '' || (value && value !== 'false');
-    };
-    // 计算某元素的offetTop
-    /**
-     * @param {?} e
-     * @return {?}
-     */
-    JdbPlgSelectComponent.prototype.getTop = /**
-     * @param {?} e
-     * @return {?}
-     */
-    function (e) {
-        var /** @type {?} */ offset = e.offsetTop;
-        if (e.offsetParent != null) {
-            //解析translateY
-            if (e.style.transform) {
-                var /** @type {?} */ ret = this.parseTranslateY(e.style.transform);
-                offset += ret.isPercent ? e.clientHeight * ret.translateY / 100 : ret.translateY;
-            }
-            offset += this.getTop(e.offsetParent);
-        }
-        return offset;
-    };
-    // 计算某元素的scrollTop
-    /**
-     * @param {?} e
-     * @return {?}
-     */
-    JdbPlgSelectComponent.prototype.getScrollTop = /**
-     * @param {?} e
-     * @return {?}
-     */
-    function (e) {
-        var /** @type {?} */ offset = e.scrollTop;
-        if (e.parentElement != null) {
-            offset += this.getScrollTop(e.parentElement);
-        }
-        return offset;
-    };
-    //正则解析translateY
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    JdbPlgSelectComponent.prototype.parseTranslateY = /**
-     * @param {?} val
-     * @return {?}
-     */
-    function (val) {
-        var /** @type {?} */ reg = /\(([^()]+)\)/g;
-        var /** @type {?} */ translate = reg.exec(val)[1];
-        var /** @type {?} */ translatArr = translate.split(',');
-        var /** @type {?} */ translateY;
-        var /** @type {?} */ isPercent;
-        //如果不包含translate
-        if (val.indexOf('translate') === -1) {
-            return {
-                isPercent: false,
-                translateY: 0
-            };
-        }
-        //判断是translate还是translateY
-        if (translatArr.length === 2) {
-            translateY = translate.split(',')[1];
-        }
-        else if (translatArr.length === 1 && val.indexOf('translateY') !== -1) {
-            translateY = translate;
-        }
-        //判断是百分比还是px
-        if (translateY.indexOf('px') !== -1) {
-            //截取px
-            isPercent = false;
-            translateY = Number(translateY.slice(0, -2));
-        }
-        else if (translateY.indexOf('%') !== -1) {
-            isPercent = true;
-            translateY = Number(translateY.slice(0, -1));
-        }
-        //返回百分比或普通number值
-        return {
-            isPercent: isPercent,
-            translateY: translateY
-        };
-    };
-    JdbPlgSelectComponent.decorators = [
-        { type: Component, args: [{
-                    selector: 'app-jdb-plg-select',
-                    template: "<!-- \u5355\u9009 --> <div *ngIf=\"_jdbMode=='chooseOne'\" #inputDom class=\"jdb-plg-select-one\" (click)=\"dialogShow($event)\" [ngClass]=\"_classMap\" [ngStyle]=\"{'width':_width}\"> <!-- placeHolder --> <div class=\"jdb-plg-select-placeholder\" [hidden]=\"inputText!=''\">{{_placeHolder}}</div> <!-- \u5355\u9009 --> <!-- <span class=\"chooseOne\" [hidden]=\"inputText==''\">{{inputText}}</span> --> <input class=\"chooseOne chooseOneInput\" [hidden]=\"inputText==''\" type=\"text\" [(ngModel)]=\"inputText\" readonly> <ul #optionList [ngClass]=\"{ 'options-show':show, 'options-no-margin':!spaceFlex} \" class=\"options \"> <!-- \u5355\u9009 --> <li *ngFor=\"let option of _selectList \" (click)=\"item($event,option) \" [ngClass]=\"{active:ngModelValue===option[_optionValue],disabled:option[_jdbItemDisabled] === _jdbSureDisabled} \"> <img class=\"img-box\" *ngIf=\"_showImgBox&&option.imgUrl\" [src]=\"option.imgUrl\" alt=\"\"> <span class=\"img-box\" *ngIf=\"_showImgBox&&!option.imgUrl\"></span> <span class=\"text-box\">{{_optionText=='option'?option:option[_optionText]}}</span> </li> </ul> <!-- \u6E05\u7A7A\u56FE\u6807 --> <span class=\"close-icon icon-empty \" [hidden]=\"!isShowClear \" (click)=\"clearInputText($event) \"></span> <!-- \u5355\u9009\u65F6\u4E0B\u62C9\u56FE\u6807 --> <span class=\"select-icon icon-select-arrow \" [hidden]=\"isShowClear \"></span> </div> <!-- \u591A\u9009 --> <div *ngIf=\"_jdbMode=='chooseMore' \" #inputDom class=\"jdb-plg-select-more \" (click)=\"dialogShow($event) \" [ngClass]=\"_classMap \" [ngStyle]=\"{ 'width':_width} \"> <!-- placeHolder --> <div class=\"jdb-plg-select-placeholder \" [hidden]=\"inputText.length !=0 \">{{_placeHolder}}</div> <!-- \u591A\u9009item --> <ul class=\"chooseMore \"> <li *ngFor=\"let item of inputText \"> {{item.text}} <span class=\"item-delete icon-close \" (click)=\"deleteMoreItem($event,item) \"></span> </li> </ul> <ul #optionList [ngClass]=\"{ 'options-show':show, 'options-no-margin':!spaceFlex} \" class=\"options \"> <li class=\"choose-more \" *ngFor=\"let option of _selectList \" (click)=\"chooseMore($event,option) \" [ngClass]=\"{ 'active':moreIndex(option),disabled:option[_jdbItemDisabled] === _jdbSureDisabled} \"> <!-- {{_optionText=='option'?option:option[_optionText]}} --> <img class=\"img-box\" *ngIf=\"_showImgBox&&option.imgUrl\" [src]=\"option.imgUrl\" alt=\"\"> <span class=\"img-box\" *ngIf=\"_showImgBox&&!option.imgUrl\"></span> <span class=\"text-box\">{{_optionText=='option'?option:option[_optionText]}}</span> <span [hidden]=\"!moreIndex(option) \" class=\"choose-right icon-selected \"></span> </li> </ul> <!-- \u6E05\u7A7A\u56FE\u6807 --> <span class=\"close-icon icon-empty \" [hidden]=\"!isShowClear \" (click)=\"clearInputText($event) \"></span> </div> <!-- \u9009\u4E2D\u51E0\u9879 --> <div *ngIf=\"_jdbMode=='chooseNum' \" #inputDom class=\"jdb-plg-select-num \" (click)=\"dialogShow($event) \" [ngClass]=\"_classMap \" [ngStyle]=\"{ 'width':_width} \"> <!-- placeHolder --> <div class=\"jdb-plg-select-placeholder \" [hidden]=\"inputText!=0 \">{{_placeHolder}}</div> <span class=\"choose-tip \" [hidden]=\"inputText==0 \">\u5DF2\u9009\u4E2D{{inputText}}\u9879</span> <ul #optionList [ngClass]=\"{ 'options-show':show, 'options-no-margin':!spaceFlex} \" class=\"options \"> <li class=\"choose-more \" *ngFor=\"let option of _selectList \" (click)=\"numClick($event,option) \" [ngClass]=\"{ 'active':moreIndex(option),disabled:option[_jdbItemDisabled] === _jdbSureDisabled} \"> <!-- {{_optionText=='option'?option:option[_optionText]}} --> <img class=\"img-box\" *ngIf=\"_showImgBox&&option.imgUrl\" [src]=\"option.imgUrl\" alt=\"\"> <span class=\"img-box\" *ngIf=\"_showImgBox&&!option.imgUrl\"></span> <span class=\"text-box\">{{_optionText=='option'?option:option[_optionText]}}</span> <span [hidden]=\"!moreIndex(option) \" class=\"choose-right icon-selected \"></span> </li> </ul> <!-- \u6E05\u7A7A\u56FE\u6807 --> <span class=\"close-icon icon-empty \" [hidden]=\"!isShowClear \" (click)=\"clearInputText($event) \"></span> <span class=\"select-icon icon-select-arrow \" [hidden]=\"isShowClear \"></span> </div> <!-- \u906E\u7F69\u5C42 --> <div class=\"jdb-plg-select-master \" *ngIf=\"show \"></div>",
-                    // styleUrls:  ['./jdb-plg-select.component.scss'],
-                    providers: [
-                        {
-                            // 注册成为表单控件
-                            provide: NG_VALUE_ACCESSOR,
-                            useExisting: forwardRef(function () { return JdbPlgSelectComponent; }),
-                            multi: true
-                        }
-                    ]
-                },] },
-    ];
-    /** @nocollapse */
-    JdbPlgSelectComponent.ctorParameters = function () { return [
-        { type: Renderer2, },
-        { type: Renderer, },
-    ]; };
-    JdbPlgSelectComponent.propDecorators = {
-        "jdbClassName": [{ type: Input },],
-        "jdbItemDisabled": [{ type: Input },],
-        "jdbSureDisabled": [{ type: Input },],
-        "jdbPlaceHolder": [{ type: Input },],
-        "jdbClear": [{ type: Input },],
-        "jdbSelectList": [{ type: Input },],
-        "jdbSize": [{ type: Input },],
-        "jdbWidth": [{ type: Input },],
-        "jdbOptionText": [{ type: Input },],
-        "jdbOptionValue": [{ type: Input },],
-        "jdbDisabled": [{ type: Input },],
-        "jdbMode": [{ type: Input },],
-        "inputDom": [{ type: ViewChild, args: ['inputDom',] },],
-        "optionList": [{ type: ViewChild, args: ['optionList',] },],
-    };
-    return JdbPlgSelectComponent;
-}());
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-var JdbPlgInputComponent = /** @class */ (function () {
-    function JdbPlgInputComponent() {
-        this._value = '';
-        this._type = 'text';
-        this._placeHolder = '';
-        this._size = 'default';
-        this._disabled = false;
-        this._readonly = false;
-        this._error = false;
-        this._inputWrapClass = [];
-        this._clear = false;
-        this._autoPromptData = [];
-        this._composing = false;
-        this.width = '300px';
-        // ngModel Access
-        this.onChange = function () { return null; };
-        this.jdbBlur = new EventEmitter();
-        this.jdbFocus = new EventEmitter();
-    }
-    /**
-     * @return {?}
-     */
-    JdbPlgInputComponent.prototype.ngOnInit = /**
-     * @return {?}
-     */
-    function () {
-        // this._inputWrapClass =[`input-text-wrap-${this._size}`];
-        if (this._prefixContent) {
-            this._inputWrapClass.push('prefix');
-        }
-    };
-    /**
-     * @param {?} e
-     * @return {?}
-     */
-    JdbPlgInputComponent.prototype.compositionStart = /**
-     * @param {?} e
-     * @return {?}
-     */
-    function (e) {
-        this._composing = true;
-    };
-    /**
-     * @param {?} e
-     * @return {?}
-     */
-    JdbPlgInputComponent.prototype.compositionEnd = /**
-     * @param {?} e
-     * @return {?}
-     */
-    function (e) {
-        this._composing = false;
-        this.onChange(this._value);
-    };
-    Object.defineProperty(JdbPlgInputComponent.prototype, "jdbType", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._type;
-        },
-        set: /**
-         * @param {?} type
-         * @return {?}
-         */
-        function (type) {
-            this._type = type;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgInputComponent.prototype, "jdbPlaceHolder", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._placeHolder;
-        },
-        set: /**
-         * @param {?} placeHolder
-         * @return {?}
-         */
-        function (placeHolder) {
-            this._placeHolder = placeHolder;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgInputComponent.prototype, "jdbSize", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._size;
-        },
-        set: /**
-         * @param {?} size
-         * @return {?}
-         */
-        function (size) {
-            this._size = { large: 'lg', small: 'sm' }[size];
-            this.setClassMap();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgInputComponent.prototype, "jdbDisabled", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._disabled;
-        },
-        set: /**
-         * @param {?} disabled
-         * @return {?}
-         */
-        function (disabled) {
-            this._disabled = this.toBoolean(disabled);
-            this.setClassMap();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgInputComponent.prototype, "jdbReadonly", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._readonly;
-        },
-        set: /**
-         * @param {?} readonly
-         * @return {?}
-         */
-        function (readonly) {
-            this._readonly = this.toBoolean(readonly);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgInputComponent.prototype, "jdbValue", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            if (this._value == '0') {
-                return '0';
-            }
-            return this._value || '';
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            if ((this._value === value) || ((this._value == null) && (value == null))) {
-                return;
-            }
-            this._value = value;
-            if (!this._composing) {
-                this.onChange(value);
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgInputComponent.prototype, "jdbError", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._error;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._error = this.toBoolean(value);
-            this.setClassMap();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgInputComponent.prototype, "jdbClear", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._clear;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._clear = this.toBoolean(value);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgInputComponent.prototype, "jdbMaxLength", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._maxlength;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._maxlength = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JdbPlgInputComponent.prototype, "jdbPromptData", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._autoPromptData;
-        },
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._autoPromptData = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * @param {?} value
-     * @return {?}
-     */
-    JdbPlgInputComponent.prototype.writeValue = /**
-     * @param {?} value
-     * @return {?}
-     */
-    function (value) {
-        this._value = value;
-    };
-    /**
-     * @param {?} fn
-     * @return {?}
-     */
-    JdbPlgInputComponent.prototype.registerOnChange = /**
-     * @param {?} fn
-     * @return {?}
-     */
-    function (fn) {
-        this.onChange = fn;
-    };
-    /**
-     * @param {?} fn
-     * @return {?}
-     */
-    JdbPlgInputComponent.prototype.registerOnTouched = /**
-     * @param {?} fn
-     * @return {?}
-     */
-    function (fn) {
-    };
-    /**
-     * @param {?} $event
-     * @return {?}
-     */
-    JdbPlgInputComponent.prototype._emitBlur = /**
-     * @param {?} $event
-     * @return {?}
-     */
-    function ($event) {
-        this.jdbBlur.emit($event);
-    };
-    /**
-     * @param {?} $event
-     * @return {?}
-     */
-    JdbPlgInputComponent.prototype._emitFocus = /**
-     * @param {?} $event
-     * @return {?}
-     */
-    function ($event) {
-        this.jdbFocus.emit($event);
-    };
-    /**
-     * @param {?} $event
-     * @return {?}
-     */
-    JdbPlgInputComponent.prototype.textareaOnChange = /**
-     * @param {?} $event
-     * @return {?}
-     */
-    function ($event) {
-    };
-    /**
-     * @return {?}
-     */
-    JdbPlgInputComponent.prototype.setClassMap = /**
-     * @return {?}
-     */
-    function () {
-        var _a;
-        this._classMap = (_a = {},
-            _a["input-" + this._type + "-" + this._size] = true,
-            _a['input-disabled'] = this._disabled,
-            _a['input-error'] = this._error,
-            _a);
-    };
-    /**
-     * @return {?}
-     */
-    JdbPlgInputComponent.prototype.clearTxt = /**
-     * @return {?}
-     */
-    function () {
-        this._value = '';
-        this.onChange('');
-    };
-    /**
-     * @param {?} value
-     * @return {?}
-     */
-    JdbPlgInputComponent.prototype.toBoolean = /**
-     * @param {?} value
-     * @return {?}
-     */
-    function (value) {
-        return value === '' || (value && value !== 'false');
-    };
-    JdbPlgInputComponent.decorators = [
-        { type: Component, args: [{
-                    selector: 'app-jdb-plg-input',
-                    template: "<span class=\"input-group-addon\" *ngIf=\"_addOnContentBefore\"> <ng-template [ngTemplateOutlet]=\"_addOnContentBefore\"> </ng-template> </span> <ng-template [ngIf]=\"_type=='text'\"> <div class=\"input-text-wrap\" [ngClass]=\"_inputWrapClass\"> <span class=\"input-prefix\" *ngIf=\"_prefixContent\"> <ng-template [ngTemplateOutlet]=\"_prefixContent\"> </ng-template> </span> <input (blur)=\"_emitBlur($event)\" (focus)=\"_emitFocus($event)\" [disabled]=\"_disabled\" [readonly]=\"_readonly\" [attr.type]=\"_type\" class=\"input\" [ngClass]=\"_classMap\" [attr.placeholder]=\"_placeHolder\" [(ngModel)]=\"jdbValue\" [style.width]=\"width\" maxlength=\"{{jdbMaxLength}}\" /> <span class=\"input-clear\" *ngIf=\"_clear && _value && _type=='text'\" (click)=\"clearTxt()\"> <i class=\"close-icon icon-empty\"></i> </span> <span class=\"ant-input-suffix\" *ngIf=\"_suffixContent\"> <i class=\"iconfont icon-guanbi2fill\"></i> <ng-template [ngTemplateOutlet]=\"_suffixContent\"> </ng-template> </span> </div> <div class=\"input-error-tip\" *ngIf=\"jdbError && _errorContent\"> <i class=\"icon-message-error error-tip\"></i> <span> <ng-template [ngTemplateOutlet]=\"_errorContent\"> </ng-template> </span> </div> </ng-template> <span class=\"input-group-addon\" *ngIf=\"_addOnContentAfter\"> <ng-template [ngTemplateOutlet]=\"_addOnContentAfter\"> </ng-template> </span> <ng-template [ngIf]=\"_type=='textarea'\"> <div class=\"input-text-wrap\"> <textarea (blur)=\"_emitBlur($event)\" (focus)=\"_emitFocus($event)\" (input)=\"textareaOnChange($event)\" #inputTextarea [disabled]=\"_disabled\" [readonly]=\"_readonly\" type=\"textarea\" class=\"input input-textarea\" [ngClass]=\"_classMap\" [attr.placeholder]=\"jdbPlaceHolder\" [(ngModel)]=\"jdbValue\" maxlength=\"{{jdbMaxLength}}\" [style.width]=\"width\"></textarea> <span class=\"textarea-wc-tip\" [ngClass]=\"{'textarea-wc-tip-red': jdbValue&&jdbValue.length == jdbMaxLength}\" *ngIf=\"jdbMaxLength && !_disabled &&!_readonly\">{{(jdbValue&&jdbValue.length)||0}}/{{jdbMaxLength}}</span> </div> </ng-template>",
-                    // styleUrls:  ['./jdb-plg-input.component.scss'],
-                    encapsulation: ViewEncapsulation.None,
-                    providers: [
-                        {
-                            provide: NG_VALUE_ACCESSOR,
-                            useExisting: forwardRef(function () { return JdbPlgInputComponent; }),
-                            multi: true
-                        }
-                    ],
-                },] },
-    ];
-    /** @nocollapse */
-    JdbPlgInputComponent.propDecorators = {
-        "width": [{ type: Input },],
-        "_errorContent": [{ type: ContentChild, args: ['jdbErrorContent',] },],
-        "_addOnContentBefore": [{ type: ContentChild, args: ['addContentBefore',] },],
-        "_addOnContentAfter": [{ type: ContentChild, args: ['addContentAfter',] },],
-        "_prefixContent": [{ type: ContentChild, args: ['prefixContent',] },],
-        "_suffixContent": [{ type: ContentChild, args: ['suffixContent',] },],
-        "jdbBlur": [{ type: Output },],
-        "jdbFocus": [{ type: Output },],
-        "compositionStart": [{ type: HostListener, args: ['compositionstart', ['$event'],] },],
-        "compositionEnd": [{ type: HostListener, args: ['compositionend', ['$event'],] },],
-        "jdbType": [{ type: Input },],
-        "jdbPlaceHolder": [{ type: Input },],
-        "jdbSize": [{ type: Input },],
-        "jdbDisabled": [{ type: Input },],
-        "jdbReadonly": [{ type: Input },],
-        "jdbValue": [{ type: Input },],
-        "jdbError": [{ type: Input },],
-        "jdbClear": [{ type: Input },],
-        "jdbMaxLength": [{ type: Input },],
-        "jdbPromptData": [{ type: Input },],
-    };
-    return JdbPlgInputComponent;
-}());
+import { HttpClientModule } from '@angular/common/http';
 
 /**
  * @license Angular v5.2.11
@@ -4625,6 +1681,40 @@ var XHRConnection = /** @class */ (function () {
     return XHRConnection;
 }());
 /**
+ * `XSRFConfiguration` sets up Cross Site Request Forgery (XSRF) protection for the application
+ * using a cookie. See https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)
+ * for more information on XSRF.
+ *
+ * Applications can configure custom cookie and header names by binding an instance of this class
+ * with different `cookieName` and `headerName` values. See the main HTTP documentation for more
+ * details.
+ *
+ * @deprecated use \@angular/common/http instead
+ */
+var CookieXSRFStrategy = /** @class */ (function () {
+    function CookieXSRFStrategy(_cookieName, _headerName) {
+        if (_cookieName === void 0) { _cookieName = 'XSRF-TOKEN'; }
+        if (_headerName === void 0) { _headerName = 'X-XSRF-TOKEN'; }
+        this._cookieName = _cookieName;
+        this._headerName = _headerName;
+    }
+    /**
+     * @param {?} req
+     * @return {?}
+     */
+    CookieXSRFStrategy.prototype.configureRequest = /**
+     * @param {?} req
+     * @return {?}
+     */
+    function (req) {
+        var /** @type {?} */ xsrfToken = ɵgetDOM().getCookie(this._cookieName);
+        if (xsrfToken) {
+            req.headers.set(this._headerName, xsrfToken);
+        }
+    };
+    return CookieXSRFStrategy;
+}());
+/**
  * Creates {\@link XHRConnection} instances.
  *
  * This class would typically not be used by end users, but could be
@@ -5539,9 +2629,1232 @@ var Jsonp = /** @class */ (function (_super) {
  * found in the LICENSE file at https://angular.io/license
  */
 /**
+ * @return {?}
+ */
+function _createDefaultCookieXSRFStrategy() {
+    return new CookieXSRFStrategy();
+}
+/**
+ * @param {?} xhrBackend
+ * @param {?} requestOptions
+ * @return {?}
+ */
+function httpFactory(xhrBackend, requestOptions) {
+    return new Http(xhrBackend, requestOptions);
+}
+/**
+ * The module that includes http's providers
+ *
+ * @deprecated use \@angular/common/http instead
+ */
+var HttpModule = /** @class */ (function () {
+    function HttpModule() {
+    }
+    HttpModule.decorators = [
+        { type: NgModule, args: [{
+                    providers: [
+                        // TODO(pascal): use factory type annotations once supported in DI
+                        // issue: https://github.com/angular/angular/issues/3183
+                        { provide: Http, useFactory: httpFactory, deps: [XHRBackend, RequestOptions] },
+                        BrowserXhr,
+                        { provide: RequestOptions, useClass: BaseRequestOptions },
+                        { provide: ResponseOptions, useClass: BaseResponseOptions },
+                        XHRBackend,
+                        { provide: XSRFStrategy, useFactory: _createDefaultCookieXSRFStrategy },
+                    ],
+                },] },
+    ];
+    /** @nocollapse */
+    HttpModule.ctorParameters = function () { return []; };
+    return HttpModule;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
  * @deprecated use \@angular/common/http instead
  */
 var VERSION = new Version('5.2.11');
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+var JdbPlgToastComponent = /** @class */ (function () {
+    function JdbPlgToastComponent() {
+        this.msg = "";
+    }
+    /**
+     * @return {?}
+     */
+    JdbPlgToastComponent.prototype.ngOnInit = /**
+     * @return {?}
+     */
+    function () {
+    };
+    JdbPlgToastComponent.decorators = [
+        { type: Component, args: [{
+                    selector: 'app-jdb-plg-toast',
+                    template: "<div class=\"toast-wraper\"> {{msg}} </div> ",
+                },] },
+    ];
+    /** @nocollapse */
+    JdbPlgToastComponent.ctorParameters = function () { return []; };
+    JdbPlgToastComponent.propDecorators = {
+        "msg": [{ type: Input },],
+    };
+    return JdbPlgToastComponent;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+var JdbTabComponent = /** @class */ (function () {
+    function JdbTabComponent(componentFactoryResolver, _injector) {
+        this.componentFactoryResolver = componentFactoryResolver;
+        this._injector = _injector;
+        this.onTabChange = new EventEmitter();
+        this.onTabRemove = new EventEmitter();
+        this.onTopComMsg = new EventEmitter();
+        this.items = [];
+        this.tabComs = [];
+        this.curTabIndex = 0;
+        this.tabIdComMap = {};
+    }
+    /**
+     * @return {?}
+     */
+    JdbTabComponent.prototype.ngOnInit = /**
+     * @return {?}
+     */
+    function () {
+    };
+    /**
+     *
+     * @param ChildComponent
+     * @param attrs:{
+     *     propery:value
+     * ]
+     * title:string
+     * isCloseFlag
+     */
+    /**
+     *
+     * @param {?} ChildComponent
+     * @param {?} attrs
+     * @param {?} title
+     * @param {?=} comId
+     * @param {?=} isCloseFlag
+     * @return {?}
+     */
+    JdbTabComponent.prototype.addItem = /**
+     *
+     * @param {?} ChildComponent
+     * @param {?} attrs
+     * @param {?} title
+     * @param {?=} comId
+     * @param {?=} isCloseFlag
+     * @return {?}
+     */
+    function (ChildComponent, attrs, title, comId, isCloseFlag) {
+        var _this = this;
+        if (comId === void 0) { comId = ""; }
+        if (isCloseFlag === void 0) { isCloseFlag = false; }
+        if (comId && this.tabIdComMap[comId]) {
+            var /** @type {?} */ com = this.tabIdComMap[comId];
+            this.tabChange(com.index);
+            return;
+        }
+        var /** @type {?} */ childComponent = this.componentFactoryResolver.resolveComponentFactory(ChildComponent);
+        var /** @type {?} */ comInstance = this.target.createComponent(childComponent);
+        var /** @type {?} */ keys = Object.keys(attrs);
+        this.items.push({
+            title: title,
+            isCloseFlag: isCloseFlag
+        });
+        keys.forEach(function (value) {
+            comInstance.instance[value] = attrs[value];
+        });
+        this.tabComs.push(comInstance);
+        if (this.items.length > 1) {
+            this.setOneComHide(this.curTabIndex);
+        }
+        this.tabSubs = comInstance.instance['onTopComMsg'] = new EventEmitter();
+        this.tabSubs.subscribe(function (value) {
+            _this.onTopComMsg.emit(value);
+        });
+        this.curTabIndex = this.items.length - 1;
+        if (comId) {
+            this.tabIdComMap[comId] = {
+                index: this.curTabIndex,
+                comInstance: comInstance.instance
+            };
+        }
+        return comInstance;
+    };
+    /**
+     * @param {?} tabIndex
+     * @return {?}
+     */
+    JdbTabComponent.prototype.setOneComHide = /**
+     * @param {?} tabIndex
+     * @return {?}
+     */
+    function (tabIndex) {
+        this.tabComs[tabIndex].location.nativeElement.style.display = "none";
+    };
+    /**
+     * @param {?} tabIndex
+     * @return {?}
+     */
+    JdbTabComponent.prototype.setOneComShow = /**
+     * @param {?} tabIndex
+     * @return {?}
+     */
+    function (tabIndex) {
+        this.tabComs[tabIndex].location.nativeElement.style.display = "block";
+    };
+    /**
+     * @param {?} index
+     * @return {?}
+     */
+    JdbTabComponent.prototype.tabChange = /**
+     * @param {?} index
+     * @return {?}
+     */
+    function (index) {
+        if (this.curTabIndex === index) {
+            return;
+        }
+        this.setOneComHide(this.curTabIndex);
+        this.setOneComShow(index);
+        this.curTabIndex = index;
+        this.onTabChange.emit(index);
+        this.tabComs[index].instance.tabRefresh && this.tabComs[index].instance.tabRefresh({});
+        // this.tabComs[index].destroy();
+    };
+    /**
+     * @param {?} index
+     * @return {?}
+     */
+    JdbTabComponent.prototype.setOneTabShow = /**
+     * @param {?} index
+     * @return {?}
+     */
+    function (index) {
+        this.tabChange(index);
+    };
+    /**
+     * @param {?} index
+     * @return {?}
+     */
+    JdbTabComponent.prototype.removeTab = /**
+     * @param {?} index
+     * @return {?}
+     */
+    function (index) {
+        this.tabComs[index].destroy();
+        this.tabComs.splice(index, 1);
+        this.items.splice(index, 1);
+        if (index <= this.curTabIndex) {
+            this.curTabIndex--;
+        }
+        if (this.curTabIndex < 0) {
+            this.curTabIndex = 0;
+        }
+        this.setOneComShow(this.curTabIndex);
+        this.onTabRemove.emit(index);
+        var /** @type {?} */ tabIdComMap = this.tabIdComMap;
+        for (var /** @type {?} */ key in tabIdComMap) {
+            if (tabIdComMap[key].index == index) {
+                delete tabIdComMap[key];
+                break;
+            }
+        }
+    };
+    /**
+     * @param {?} id
+     * @return {?}
+     */
+    JdbTabComponent.prototype.removeTabById = /**
+     * @param {?} id
+     * @return {?}
+     */
+    function (id) {
+        var /** @type {?} */ tabIdComMap = this.tabIdComMap;
+        for (var /** @type {?} */ key in tabIdComMap) {
+            if (key == id) {
+                this.removeTab(tabIdComMap[key]['index']);
+                break;
+            }
+        }
+    };
+    /**
+     * @return {?}
+     */
+    JdbTabComponent.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        if (this.target) {
+            // this.target.destroy();
+            this.target.clear();
+        }
+    };
+    JdbTabComponent.decorators = [
+        { type: Component, args: [{
+                    selector: 'jdb-tab',
+                    template: "<div class=\"tab-wraper\"> <div class=\"tab-nav-wraper\"> <div class=\"tab-item\" *ngFor=\"let item of items;let i = index;\" [ngClass]=\"{'tab-selected':i == curTabIndex}\" title='{{item.title}}'> <div (click)=\"tabChange(i)\" class=\"tab-text\"> {{item.title}}</div> <span class=\"close-btn\" (click)=\"removeTab(i)\" *ngIf=\"i !== 0 && item.isCloseFlag != true\">&times;</span> </div> </div> <div class=\"tab-content-wraper\"> <div #tabContent class=\"place-holder\"></div> </div> </div> ",
+                },] },
+    ];
+    /** @nocollapse */
+    JdbTabComponent.ctorParameters = function () { return [
+        { type: ComponentFactoryResolver, },
+        { type: Injector, },
+    ]; };
+    JdbTabComponent.propDecorators = {
+        "target": [{ type: ViewChild, args: ['tabContent', { read: ViewContainerRef },] },],
+        "onTabChange": [{ type: Output },],
+        "onTabRemove": [{ type: Output },],
+        "onTopComMsg": [{ type: Output },],
+    };
+    return JdbTabComponent;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+var ShowPictureComponent = /** @class */ (function () {
+    function ShowPictureComponent() {
+        this.update = new EventEmitter();
+    }
+    /**
+     * @return {?}
+     */
+    ShowPictureComponent.prototype.ngOnInit = /**
+     * @return {?}
+     */
+    function () {
+    };
+    /**
+     * @return {?}
+     */
+    ShowPictureComponent.prototype.closeModel = /**
+     * @return {?}
+     */
+    function () {
+        this.update.emit({ status: false });
+    };
+    ShowPictureComponent.decorators = [
+        { type: Component, args: [{
+                    selector: 'app-show-picture',
+                    template: "<div> <div class=\"img-mask\" (click)=\"closeModel()\"> <!-- \u906E\u7F69\u5C42 --> </div> <div class=\"img-content\"> <span class=\"close\" (click)=\"closeModel()\"> <img src=\"/assets/images/close-x.png\" alt=\"\"> </span> <img [src]=\"pictureUrl\" alt=\"\" style=\"max-height: 600px;max-width: 800px;\"> </div> </div> ",
+                },] },
+    ];
+    /** @nocollapse */
+    ShowPictureComponent.ctorParameters = function () { return []; };
+    ShowPictureComponent.propDecorators = {
+        "pictureUrl": [{ type: Input },],
+        "update": [{ type: Output },],
+    };
+    return ShowPictureComponent;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+var PictureViewerComponent = /** @class */ (function () {
+    function PictureViewerComponent(renderer) {
+        this.renderer = renderer;
+        this.pictureList = [];
+        this.update = new EventEmitter();
+        // 设置容器的默认宽高，可适配 可配置属性
+        this.maxWidth = 800;
+        this.maxHeight = 600;
+        this.jdbShowType = 1;
+        this._jdbMaster = true;
+        this._jdbClear = true;
+        this.dragStatus = false;
+        this.current = 0;
+        this.imgOperate = {
+            num: 1,
+            degnum: 0
+        };
+    }
+    Object.defineProperty(PictureViewerComponent.prototype, "jdbMaster", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._jdbMaster;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._jdbMaster = this.toBoolean(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PictureViewerComponent.prototype, "jdbClear", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._jdbClear;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._jdbClear = this.toBoolean(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PictureViewerComponent.prototype, "jdbCurrent", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this.current;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            if (value > this.pictureList.length || value < 0) {
+                this.current = 0;
+                return;
+            }
+            this.current = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @return {?}
+     */
+    PictureViewerComponent.prototype.ngOnInit = /**
+     * @return {?}
+     */
+    function () {
+        this.elem = this.imgBox.nativeElement.children; // 所有的li
+    };
+    /**
+     * @return {?}
+     */
+    PictureViewerComponent.prototype.ngOnChanges = /**
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        if (this.pictureList) {
+            this.pictureList.forEach(function (element, index) {
+                _this.resetPosition(index);
+            });
+        }
+    };
+    // 设置元素样式
+    /**
+     * @return {?}
+     */
+    PictureViewerComponent.prototype.ngAfterViewInit = /**
+     * @return {?}
+     */
+    function () {
+        var /** @type {?} */ imgContent = this.imgContent.nativeElement;
+        this.renderer.setElementStyle(imgContent, 'height', this.maxHeight + 'px');
+        this.renderer.setElementStyle(imgContent, 'width', this.maxWidth + 'px');
+        if (this.jdbShowType == 1) {
+            this.renderer.setElementStyle(imgContent, 'margin-left', -this.maxWidth / 2 + 'px');
+            this.renderer.setElementStyle(imgContent, 'margin-top', -this.maxHeight / 2 + 'px');
+        }
+    };
+    // 重置图片位置
+    /**
+     * @param {?} index
+     * @return {?}
+     */
+    PictureViewerComponent.prototype.resetPosition = /**
+     * @param {?} index
+     * @return {?}
+     */
+    function (index) {
+        var _this = this;
+        var /** @type {?} */ image = new Image();
+        image.onload = function () {
+            // 获取当前加载图片宽高
+            var /** @type {?} */ w = image.width;
+            var /** @type {?} */ h = image.height;
+            var /** @type {?} */ hRatio;
+            var /** @type {?} */ wRatio;
+            // 设置默认比例以及容器宽高
+            var /** @type {?} */ imgRate = w / h; // 图片宽高比
+            // const maxWidth = 800;
+            // const maxHeight = 600;
+            wRatio = _this.maxWidth / w;
+            hRatio = _this.maxHeight / h;
+            if (wRatio > 1 && hRatio > 1) {
+                // 两者比例均大于1表示图为小图，宽高未达到800*600,则取原图大小
+                w = w;
+                h = h;
+            }
+            else if (wRatio < 1 && hRatio < 1) {
+                // 两者比例均小于1表示图为大图，宽高达到800*600,则取容器大小
+                if (imgRate > 1) {
+                    // 宽图
+                    w = _this.maxWidth;
+                    h = w / imgRate;
+                }
+                else if (imgRate < 1) {
+                    // 长图
+                    h = _this.maxHeight;
+                    w = h * imgRate;
+                }
+            }
+            else if (wRatio > 1 && hRatio < 1) {
+                // 表示为长图片，则高为600，宽等比例缩放取值
+                h = _this.maxHeight;
+                w = w * hRatio;
+            }
+            else if (wRatio < 1 && hRatio > 1) {
+                // 表示为宽图片，则宽为800，高等比例缩放取值
+                h = h * wRatio;
+                w = _this.maxWidth;
+            }
+            // 设置图片展示宽高
+            // 设置图片展示宽高
+            _this.renderer.setElementStyle(_this.elem[index].children[0], 'height', h + 'px');
+            _this.renderer.setElementStyle(_this.elem[index].children[0], 'width', w + 'px');
+            if (w === _this.maxWidth && h === _this.maxHeight) {
+                // 设置图片位置使其垂直水平居中
+                // 设置图片位置使其垂直水平居中
+                _this.renderer.setElementStyle(_this.elem[index].children[0], 'top', '0px');
+                _this.renderer.setElementStyle(_this.elem[index].children[0], 'left', '0px');
+            }
+            else {
+                // 设置图片位置使其垂直水平居中
+                // 设置图片位置使其垂直水平居中
+                _this.renderer.setElementStyle(_this.elem[index].children[0], 'top', (_this.maxHeight - h) / 2 + 'px');
+                _this.renderer.setElementStyle(_this.elem[index].children[0], 'left', (_this.maxWidth - w) / 2 + 'px');
+            }
+        };
+        image.src = this.pictureList[index].imgUrl;
+    };
+    // 切换动画
+    /**
+     * @param {?} index
+     * @return {?}
+     */
+    PictureViewerComponent.prototype.ImgState = /**
+     * @param {?} index
+     * @return {?}
+     */
+    function (index) {
+        if (this.pictureList && this.pictureList.length) {
+            if (this.current === 0) {
+                return index === 0 ? 'on' :
+                    index === 1 ? 'next' :
+                        index === this.pictureList.length - 1 ? 'prev' :
+                            'off';
+            }
+            else if (this.current === this.pictureList.length - 1) {
+                return index === this.pictureList.length - 1 ? 'on' :
+                    index === this.pictureList.length - 2 ? 'prev' :
+                        index === 0 ? 'next' :
+                            'off';
+            }
+            switch (index - this.current) {
+                case 0:
+                    return 'on';
+                case 1:
+                    return 'next';
+                case -1:
+                    return 'prev';
+                default:
+                    return 'off';
+            }
+        }
+        else {
+            return 'off';
+        }
+    };
+    // 下一张图
+    /**
+     * @return {?}
+     */
+    PictureViewerComponent.prototype.Next = /**
+     * @return {?}
+     */
+    function () {
+        this.resetImgData();
+        this.current = (this.current + 1) % this.pictureList.length;
+        this.resetPosition(this.current - 1);
+        // 修改状态，使拖动图片回到原来位置
+        // this.dragStatus = true;
+    };
+    // 上一张图
+    /**
+     * @return {?}
+     */
+    PictureViewerComponent.prototype.Prev = /**
+     * @return {?}
+     */
+    function () {
+        this.resetImgData();
+        this.current = this.current - 1 < 0 ? this.pictureList.length - 1 : this.current - 1;
+        this.resetPosition(this.current + 1);
+        // 修改状态，使拖动图片回到原来位置
+        // this.dragStatus = true;
+    };
+    // 关闭图片查看器 __关闭弹框后再次打开所有拖拽后的位置都会自动归为，因为触发了onChanges方法
+    /**
+     * @return {?}
+     */
+    PictureViewerComponent.prototype.closeModel = /**
+     * @return {?}
+     */
+    function () {
+        this.resetImgData();
+        this.update.emit({ status: false });
+    };
+    // 放大 50% 100% 200% 400%
+    /**
+     * @return {?}
+     */
+    PictureViewerComponent.prototype.scaleBig = /**
+     * @return {?}
+     */
+    function () {
+        this.imgOperate.num = this.imgOperate.num * 2;
+        if (this.imgOperate.num > 4) {
+            this.imgOperate.num = 4;
+        }
+        var /** @type {?} */ rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
+        this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
+    };
+    // 缩小
+    /**
+     * @return {?}
+     */
+    PictureViewerComponent.prototype.scaleSmall = /**
+     * @return {?}
+     */
+    function () {
+        this.imgOperate.num = this.imgOperate.num / 2;
+        if (this.imgOperate.num < 1) {
+            this.imgOperate.num = 0.5;
+        }
+        var /** @type {?} */ rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
+        this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
+    };
+    // 逆时针旋转
+    /**
+     * @return {?}
+     */
+    PictureViewerComponent.prototype.routateNi = /**
+     * @return {?}
+     */
+    function () {
+        this.imgOperate.degnum++;
+        var /** @type {?} */ rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
+        this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
+    };
+    // 顺时针旋转
+    /**
+     * @return {?}
+     */
+    PictureViewerComponent.prototype.routateShun = /**
+     * @return {?}
+     */
+    function () {
+        this.imgOperate.degnum--;
+        var /** @type {?} */ rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
+        this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
+    };
+    // 重置图片数据
+    /**
+     * @return {?}
+     */
+    PictureViewerComponent.prototype.resetImgData = /**
+     * @return {?}
+     */
+    function () {
+        this.imgOperate = {
+            num: 1,
+            degnum: 0
+        };
+        var /** @type {?} */ rate = 'scale(1,1) rotate(0deg)';
+        this.renderer.setElementStyle(this.elem[this.current].children[0], 'transition', 'transform 0.2s linear 0.4s');
+        this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
+    };
+    // 转换为boolean,即实现有这个字段就认为为true,没有即为false
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    PictureViewerComponent.prototype.toBoolean = /**
+     * @param {?} value
+     * @return {?}
+     */
+    function (value) {
+        return value === '' || (value && value !== 'false');
+    };
+    /**
+     * @return {?}
+     */
+    PictureViewerComponent.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this.pictureList = null;
+        this.imgBox = null;
+        this.imgContent = null;
+        this.current = null;
+    };
+    PictureViewerComponent.decorators = [
+        { type: Component, args: [{
+                    selector: 'app-picture-viewer',
+                    template: "<div class=\"picture-viewer\"> <div class=\"img-mask\" *ngIf=\"_jdbMaster\" (click)=\"closeModel()\"> <!-- \u906E\u7F69\u5C42 --> </div> <div #imgContent [ngClass]=\"{'img-content-componet':jdbShowType==2}\" class=\"img-content\"> <!-- \u53F3\u4E0A\u89D2\u5173\u95ED\u6309\u94AE --> <div class=\"close\" *ngIf=\"_jdbClear\" (click)=\"closeModel()\"> <span class=\"icon-close\"></span> </div> <!-- \u56FE\u7247box --> <ul class=\"img-box\" #img> <!-- <li *ngFor=\"let item of pictureList;let i=index\" [@imgMove]=\"ImgState(i)\"> <img appDragDirective \u00A0[src]=\"item.imgUrl\" alt=\"\" style=\"max-height: 600px;max-width: 800px;\"> </li> --> </ul> <!-- \u4E0A\u4E00\u9875\u4E0B\u4E00\u9875 --> <div [hidden]=\"current==0\" class=\"prev-page\" (click)=\"Prev()\"> <span class=\"icon-pagination-prev\"></span> </div> <div [hidden]=\"current==pictureList.length-1\" class=\"next-page\" (click)=\"Next()\"> <span class=\"icon-pagination-next\"></span> </div> <!-- \u53F3\u4E0B\u89D2\u9875\u7801 --> <div class=\"img-index\">{{current+1}}/{{pictureList.length}}</div> <!-- \u7F29\u653E\u65CB\u8F6C\u6309\u94AE\u7EC4 --> <div class=\"btn-box\"> <span [ngClass]=\"{'hover-disabled':imgOperate.num===4}\" class=\"icon-picture-zoom-in scale-big\" (click)=\"scaleBig()\"></span> <span [ngClass]=\"{'hover-disabled':imgOperate.num==0.5}\" class=\"icon-picture-zoom-out  scale-small\" (click)=\"scaleSmall()\"></span> <span class=\"icon-picture-counterclockwise routate-ni\" (click)=\"routateNi()\"></span> <span class=\"icon-picture-clockwise routate-shun\" (click)=\"routateShun()\"></span> </div> </div> </div>",
+                    // styleUrls:  ['./picture-viewer.component.scss'],
+                    animations: [
+                        trigger('imgMove', [
+                            /** 不显示 */
+                            state('off', style({ 'display': 'none', 'z-index': '0', 'transform': 'translateX(0)' })),
+                            /** 上一张图片 */
+                            state('prev', style({
+                                'z-index': '1',
+                                'transform': 'translateX(-100%)'
+                            })),
+                            /** 下一张图片 */
+                            state('next', style({ 'z-index': '2', 'transform': 'translateX(100%)' })),
+                            /** 当前图片 */
+                            state('on', style({ 'z-index': '3', 'transform': 'translateX(0)' })),
+                            transition('prev=>on', [
+                                animate('0.3s ease-in')
+                            ]),
+                            transition('next=>on', [
+                                animate('0.3s ease-in')
+                            ]),
+                            transition('on=>prev', [
+                                animate('0.3s ease-in')
+                            ]),
+                            transition('on=>next', [
+                                animate('0.3s ease-in')
+                            ])
+                        ])
+                    ]
+                },] },
+    ];
+    /** @nocollapse */
+    PictureViewerComponent.ctorParameters = function () { return [
+        { type: Renderer, },
+    ]; };
+    PictureViewerComponent.propDecorators = {
+        "pictureList": [{ type: Input },],
+        "update": [{ type: Output },],
+        "imgBox": [{ type: ViewChild, args: ['img',] },],
+        "imgContent": [{ type: ViewChild, args: ['imgContent',] },],
+        "maxWidth": [{ type: Input },],
+        "maxHeight": [{ type: Input },],
+        "jdbShowType": [{ type: Input },],
+        "jdbMaster": [{ type: Input },],
+        "jdbClear": [{ type: Input },],
+        "jdbCurrent": [{ type: Input },],
+    };
+    return PictureViewerComponent;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+var DragDirective = /** @class */ (function () {
+    function DragDirective(elem, render) {
+        //
+        this.elem = elem;
+        this.render = render;
+        this.isDown = false;
+    }
+    /**
+     * @param {?} event
+     * @return {?}
+     */
+    DragDirective.prototype.onMousedown = /**
+     * @param {?} event
+     * @return {?}
+     */
+    function (event) {
+        var /** @type {?} */ wRate = localStorage.getItem('dragWidth');
+        var /** @type {?} */ hRate = localStorage.getItem('dragHeight');
+        this.isDown = true;
+        this.disLeft = this.elem.nativeElement.offsetLeft;
+        this.disTop = this.elem.nativeElement.offsetTop;
+        this.disX = event.clientX;
+        this.disY = event.clientY;
+        event.target.style.cursor = 'move';
+        // event.preventDefault();
+    };
+    /**
+     * @param {?} event
+     * @return {?}
+     */
+    DragDirective.prototype.onMousemove = /**
+     * @param {?} event
+     * @return {?}
+     */
+    function (event) {
+        event.preventDefault();
+        // 判断该元素是否被点击了。
+        if (this.isDown) {
+            var /** @type {?} */ newdisX = event.clientX - this.disX;
+            var /** @type {?} */ newdisY = event.clientY - this.disY;
+            this.elem.nativeElement.style.left = newdisX + this.disLeft + 'px';
+            this.elem.nativeElement.style.top = newdisY + this.disTop + 'px';
+        }
+        return false;
+    };
+    /**
+     * @return {?}
+     */
+    DragDirective.prototype.onMouseup = /**
+     * @return {?}
+     */
+    function () {
+        // 只用当元素移动过了，离开函数体才会触发。
+        if (this.isDown) {
+            this.isDown = false;
+            this.disLeft = this.elem.nativeElement.offsetLeft;
+            this.disTop = this.elem.nativeElement.offsetTop;
+        }
+    };
+    /**
+     * @return {?}
+     */
+    DragDirective.prototype.onMouseleave = /**
+     * @return {?}
+     */
+    function () {
+        this.isDown = false;
+    };
+    /**
+     * @return {?}
+     */
+    DragDirective.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        //Called once, before the instance is destroyed.
+        //Add 'implements OnDestroy' to the class.
+    };
+    DragDirective.decorators = [
+        { type: Directive, args: [{
+                    selector: 'img[appDragDirective]'
+                },] },
+    ];
+    /** @nocollapse */
+    DragDirective.ctorParameters = function () { return [
+        { type: ElementRef, },
+        { type: Renderer, },
+    ]; };
+    DragDirective.propDecorators = {
+        "onMousedown": [{ type: HostListener, args: ['mousedown', ['$event'],] },],
+        "onMousemove": [{ type: HostListener, args: ['mousemove', ['$event'],] },],
+        "onMouseup": [{ type: HostListener, args: ['mouseup', ['$event'],] },],
+        "onMouseleave": [{ type: HostListener, args: ['mouseleave', ['$event'],] },],
+    };
+    return DragDirective;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+var JdbPlgPaginationComponent = /** @class */ (function () {
+    function JdbPlgPaginationComponent(el, renderer2) {
+        this.el = el;
+        this.renderer2 = renderer2;
+        this._current = 1;
+        this._pageSize = 10;
+        this._firstIndex = 1;
+        this._lastIndex = Infinity;
+        this._showTotal = false;
+        this._showPageSize = false;
+        this._showQuickJump = false;
+        this.pages = [];
+        // _options = [10, 20, 30, 40, 50]; // select默认数组
+        // select默认数组
+        this._options = [
+            { value: 10, text: '10条/页' },
+            { value: 20, text: '20条/页' },
+            { value: 30, text: '30条/页' },
+            { value: 40, text: '40条/页' },
+            { value: 50, text: '50条/页' }
+        ];
+        this._jdbSimple = false;
+        this.jdbPageSizeChange = new EventEmitter();
+        this.jdbPageIndexChange = new EventEmitter();
+    }
+    Object.defineProperty(JdbPlgPaginationComponent.prototype, "jdbShowTotal", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._showTotal;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._showTotal = this.toBoolean(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgPaginationComponent.prototype, "jdbTotal", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._total;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            // 若传入值和当前total一致，则不触发操作
+            if (value === this._total) {
+                return;
+            }
+            this._total = value;
+            this.setPageNo();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgPaginationComponent.prototype, "jdbPageIndex", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._current;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            if (this._current === value) {
+                return;
+            }
+            if (value > this._lastIndex || value < this._firstIndex) {
+                return;
+            }
+            this._current = Number(value);
+            this.setPageNo();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgPaginationComponent.prototype, "jdbShowPageSize", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._showPageSize;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._showPageSize = this.toBoolean(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgPaginationComponent.prototype, "jdbPageSize", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._pageSize;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            if (value === this._pageSize) {
+                return;
+            }
+            this._pageSize = value;
+            this.setPageNo();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgPaginationComponent.prototype, "jdbSizeOptions", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._options;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            // 若传入值和当前total一致，则不触发操作
+            if (value === this._options) {
+                return;
+            }
+            // 判断是否为数组
+            if (Object.prototype.toString.call(value) === '[object Array]') {
+                var /** @type {?} */ optionsArr_1 = [];
+                value.forEach(function (elem) {
+                    var /** @type {?} */ obj = {
+                        value: elem,
+                        text: elem + '条/页'
+                    };
+                    optionsArr_1.push(obj);
+                });
+                this._options = optionsArr_1;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgPaginationComponent.prototype, "jdbShowQuickJump", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._showQuickJump;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._showQuickJump = this.toBoolean(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgPaginationComponent.prototype, "jdbSimple", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this.jdbSimple;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._jdbSimple = this.toBoolean(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    // 创建页码
+    /**
+     * @return {?}
+     */
+    JdbPlgPaginationComponent.prototype.setPageNo = /**
+     * @return {?}
+     */
+    function () {
+        // 向上取整
+        this._lastIndex = Math.ceil(this._total / this._pageSize);
+        // 如果当前页码大于尾页，则等于尾页
+        // if (this._current > this._lastIndex) {
+        //   this.jdbPageIndex = this._lastIndex;
+        //   this.jdbPageIndexChange.emit(this.jdbPageIndex);
+        // }
+        var /** @type {?} */ tmpPages = [];
+        if (this._lastIndex <= 9) {
+            // 若总页数不超过9，则全部展示在页面上
+            for (var /** @type {?} */ i = 2; i <= this._lastIndex - 1; i++) {
+                tmpPages.push({
+                    index: i
+                });
+            }
+        }
+        else {
+            var /** @type {?} */ current = +this._current;
+            var /** @type {?} */ left = Math.max(2, current - 2);
+            var /** @type {?} */ right = Math.min(current + 2, this._lastIndex - 1);
+            // 特殊处理正数第五个数和倒数第五个数
+            if (current === 5) {
+                left = 2;
+            }
+            else if (current === this._lastIndex - 4) {
+                right = this._lastIndex - 1;
+            }
+            if (current - 1 <= 3) {
+                right = 7;
+            }
+            if (this._lastIndex - current <= 3) {
+                left = this._lastIndex - 6;
+            }
+            for (var /** @type {?} */ i = left; i <= right; i++) {
+                tmpPages.push({ index: i });
+            }
+        }
+        this.pages = tmpPages;
+    };
+    // status为true表示页码切换，num表示页码，false表示条数切换，num表示条数
+    /**
+     * @param {?} status
+     * @param {?} num
+     * @return {?}
+     */
+    JdbPlgPaginationComponent.prototype.dataChange = /**
+     * @param {?} status
+     * @param {?} num
+     * @return {?}
+     */
+    function (status, num) {
+        if (status) {
+            if (num === this._firstIndex - 1 || num === this._lastIndex + 1) {
+                return;
+            }
+            // 清空输入框内容
+            this.quickJumpPage = '';
+            this.jdbPageIndex = num;
+            this.jdbPageIndexChange.emit(this.jdbPageIndex);
+        }
+        else {
+            // 清空输入框内容
+            this.quickJumpPage = '';
+            this.jdbPageSize = num;
+            this.jdbPageSizeChange.emit(num);
+            // 切换页数之后需要将页码重置为1
+            this.jdbPageIndex = 1;
+            this.jdbPageIndexChange.emit(this.jdbPageIndex);
+            this.setPageNo();
+        }
+        // this.setPageNo();
+    };
+    // 点击跳转按钮快速跳转
+    /**
+     * @return {?}
+     */
+    JdbPlgPaginationComponent.prototype.quickJump = /**
+     * @return {?}
+     */
+    function () {
+        // 若是输入的页码大于最后一页页码，即超出范围不存在，则清空页码，并使输入框获取焦点
+        if (this.quickJumpPage > this._lastIndex) {
+            this.inputJump.nativeElement.focus();
+            this.quickJumpPage = '';
+            return;
+        }
+        // 若输入为空，则不能跳转
+        if (!this.quickJumpPage) {
+            return;
+        }
+        this.jdbPageIndex = this.quickJumpPage;
+        this.jdbPageIndexChange.emit(this.jdbPageIndex);
+    };
+    // 点击左箭头(为什么使用条数除以2呢)
+    /**
+     * @param {?} pageSize
+     * @return {?}
+     */
+    JdbPlgPaginationComponent.prototype.jumpBefore = /**
+     * @param {?} pageSize
+     * @return {?}
+     */
+    function (pageSize) {
+        this.dataChange(true, this._current - Math.round(pageSize / 2));
+    };
+    // 点击右箭头
+    /**
+     * @param {?} pageSize
+     * @return {?}
+     */
+    JdbPlgPaginationComponent.prototype.jumpAfter = /**
+     * @param {?} pageSize
+     * @return {?}
+     */
+    function (pageSize) {
+        this.dataChange(true, this._current + Math.round(pageSize / 2));
+    };
+    // 转换为boolean,即实现有这个字段就认为为true,没有即为false
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    JdbPlgPaginationComponent.prototype.toBoolean = /**
+     * @param {?} value
+     * @return {?}
+     */
+    function (value) {
+        return value === '' || (value && value !== 'false');
+    };
+    // 校验是否为纯数字
+    /**
+     * @param {?} obj
+     * @return {?}
+     */
+    JdbPlgPaginationComponent.prototype.isNumber = /**
+     * @param {?} obj
+     * @return {?}
+     */
+    function (obj) {
+        var /** @type {?} */ reg = /^[0-9]*$/;
+        return reg.test(obj);
+    };
+    JdbPlgPaginationComponent.decorators = [
+        { type: Component, args: [{
+                    selector: 'app-jdb-plg-pagination',
+                    template: "<div class=\"jdb-plg-pagination\"> <!-- \u603B\u6761\u6570 --> <span *ngIf=\"_showTotal\" class=\"total-box\"> \u5171{{_total}}\u6761 </span> <div class=\"operate-box\"> <!-- \u6761\u6570\u5207\u6362 --> <div class=\"jdb-plg-pagination-options\" *ngIf=\"_showPageSize\"> <app-jdb-plg-select (ngModelChange)=\"dataChange(false,$event)\" [jdbSize]=\"'small'\" [jdbWidth]=\"'90px'\" [(ngModel)]=\"_pageSize\" [jdbSelectList]=\"_options\"></app-jdb-plg-select> </div> <!-- \u57FA\u672C\u5206\u9875\u6837\u5F0F --> <ul *ngIf=\"!_jdbSimple\" class=\"base-pagination\"> <!-- \u4E0A\u4E00\u9875\u6309\u94AE --> <li class=\"jdb-plg-pagination-prev\" title=\"\u4E0A\u4E00\u9875\" [ngClass]=\"{'disabled':_current===_firstIndex}\" (click)=\"dataChange(true,_current-1)\"> <span class=\"jdbIcon icon-pagination-prev\"></span> </li> <!-- \u9996\u9875\u6309\u94AE --> <li class=\"jdb-plg-pagination-first\" title=\"\u9996\u9875\" [ngClass]=\"{'active':_current===_firstIndex}\" (click)=\"dataChange(true,_firstIndex)\"> {{_firstIndex}} </li> <!-- \u7701\u7565\u53F7 --> <li class=\"jdb-plg-pagination-forward\" *ngIf=\"(_lastIndex >9)&&(_current-4>_firstIndex)\" (click)=\"jumpBefore(_pageSize)\"> <span class=\"icon-pagination-more\"></span> <span class=\"icon-pagination-jump-prev\"></span> </li> <!-- \u6309\u94AE --> <li class=\"jdb-plg-pagination-pager\" *ngFor=\"let page of pages\" [ngClass]=\"{'active':_current===page.index}\" (click)=\"dataChange(true,page.index)\"> {{page.index}} </li> <!-- \u7701\u7565\u53F7 --> <li class=\"jdb-plg-pagination-backward\" *ngIf=\"(_lastIndex >9)&&(_current+4<_lastIndex)\" (click)=\"jumpAfter(_pageSize)\"> <span class=\"icon-pagination-more\"></span> <span class=\"icon-pagination-jump-next\"></span> </li> <!-- \u5C3E\u9875\u6309\u94AE --> <li class=\"jdb-plg-pagination-last\" *ngIf=\"(_lastIndex>0)&&(_lastIndex!==_firstIndex)\" title=\"\u5C3E\u9875\" [ngClass]=\"{'active':_current===_lastIndex}\" (click)=\"dataChange(true,_lastIndex)\"> {{_lastIndex}} </li> <!-- \u4E0B\u4E00\u9875\u6309\u94AE --> <li class=\"jdb-plg-pagination-next\" title=\"\u4E0B\u4E00\u9875\" [ngClass]=\"{'disabled':_current===_lastIndex}\" (click)=\"dataChange(true,_current+1)\"> <span class=\"jdbIcon icon-pagination-next\"></span> </li> </ul> <!-- \u7B80\u5355\u5206\u9875\u6837\u5F0F --> <div class=\"simple-pagination\" *ngIf=\"_jdbSimple\"> <div class=\"left-box\"> <span class=\"icon-pagination-first\" [ngClass]=\"{'disabled':_current===_firstIndex}\" (click)=\"dataChange(true,_firstIndex)\"></span> <span class=\"icon-pagination-prev\" [ngClass]=\"{'disabled':_current===_firstIndex}\" (click)=\"dataChange(true,_current-1)\"></span> </div> <div class=\"center-box\"> {{_current}} / {{_lastIndex}} </div> <div class=\"right-box\"> <span class=\"icon-pagination-next\" [ngClass]=\"{'disabled':_current===_lastIndex}\" (click)=\"dataChange(true,_current+1)\"></span> <span class=\"icon-pagination-last\" [ngClass]=\"{'disabled':_current===_lastIndex}\" (click)=\"dataChange(true,_lastIndex)\"></span> </div> </div> <!-- \u5FEB\u901F\u8DF3\u8F6C --> <div *ngIf=\"_showQuickJump\" class=\"quick-jumper\"> \u7B2C <input #inputJump type=\"text\" [(ngModel)]=\"quickJumpPage\" (keyup.enter)=\"quickJump()\" appOnlyNumber=\"true\"> \u9875 <button (click)=\"quickJump()\">\u8DF3\u8F6C</button> </div> </div> </div>",
+                },] },
+    ];
+    /** @nocollapse */
+    JdbPlgPaginationComponent.ctorParameters = function () { return [
+        { type: ElementRef, },
+        { type: Renderer2, },
+    ]; };
+    JdbPlgPaginationComponent.propDecorators = {
+        "jdbPageSizeChange": [{ type: Output },],
+        "jdbPageIndexChange": [{ type: Output },],
+        "inputJump": [{ type: ViewChild, args: ['inputJump',] },],
+        "jdbShowTotal": [{ type: Input },],
+        "jdbTotal": [{ type: Input },],
+        "jdbPageIndex": [{ type: Input },],
+        "jdbShowPageSize": [{ type: Input },],
+        "jdbPageSize": [{ type: Input },],
+        "jdbSizeOptions": [{ type: Input },],
+        "jdbShowQuickJump": [{ type: Input },],
+        "jdbSimple": [{ type: Input },],
+    };
+    return JdbPlgPaginationComponent;
+}());
 
 /**
  * @fileoverview added by tsickle
@@ -6013,6 +4326,1782 @@ var JdbPlgBaseService = /** @class */ (function () {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+var JdbPlgButtonComponent = /** @class */ (function () {
+    function JdbPlgButtonComponent(_elementRef, _renderer, jdbPlgBaseService) {
+        this._elementRef = _elementRef;
+        this._renderer = _renderer;
+        this.jdbPlgBaseService = jdbPlgBaseService;
+        this._prefixCls = 'jdb-plg-btn';
+        this._el = this._elementRef.nativeElement;
+        this.nativeElement = this._elementRef.nativeElement;
+        this._renderer.addClass(this._el, this._prefixCls);
+    }
+    Object.defineProperty(JdbPlgButtonComponent.prototype, "jdbSize", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this.size;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            if (!value) {
+                value = 'default';
+            }
+            this.size = value;
+            // this._renderer.addClass(this._el, this.size);
+            this._setClassMap(this.loading);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgButtonComponent.prototype, "jdbType", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this.type;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            if (!value) {
+                value = 'primary';
+            }
+            this.type = value;
+            // this._renderer.addClass(this._el, this.type);
+            this._setClassMap(this.loading);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgButtonComponent.prototype, "jdbLoading", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this.loading;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            value = value === '' || (value && value !== 'false');
+            this.loading = value;
+            this._setClassMap(this.loading);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @param {?} loading
+     * @return {?}
+     */
+    JdbPlgButtonComponent.prototype._setClassMap = /**
+     * @param {?} loading
+     * @return {?}
+     */
+    function (loading) {
+        this._renderer.removeClass(this._el, 'undefined');
+        this._renderer.addClass(this._el, this.size);
+        this._renderer.addClass(this._el, this.type);
+        if (loading) {
+            this._renderer.addClass(this._el, 'loading_disable');
+        }
+        else {
+            this._renderer.removeClass(this._el, 'loading_disable');
+        }
+    };
+    /**
+     * @return {?}
+     */
+    JdbPlgButtonComponent.prototype.ngOnInit = /**
+     * @return {?}
+     */
+    function () {
+    };
+    JdbPlgButtonComponent.decorators = [
+        { type: Component, args: [{
+                    selector: '[app-jdb-plg-button]',
+                    template: "<i class=\"jdb-icon-loading action\" *ngIf=\"loading\"></i> <ng-content></ng-content>",
+                },] },
+    ];
+    /** @nocollapse */
+    JdbPlgButtonComponent.ctorParameters = function () { return [
+        { type: ElementRef, },
+        { type: Renderer2, },
+        { type: JdbPlgBaseService, },
+    ]; };
+    JdbPlgButtonComponent.propDecorators = {
+        "jdbSize": [{ type: Input },],
+        "jdbType": [{ type: Input },],
+        "jdbLoading": [{ type: Input },],
+    };
+    return JdbPlgButtonComponent;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+var JdbPlgDialogComponent = /** @class */ (function () {
+    function JdbPlgDialogComponent(resolver) {
+        this.resolver = resolver;
+        this._customClass = '';
+        this._maskClass = '';
+        this._visible = false;
+        this._title = '';
+        this._closeable = true;
+        this._animationStatus = '11';
+        this._width = '400px';
+        this._footerHide = false;
+        this._isConfirm = false;
+        this._okText = '';
+        this._cancelText = '';
+        this._RogerText = '';
+        this._state = 'hideM';
+        this.MvisibileChange = new EventEmitter();
+        this.MOnOk = new EventEmitter();
+        this.MOnCancel = new EventEmitter();
+    }
+    Object.defineProperty(JdbPlgDialogComponent.prototype, "Mvisible", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._visible;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            var /** @type {?} */ visible = this.toBoolean(value);
+            if (this._visible === visible) {
+                return;
+            }
+            this._visible = visible;
+            this.MvisibileChange.emit(this._visible);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgDialogComponent.prototype, "MfooterHiden", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._footerHide;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            var /** @type {?} */ visible = this.toBoolean(value);
+            if (this._visible === visible) {
+                return;
+            }
+            this._footerHide = visible;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgDialogComponent.prototype, "Mtitle", {
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            if (value instanceof TemplateRef) {
+                this._titleTpl = value;
+            }
+            else {
+                this._title = value;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgDialogComponent.prototype, "Mcontent", {
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            if (value instanceof TemplateRef) {
+                this._contentTpl = value;
+            }
+            else {
+                this._content = value;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgDialogComponent.prototype, "Mfooter", {
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            if (value instanceof TemplateRef) {
+                this._footerTpl = value;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgDialogComponent.prototype, "Mwidth", {
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._width = typeof value === 'number' ? value + 'px' : value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    // 定位modal位置和样式
+    /**
+     * @return {?}
+     */
+    JdbPlgDialogComponent.prototype.setStyle = /**
+     * @return {?}
+     */
+    function () {
+        var /** @type {?} */ el = this.contentEl.nativeElement;
+        this._bodyStyleMap = __assign({ width: this._width });
+    };
+    /**
+     * @param {?} e
+     * @return {?}
+     */
+    JdbPlgDialogComponent.prototype.onEsc = /**
+     * @param {?} e
+     * @return {?}
+     */
+    function (e) {
+        this.clickCancel(e);
+    };
+    Object.defineProperty(JdbPlgDialogComponent.prototype, "Mclass", {
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._customClass = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgDialogComponent.prototype, "MOkText", {
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._okText = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgDialogComponent.prototype, "McancelText", {
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._cancelText = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgDialogComponent.prototype, "MRogerText", {
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._isConfirm = true;
+            this._RogerText = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @return {?}
+     */
+    JdbPlgDialogComponent.prototype.ngOnInit = /**
+     * @return {?}
+     */
+    function () {
+        this.setStyle();
+    };
+    /**
+     * @param {?} component
+     * @return {?}
+     */
+    JdbPlgDialogComponent.prototype.createDynamicComponent = /**
+     * @param {?} component
+     * @return {?}
+     */
+    function (component) {
+        var /** @type {?} */ factory = this.resolver.resolveComponentFactory(/** @type {?} */ (this._content));
+        this.bodyEl.createComponent(factory);
+    };
+    /**
+     * @return {?}
+     */
+    JdbPlgDialogComponent.prototype.ngAfterViewInit = /**
+     * @return {?}
+     */
+    function () {
+    };
+    /**
+     * @param {?} changes
+     * @return {?}
+     */
+    JdbPlgDialogComponent.prototype.ngOnChanges = /**
+     * @param {?} changes
+     * @return {?}
+     */
+    function (changes) {
+        var _this = this;
+        if (this._visible) {
+            this._state = 'showM';
+            setTimeout(function () {
+                _this.contentEl.nativeElement.parentNode.focus();
+            }, 200);
+        }
+        else {
+            this._state = 'hideM';
+        }
+    };
+    /**
+     * @param {?} e
+     * @return {?}
+     */
+    JdbPlgDialogComponent.prototype.clickCancel = /**
+     * @param {?} e
+     * @return {?}
+     */
+    function (e) {
+        this._visible = false;
+        this._state = 'hideM';
+        this.MOnCancel.emit(e);
+    };
+    /**
+     * @param {?} e
+     * @return {?}
+     */
+    JdbPlgDialogComponent.prototype.clickOk = /**
+     * @param {?} e
+     * @return {?}
+     */
+    function (e) {
+        if (this.MOnOk) {
+            this.MOnOk.emit(e);
+        }
+        else {
+            this._visible = false;
+            this._state = 'hideM';
+        }
+    };
+    /**
+     * @param {?} e
+     * @return {?}
+     */
+    JdbPlgDialogComponent.prototype.closeModal = /**
+     * @param {?} e
+     * @return {?}
+     */
+    function (e) {
+        if ((/** @type {?} */ (e.target)).getAttribute('role') === 'dialog') {
+            this.clickCancel(e);
+            this._state = 'hideM';
+        }
+    };
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    JdbPlgDialogComponent.prototype.toBoolean = /**
+     * @param {?} value
+     * @return {?}
+     */
+    function (value) {
+        return value === '' || (value && value !== false);
+    };
+    JdbPlgDialogComponent.decorators = [
+        { type: Component, args: [{
+                    selector: 'app-jdb-plg-dialog',
+                    template: "<div [ngClass]=\"_customClass\"> <div class=\"_maskClass\" [ngClass]=\"{'hid':!_visible}\" [style.zIndex]=\"1000\"></div> <div class=\"jdb-modal\" tabindex=\"-1\" role=\"dialog\" [ngClass]=\"{'hid':!_visible}\" [ngStyle]=\"{'dispaly':!_visible}\" (click)=\"closeModal($event)\" class=\"_wrapClass\" [ngClass]=\"_wrapClass\" [style.zIndex]=\"1000\" [attr.aria-modalId]=\"modalId\"> <div #modal_content class=\"modal\" [@optionsState]=\"_state\" [ngStyle]=\"_bodyStyleMap\"> <div class=\"modal-content\"> <ng-template [ngIf]=\"_closeable\"> <button class=\"modal-close\" (click)=\"clickCancel($event)\"> <!-- <span class=\"modal-close-x\"></span> --> <span class=\"icon-close\"></span> </button> </ng-template> <div class=\"modal-header\" *ngIf=\"_title||_titleTpl\"> <div class=\"modal-title\" [attr.id]=\"modalId\"> <ng-template #defaultTitle> {{_title}} </ng-template> <ng-template [ngTemplateOutlet]=\"_titleTpl||defaultTitle\"> </ng-template> </div> </div> <div class=\"modal-body\"> <ng-template #defaultContent>{{_content}}</ng-template> <ng-template [ngTemplateOutlet]=\"_contentTpl||defaultContent\"></ng-template> <ng-template #modal_component></ng-template> </div> <div class=\"modal-footer\" *ngIf=\"!_footerHide\"> <ng-template #defalutFooter> <button *ngIf=\"!_isConfirm\" app-jdb-plg-button [jdbSize]=\"'default'\" [jdbType]=\"'white'\" (click)=\"clickCancel($event)\"><span>{{_cancelText||'\u53D6\u6D88'}}</span></button> <button *ngIf=\"!_isConfirm\" class=\"right-btn\" app-jdb-plg-button [jdbSize]=\"'default'\" [jdbType]=\"'primary'\" (click)=\"clickOk($event)\"><span>{{_okText||'\u786E\u8BA4'}}</span></button> <button *ngIf=\"_isConfirm\" class=\"right-btn\" app-jdb-plg-button [jdbSize]=\"'default'\" [jdbType]=\"'primary'\" (click)=\"clickOk($event)\" (click)=\"clickOk($event)\"><span>{{_RogerText}}</span></button> </ng-template> <ng-template [ngTemplateOutlet]=\"_footerTpl||defalutFooter\"></ng-template> </div> <div tabindex=\"0\" style=\"width:0px;height:0px;overflow:hidden;\">aaa</div> </div> </div> </div> </div>",
+                    // styleUrls:  ['./jdb-plg-dialog.component.scss'],
+                    animations: [
+                        trigger$1('optionsState', [
+                            state$1('showM', style$1({
+                                transform: 'translate(-50%, -50%)',
+                                opacity: '1',
+                            })),
+                            state$1('hideM', style$1({
+                                transform: 'translate(-50%, -80%)',
+                                opacity: '0',
+                            })),
+                            transition$1('showM <=> hideM', animate$1('200ms ease-out'))
+                        ])
+                    ]
+                },] },
+    ];
+    /** @nocollapse */
+    JdbPlgDialogComponent.ctorParameters = function () { return [
+        { type: ComponentFactoryResolver, },
+    ]; };
+    JdbPlgDialogComponent.propDecorators = {
+        "contentEl": [{ type: ViewChild, args: ['modal_content',] },],
+        "bodyEl": [{ type: ViewChild, args: ['modal_component', { read: ViewContainerRef },] },],
+        "MvisibileChange": [{ type: Output },],
+        "MOnOk": [{ type: Output },],
+        "MOnCancel": [{ type: Output },],
+        "Mvisible": [{ type: Input },],
+        "MfooterHiden": [{ type: Input },],
+        "Mtitle": [{ type: Input },],
+        "Mcontent": [{ type: Input },],
+        "Mfooter": [{ type: Input },],
+        "Mwidth": [{ type: Input },],
+        "onEsc": [{ type: HostListener, args: ['keydown.esc', ['$event'],] },],
+        "Mclass": [{ type: Input },],
+        "MOkText": [{ type: Input },],
+        "McancelText": [{ type: Input },],
+        "MRogerText": [{ type: Input },],
+    };
+    return JdbPlgDialogComponent;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+var OnlyNumberDirective = /** @class */ (function () {
+    function OnlyNumberDirective(el) {
+        this.el = el;
+        this.regexStr = '^[0-9]*$';
+    }
+    /**
+     * @param {?} event
+     * @return {?}
+     */
+    OnlyNumberDirective.prototype.onKeyDown = /**
+     * @param {?} event
+     * @return {?}
+     */
+    function (event) {
+        var /** @type {?} */ e = /** @type {?} */ (event);
+        if (this.appOnlyNumber) {
+            if ([46, 8, 9, 27, 13, 110, 190].indexOf(e.keyCode) !== -1 ||
+                // Allow: Ctrl+A
+                (e.keyCode === 65 && e.ctrlKey === true) ||
+                // Allow: Ctrl+C
+                (e.keyCode === 67 && e.ctrlKey === true) ||
+                // Allow: Ctrl+V
+                (e.keyCode === 86 && e.ctrlKey === true) ||
+                // Allow: Ctrl+X
+                (e.keyCode === 88 && e.ctrlKey === true) ||
+                // Allow: home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 39)) {
+                // let it happen, don't do anything
+                return;
+            }
+            var /** @type {?} */ ch = String.fromCharCode(e.keyCode);
+            var /** @type {?} */ regEx = new RegExp(this.regexStr);
+            if (regEx.test(ch)) {
+                return;
+            }
+            else {
+                e.preventDefault();
+            }
+        }
+    };
+    /**
+     * @param {?} event
+     * @return {?}
+     */
+    OnlyNumberDirective.prototype.onKeyUp = /**
+     * @param {?} event
+     * @return {?}
+     */
+    function (event) {
+        this.el.nativeElement.value = this.el.nativeElement.value.replace(/\D/g, '');
+    };
+    OnlyNumberDirective.decorators = [
+        { type: Directive, args: [{
+                    selector: '[appOnlyNumber]'
+                },] },
+    ];
+    /** @nocollapse */
+    OnlyNumberDirective.ctorParameters = function () { return [
+        { type: ElementRef, },
+    ]; };
+    OnlyNumberDirective.propDecorators = {
+        "appOnlyNumber": [{ type: Input },],
+        "onKeyDown": [{ type: HostListener, args: ['keydown', ['$event'],] },],
+        "onKeyUp": [{ type: HostListener, args: ['keyup', ['$event'],] },],
+    };
+    return OnlyNumberDirective;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+var JdbPlgSelectComponent = /** @class */ (function () {
+    function JdbPlgSelectComponent(renderer2, renderer) {
+        this.renderer2 = renderer2;
+        this.renderer = renderer;
+        this._size = 'middle';
+        this._optionText = 'text';
+        this._optionValue = 'value';
+        this.isShowClear = false;
+        this._jdbClear = false;
+        this._jdbDisabled = false;
+        this._jdbMode = 'chooseOne';
+        this._placeHolder = '请选择';
+        this._chooseMoreArray = [];
+        this._classMap = {};
+        this.savaHeight = true;
+        this.spaceFlex = true;
+        this._showImgBox = false;
+        this._jdbItemDisabled = 'disabled';
+        this._jdbSureDisabled = 2;
+        this._jdbNoDisabled = 1;
+        // 自定义类名
+        this.jdbClassName = '';
+        this.show = false;
+        this.ngModelValue = '';
+        this.onChange = function () { return null; };
+    }
+    Object.defineProperty(JdbPlgSelectComponent.prototype, "jdbItemDisabled", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._jdbItemDisabled;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._jdbItemDisabled = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgSelectComponent.prototype, "jdbSureDisabled", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._jdbSureDisabled;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._jdbSureDisabled = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgSelectComponent.prototype, "jdbPlaceHolder", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._placeHolder;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._placeHolder = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgSelectComponent.prototype, "jdbClear", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._jdbClear;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._jdbClear = this.toBoolean(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgSelectComponent.prototype, "jdbSelectList", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._selectList;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            var _this = this;
+            this._selectList = value;
+            // 循环数组，判断是否需要展示带有图片下拉框
+            if (this._selectList) {
+                this._selectList.forEach(function (element) {
+                    if (element.imgUrl) {
+                        _this._showImgBox = true;
+                    }
+                });
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgSelectComponent.prototype, "jdbSize", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._size;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._size = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgSelectComponent.prototype, "jdbWidth", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._width;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._width = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgSelectComponent.prototype, "jdbOptionText", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._optionText;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._optionText = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgSelectComponent.prototype, "jdbOptionValue", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._optionValue;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._optionValue = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgSelectComponent.prototype, "jdbDisabled", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._jdbDisabled;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._jdbDisabled = this.toBoolean(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgSelectComponent.prototype, "jdbMode", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._jdbMode;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._jdbMode = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @return {?}
+     */
+    JdbPlgSelectComponent.prototype.ngOnInit = /**
+     * @return {?}
+     */
+    function () {
+    };
+    // tslint:disable-next-line:use-life-cycle-interface
+    /**
+     * @return {?}
+     */
+    JdbPlgSelectComponent.prototype.ngAfterViewInit = /**
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        // 点击除下拉框以外位置，下拉框隐藏
+        this.renderer2.listen('document', 'click', function () {
+            _this.show = false;
+            _this.renderer.setElementClass(_this.inputDom.nativeElement, 'jdb-plg-select-active', _this.show);
+        });
+        if (this._jdbClear && !this._jdbDisabled) {
+            // 监听输入框元素，若有内容时则滑上显示x
+            this.renderer2.listen(this.inputDom.nativeElement, 'mouseenter', function () {
+                // 若输入框不存在内容，则不做任何操作
+                if (_this._jdbMode === 'chooseOne' || _this._jdbMode === 'chooseNum') {
+                    if (!_this.inputText || _this.show) {
+                        return;
+                    }
+                }
+                else if (_this._jdbMode === 'chooseMore') {
+                    if (_this.inputText.length === 0 || _this.show) {
+                        return;
+                    }
+                }
+                _this.isShowClear = true;
+                _this.renderer.setElementClass(_this.inputDom.nativeElement, 'jdb-plg-select-active', _this.show);
+            });
+            this.renderer2.listen(this.inputDom.nativeElement, 'mouseleave', function () {
+                // 若输入框不存在内容，则不做任何操作
+                if (_this._jdbMode === 'chooseOne' || _this._jdbMode === 'chooseNum') {
+                    if (!_this.inputText || _this.show) {
+                        return;
+                    }
+                }
+                else if (_this._jdbMode === 'chooseMore') {
+                    if (_this.inputText.length === 0 || _this.show) {
+                        return;
+                    }
+                }
+                _this.isShowClear = false;
+                _this.renderer.setElementClass(_this.inputDom.nativeElement, 'jdb-plg-select-active', _this.show);
+            });
+        }
+    };
+    /**
+     * @return {?}
+     */
+    JdbPlgSelectComponent.prototype.ngOnChanges = /**
+     * @return {?}
+     */
+    function () {
+        if (this._jdbMode === 'chooseOne') {
+            this.inputText = '';
+        }
+        else if (this._jdbMode === 'chooseMore') {
+            this.inputText = [];
+        }
+        else if (this._jdbMode === 'chooseNum') {
+            this.inputText = 0;
+        }
+        this.setClassMap();
+    };
+    /**
+     * @return {?}
+     */
+    JdbPlgSelectComponent.prototype.setClassMap = /**
+     * @return {?}
+     */
+    function () {
+        var _a, _b;
+        if (this._jdbMode === 'chooseMore') {
+            this._classMap = (_a = {},
+                _a["" + this._size] = true,
+                _a["jdb-plg-select-bottom-" + this._size] = this.inputText.length !== 0,
+                _a['jdb-plg-select-disabled'] = this._jdbDisabled,
+                _a[this.jdbClassName] = true,
+                _a);
+        }
+        else {
+            this._classMap = (_b = {},
+                _b["" + this._size] = true,
+                _b['jdb-plg-select-disabled'] = this._jdbDisabled,
+                _b[this.jdbClassName] = true,
+                _b);
+        }
+    };
+    // 点击x，清空内容
+    /**
+     * @param {?} e
+     * @return {?}
+     */
+    JdbPlgSelectComponent.prototype.clearInputText = /**
+     * @param {?} e
+     * @return {?}
+     */
+    function (e) {
+        e.stopPropagation();
+        if (this._jdbMode === 'chooseOne') {
+            this.inputText = '';
+        }
+        else if (this._jdbMode === 'chooseMore') {
+            this.inputText = [];
+            this._chooseMoreArray = [];
+        }
+        else if (this._jdbMode === 'chooseNum') {
+            this.inputText = 0;
+            this._chooseMoreArray = [];
+        }
+        this.isShowClear = !this.isShowClear;
+        // 清空后输入需要重新告知父组件
+        this.ngModelValue = '';
+        this.onChange('');
+        this.setClassMap();
+    };
+    // 点击输入框下拉菜单显隐
+    /**
+     * @param {?} e
+     * @return {?}
+     */
+    JdbPlgSelectComponent.prototype.dialogShow = /**
+     * @param {?} e
+     * @return {?}
+     */
+    function (e) {
+        e.stopPropagation();
+        // 若外侧组件告知禁用，则点击没有任何效果
+        if (this._jdbDisabled) {
+            return;
+        }
+        this.isShowClear = false;
+        this.show = !this.show;
+        this.renderer.setElementClass(this.inputDom.nativeElement, 'jdb-plg-select-active', this.show);
+        this.optionPosition(this.optionList.nativeElement.clientHeight);
+    };
+    // 浮层出现是在输入框上方还是下方
+    /**
+     * @param {?} listHeight
+     * @return {?}
+     */
+    JdbPlgSelectComponent.prototype.optionPosition = /**
+     * @param {?} listHeight
+     * @return {?}
+     */
+    function (listHeight) {
+        var /** @type {?} */ offetTop = this.getTop(this.inputDom.nativeElement); // 元素offetTop
+        var /** @type {?} */ scrollTop = this.getScrollTop(this.inputDom.nativeElement.parentElement);
+        var /** @type {?} */ clientHeight = document.documentElement.clientHeight || document.body.clientHeight; // 屏幕高度
+        var /** @type {?} */ elemHeight = this.inputDom.nativeElement.clientHeight; // 元素高度
+        var /** @type {?} */ paddingHeight;
+        if (this.jdbSize === 'small') {
+            paddingHeight = 2;
+        }
+        else if (this.jdbSize === 'large') {
+            paddingHeight = 9;
+        }
+        else if (this.jdbSize === 'middle') {
+            paddingHeight = 5;
+        }
+        var /** @type {?} */ flexHeight = clientHeight - offetTop - elemHeight - paddingHeight + scrollTop; // 剩余高度
+        if (flexHeight < listHeight) {
+            // 空间不足
+            this.spaceFlex = false;
+            this.renderer.setElementStyle(this.optionList.nativeElement, 'transform-origin', '100% 100%');
+            if (listHeight < 188) {
+                this.renderer.setElementStyle(this.optionList.nativeElement, 'top', -listHeight - 5 + 'px');
+            }
+            else {
+                this.renderer.setElementStyle(this.optionList.nativeElement, 'top', -190 - paddingHeight + 'px');
+            }
+        }
+        else {
+            this.spaceFlex = true;
+            this.renderer.setElementStyle(this.optionList.nativeElement, 'top', '');
+            this.renderer.setElementStyle(this.optionList.nativeElement, 'transform-origin', '0% 0%');
+        }
+    };
+    // ControlValueAccessor 自定义表单 与父组件的ngModel绑定起来
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    JdbPlgSelectComponent.prototype.writeValue = /**
+     * @param {?} value
+     * @return {?}
+     */
+    function (value) {
+        this.ngModelValue = value;
+        // 若有初始项，则需要处理一下
+        // if (this._jdbMode === 'chooseOne') {
+        //   this.forOneStart(value);
+        // } else if (this._jdbMode === 'chooseMore') {
+        //   this.forMoreStart(value);
+        //   this.setClassMap();
+        // } else if (this._jdbMode === 'chooseNum') {
+        //   this.forNumStart(value);
+        // }
+        if (value === null || value === '' || value === undefined) {
+            // 若传入值为null，则清空数据
+            if (this._jdbMode === 'chooseMore') {
+                this.inputText = [];
+            }
+            else {
+                this.inputText = '';
+            }
+        }
+        else {
+            if (this._jdbMode === 'chooseOne') {
+                this.forOneStart(value);
+            }
+            else if (this._jdbMode === 'chooseMore') {
+                this.forMoreStart(value);
+                this.setClassMap();
+            }
+            else if (this._jdbMode === 'chooseNum') {
+                this.forNumStart(value);
+            }
+        }
+    };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    JdbPlgSelectComponent.prototype.registerOnChange = /**
+     * @param {?} fn
+     * @return {?}
+     */
+    function (fn) {
+        this.onChange = fn;
+    };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    JdbPlgSelectComponent.prototype.registerOnTouched = /**
+     * @param {?} fn
+     * @return {?}
+     */
+    function (fn) {
+    };
+    /**
+     * @param {?} isDisabled
+     * @return {?}
+     */
+    JdbPlgSelectComponent.prototype.setDisabledState = /**
+     * @param {?} isDisabled
+     * @return {?}
+     */
+    function (isDisabled) {
+    };
+    // 单选，若有初始选项，则遍历数组
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    JdbPlgSelectComponent.prototype.forOneStart = /**
+     * @param {?} value
+     * @return {?}
+     */
+    function (value) {
+        var _this = this;
+        this._selectList.forEach(function (elem) {
+            if (elem[_this._optionValue] === value) {
+                _this.inputText = elem[_this._optionText];
+            }
+        });
+    };
+    // 多选，若有初始值则遍历数组
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    JdbPlgSelectComponent.prototype.forMoreStart = /**
+     * @param {?} value
+     * @return {?}
+     */
+    function (value) {
+        var _this = this;
+        value = value.split(',');
+        value.forEach(function (item) {
+            _this._selectList.forEach(function (elem) {
+                if (elem[_this._optionValue] === item) {
+                    // inputText为输入框中展示的内容
+                    var /** @type {?} */ text = _this._optionText;
+                    var /** @type {?} */ value_1 = _this._optionValue;
+                    _this.inputText.push({
+                        text: elem[_this._optionText],
+                        value: elem[_this._optionValue]
+                    });
+                    // this._chooseMoreArray为传出去的数据
+                    // this._chooseMoreArray为传出去的数据
+                    _this._chooseMoreArray.push(elem[_this._optionValue]);
+                    return;
+                }
+            });
+        });
+    };
+    // 选几项
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    JdbPlgSelectComponent.prototype.forNumStart = /**
+     * @param {?} value
+     * @return {?}
+     */
+    function (value) {
+        var _this = this;
+        value = value.split(',');
+        value.forEach(function (item) {
+            _this._selectList.forEach(function (elem) {
+                if (elem[_this._optionValue] === item) {
+                    _this.inputText++;
+                    _this._chooseMoreArray.push(elem[_this._optionValue]);
+                    return;
+                }
+            });
+        });
+    };
+    // 单选某一元素点击
+    /**
+     * @param {?} e
+     * @param {?} item
+     * @return {?}
+     */
+    JdbPlgSelectComponent.prototype.item = /**
+     * @param {?} e
+     * @param {?} item
+     * @return {?}
+     */
+    function (e, item) {
+        // 阻止事件冒泡
+        e.stopPropagation();
+        // 判断show是否为true
+        if (!this.show) {
+            return;
+        }
+        // 判断该项是否可点击
+        if (item[this._jdbItemDisabled] === this._jdbSureDisabled) {
+            return;
+        }
+        this.inputText = item[this._optionText];
+        this.show = !this.show;
+        this.renderer.setElementClass(this.inputDom.nativeElement, 'jdb-plg-select-active', this.show);
+        this.ngModelValue = item[this._optionValue];
+        this.onChange(item[this._optionValue]);
+    };
+    // 多选元素点击
+    /**
+     * @param {?} e
+     * @param {?} item
+     * @return {?}
+     */
+    JdbPlgSelectComponent.prototype.chooseMore = /**
+     * @param {?} e
+     * @param {?} item
+     * @return {?}
+     */
+    function (e, item) {
+        var _this = this;
+        var /** @type {?} */ flag = false;
+        // 阻止事件冒泡
+        e.stopPropagation();
+        // 判断show是否为true
+        if (!this.show) {
+            return;
+        }
+        // 判断该项是否可点击
+        if (item[this._jdbItemDisabled] === this._jdbSureDisabled) {
+            return;
+        }
+        // 判断是否存在
+        this.inputText.forEach(function (element, index) {
+            if (element[_this._optionValue] === item[_this._optionValue]) {
+                flag = true;
+                return;
+            }
+        });
+        if (flag) {
+            this.deleteMoreItem(e, item);
+            return;
+        }
+        // inputText为输入框中展示的内容
+        var /** @type {?} */ text = this._optionText;
+        var /** @type {?} */ value = this._optionValue;
+        this.inputText.push({
+            text: item[this._optionText],
+            value: item[this._optionValue]
+        });
+        // this._chooseMoreArray为传出去的数据
+        this._chooseMoreArray.push(item[this._optionValue]);
+        this.ngModelValue = this._chooseMoreArray.toString();
+        this.onChange(this._chooseMoreArray);
+        this.show = true;
+        this.setClassMap();
+    };
+    // 选中多少项li点击
+    /**
+     * @param {?} e
+     * @param {?} item
+     * @return {?}
+     */
+    JdbPlgSelectComponent.prototype.numClick = /**
+     * @param {?} e
+     * @param {?} item
+     * @return {?}
+     */
+    function (e, item) {
+        var _this = this;
+        var /** @type {?} */ flag = false;
+        // 阻止事件冒泡
+        e.stopPropagation();
+        // 判断show是否为true
+        if (!this.show) {
+            return;
+        }
+        // 判断该项是否可点击
+        if (item[this._jdbItemDisabled] === this._jdbSureDisabled) {
+            return;
+        }
+        // 判断是否点击过
+        this._chooseMoreArray.forEach(function (element, index) {
+            if (element === item[_this._optionValue]) {
+                flag = true;
+                _this._chooseMoreArray.splice(index, 1);
+                return;
+            }
+        });
+        if (flag) {
+            this.inputText--;
+            return;
+        }
+        this.inputText++;
+        this.show = true;
+        this._chooseMoreArray.push(item[this._optionValue]);
+        this.ngModelValue = this._chooseMoreArray.toString();
+        this.onChange(this._chooseMoreArray);
+    };
+    // 判断某一项是否存在于inputText中
+    /**
+     * @param {?} item
+     * @return {?}
+     */
+    JdbPlgSelectComponent.prototype.moreIndex = /**
+     * @param {?} item
+     * @return {?}
+     */
+    function (item) {
+        var _this = this;
+        var /** @type {?} */ flag = false;
+        this._chooseMoreArray.forEach(function (element, index) {
+            if (element === item[_this._optionValue]) {
+                flag = true;
+                return;
+            }
+        });
+        return flag;
+    };
+    // 删除某一项
+    /**
+     * @param {?} e
+     * @param {?} item
+     * @return {?}
+     */
+    JdbPlgSelectComponent.prototype.deleteMoreItem = /**
+     * @param {?} e
+     * @param {?} item
+     * @return {?}
+     */
+    function (e, item) {
+        var _this = this;
+        e.stopPropagation();
+        if (this._jdbDisabled) {
+            return;
+        }
+        this.inputText.forEach(function (element, index) {
+            if (element[_this._optionValue] === item[_this._optionValue]) {
+                _this.inputText.splice(index, 1);
+                return;
+            }
+        });
+        this._chooseMoreArray.forEach(function (element, index) {
+            if (element === item[_this._optionValue]) {
+                _this._chooseMoreArray.splice(index, 1);
+                return;
+            }
+        });
+        this.ngModelValue = this._chooseMoreArray.toString();
+        this.onChange(this._chooseMoreArray);
+        this.setClassMap();
+    };
+    // 转换为boolean,即实现有这个字段就认为为true,没有即为false
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    JdbPlgSelectComponent.prototype.toBoolean = /**
+     * @param {?} value
+     * @return {?}
+     */
+    function (value) {
+        return value === '' || (value && value !== 'false');
+    };
+    // 计算某元素的offetTop
+    /**
+     * @param {?} e
+     * @return {?}
+     */
+    JdbPlgSelectComponent.prototype.getTop = /**
+     * @param {?} e
+     * @return {?}
+     */
+    function (e) {
+        var /** @type {?} */ offset = e.offsetTop;
+        if (e.offsetParent != null) {
+            //解析translateY
+            if (e.style.transform) {
+                var /** @type {?} */ ret = this.parseTranslateY(e.style.transform);
+                offset += ret.isPercent ? e.clientHeight * ret.translateY / 100 : ret.translateY;
+            }
+            offset += this.getTop(e.offsetParent);
+        }
+        return offset;
+    };
+    // 计算某元素的scrollTop
+    /**
+     * @param {?} e
+     * @return {?}
+     */
+    JdbPlgSelectComponent.prototype.getScrollTop = /**
+     * @param {?} e
+     * @return {?}
+     */
+    function (e) {
+        var /** @type {?} */ offset = e.scrollTop;
+        if (e.parentElement != null) {
+            offset += this.getScrollTop(e.parentElement);
+        }
+        return offset;
+    };
+    //正则解析translateY
+    /**
+     * @param {?} val
+     * @return {?}
+     */
+    JdbPlgSelectComponent.prototype.parseTranslateY = /**
+     * @param {?} val
+     * @return {?}
+     */
+    function (val) {
+        var /** @type {?} */ reg = /\(([^()]+)\)/g;
+        var /** @type {?} */ translate = reg.exec(val)[1];
+        var /** @type {?} */ translatArr = translate.split(',');
+        var /** @type {?} */ translateY;
+        var /** @type {?} */ isPercent;
+        //如果不包含translate
+        if (val.indexOf('translate') === -1) {
+            return {
+                isPercent: false,
+                translateY: 0
+            };
+        }
+        //判断是translate还是translateY
+        if (translatArr.length === 2) {
+            translateY = translate.split(',')[1];
+        }
+        else if (translatArr.length === 1 && val.indexOf('translateY') !== -1) {
+            translateY = translate;
+        }
+        //判断是百分比还是px
+        if (translateY.indexOf('px') !== -1) {
+            //截取px
+            isPercent = false;
+            translateY = Number(translateY.slice(0, -2));
+        }
+        else if (translateY.indexOf('%') !== -1) {
+            isPercent = true;
+            translateY = Number(translateY.slice(0, -1));
+        }
+        //返回百分比或普通number值
+        return {
+            isPercent: isPercent,
+            translateY: translateY
+        };
+    };
+    JdbPlgSelectComponent.decorators = [
+        { type: Component, args: [{
+                    selector: 'app-jdb-plg-select',
+                    template: "<!-- \u5355\u9009 --> <div *ngIf=\"_jdbMode=='chooseOne'\" #inputDom class=\"jdb-plg-select-one\" (click)=\"dialogShow($event)\" [ngClass]=\"_classMap\" [ngStyle]=\"{'width':_width}\"> <!-- placeHolder --> <div class=\"jdb-plg-select-placeholder\" [hidden]=\"inputText!=''\">{{_placeHolder}}</div> <!-- \u5355\u9009 --> <!-- <span class=\"chooseOne\" [hidden]=\"inputText==''\">{{inputText}}</span> --> <input class=\"chooseOne chooseOneInput\" [hidden]=\"inputText==''\" type=\"text\" [(ngModel)]=\"inputText\" readonly> <ul #optionList [ngClass]=\"{ 'options-show':show, 'options-no-margin':!spaceFlex} \" class=\"options \"> <!-- \u5355\u9009 --> <li *ngFor=\"let option of _selectList \" (click)=\"item($event,option) \" [ngClass]=\"{active:ngModelValue===option[_optionValue],disabled:option[_jdbItemDisabled] === _jdbSureDisabled} \"> <img class=\"img-box\" *ngIf=\"_showImgBox&&option.imgUrl\" [src]=\"option.imgUrl\" alt=\"\"> <span class=\"img-box\" *ngIf=\"_showImgBox&&!option.imgUrl\"></span> <span class=\"text-box\">{{_optionText=='option'?option:option[_optionText]}}</span> </li> </ul> <!-- \u6E05\u7A7A\u56FE\u6807 --> <span class=\"close-icon icon-empty \" [hidden]=\"!isShowClear \" (click)=\"clearInputText($event) \"></span> <!-- \u5355\u9009\u65F6\u4E0B\u62C9\u56FE\u6807 --> <span class=\"select-icon icon-select-arrow \" [hidden]=\"isShowClear \"></span> </div> <!-- \u591A\u9009 --> <div *ngIf=\"_jdbMode=='chooseMore' \" #inputDom class=\"jdb-plg-select-more \" (click)=\"dialogShow($event) \" [ngClass]=\"_classMap \" [ngStyle]=\"{ 'width':_width} \"> <!-- placeHolder --> <div class=\"jdb-plg-select-placeholder \" [hidden]=\"inputText.length !=0 \">{{_placeHolder}}</div> <!-- \u591A\u9009item --> <ul class=\"chooseMore \"> <li *ngFor=\"let item of inputText \"> {{item.text}} <span class=\"item-delete icon-close \" (click)=\"deleteMoreItem($event,item) \"></span> </li> </ul> <ul #optionList [ngClass]=\"{ 'options-show':show, 'options-no-margin':!spaceFlex} \" class=\"options \"> <li class=\"choose-more \" *ngFor=\"let option of _selectList \" (click)=\"chooseMore($event,option) \" [ngClass]=\"{ 'active':moreIndex(option),disabled:option[_jdbItemDisabled] === _jdbSureDisabled} \"> <!-- {{_optionText=='option'?option:option[_optionText]}} --> <img class=\"img-box\" *ngIf=\"_showImgBox&&option.imgUrl\" [src]=\"option.imgUrl\" alt=\"\"> <span class=\"img-box\" *ngIf=\"_showImgBox&&!option.imgUrl\"></span> <span class=\"text-box\">{{_optionText=='option'?option:option[_optionText]}}</span> <span [hidden]=\"!moreIndex(option) \" class=\"choose-right icon-selected \"></span> </li> </ul> <!-- \u6E05\u7A7A\u56FE\u6807 --> <span class=\"close-icon icon-empty \" [hidden]=\"!isShowClear \" (click)=\"clearInputText($event) \"></span> </div> <!-- \u9009\u4E2D\u51E0\u9879 --> <div *ngIf=\"_jdbMode=='chooseNum' \" #inputDom class=\"jdb-plg-select-num \" (click)=\"dialogShow($event) \" [ngClass]=\"_classMap \" [ngStyle]=\"{ 'width':_width} \"> <!-- placeHolder --> <div class=\"jdb-plg-select-placeholder \" [hidden]=\"inputText!=0 \">{{_placeHolder}}</div> <span class=\"choose-tip \" [hidden]=\"inputText==0 \">\u5DF2\u9009\u4E2D{{inputText}}\u9879</span> <ul #optionList [ngClass]=\"{ 'options-show':show, 'options-no-margin':!spaceFlex} \" class=\"options \"> <li class=\"choose-more \" *ngFor=\"let option of _selectList \" (click)=\"numClick($event,option) \" [ngClass]=\"{ 'active':moreIndex(option),disabled:option[_jdbItemDisabled] === _jdbSureDisabled} \"> <!-- {{_optionText=='option'?option:option[_optionText]}} --> <img class=\"img-box\" *ngIf=\"_showImgBox&&option.imgUrl\" [src]=\"option.imgUrl\" alt=\"\"> <span class=\"img-box\" *ngIf=\"_showImgBox&&!option.imgUrl\"></span> <span class=\"text-box\">{{_optionText=='option'?option:option[_optionText]}}</span> <span [hidden]=\"!moreIndex(option) \" class=\"choose-right icon-selected \"></span> </li> </ul> <!-- \u6E05\u7A7A\u56FE\u6807 --> <span class=\"close-icon icon-empty \" [hidden]=\"!isShowClear \" (click)=\"clearInputText($event) \"></span> <span class=\"select-icon icon-select-arrow \" [hidden]=\"isShowClear \"></span> </div> <!-- \u906E\u7F69\u5C42 --> <div class=\"jdb-plg-select-master \" *ngIf=\"show \"></div>",
+                    // styleUrls:  ['./jdb-plg-select.component.scss'],
+                    providers: [
+                        {
+                            // 注册成为表单控件
+                            provide: NG_VALUE_ACCESSOR,
+                            useExisting: forwardRef(function () { return JdbPlgSelectComponent; }),
+                            multi: true
+                        }
+                    ]
+                },] },
+    ];
+    /** @nocollapse */
+    JdbPlgSelectComponent.ctorParameters = function () { return [
+        { type: Renderer2, },
+        { type: Renderer, },
+    ]; };
+    JdbPlgSelectComponent.propDecorators = {
+        "jdbClassName": [{ type: Input },],
+        "jdbItemDisabled": [{ type: Input },],
+        "jdbSureDisabled": [{ type: Input },],
+        "jdbPlaceHolder": [{ type: Input },],
+        "jdbClear": [{ type: Input },],
+        "jdbSelectList": [{ type: Input },],
+        "jdbSize": [{ type: Input },],
+        "jdbWidth": [{ type: Input },],
+        "jdbOptionText": [{ type: Input },],
+        "jdbOptionValue": [{ type: Input },],
+        "jdbDisabled": [{ type: Input },],
+        "jdbMode": [{ type: Input },],
+        "inputDom": [{ type: ViewChild, args: ['inputDom',] },],
+        "optionList": [{ type: ViewChild, args: ['optionList',] },],
+    };
+    return JdbPlgSelectComponent;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+var JdbPlgInputComponent = /** @class */ (function () {
+    function JdbPlgInputComponent() {
+        this._value = '';
+        this._type = 'text';
+        this._placeHolder = '';
+        this._size = 'default';
+        this._disabled = false;
+        this._readonly = false;
+        this._error = false;
+        this._inputWrapClass = [];
+        this._clear = false;
+        this._autoPromptData = [];
+        this._composing = false;
+        this.width = '300px';
+        // ngModel Access
+        this.onChange = function () { return null; };
+        this.jdbBlur = new EventEmitter();
+        this.jdbFocus = new EventEmitter();
+    }
+    /**
+     * @return {?}
+     */
+    JdbPlgInputComponent.prototype.ngOnInit = /**
+     * @return {?}
+     */
+    function () {
+        // this._inputWrapClass =[`input-text-wrap-${this._size}`];
+        if (this._prefixContent) {
+            this._inputWrapClass.push('prefix');
+        }
+    };
+    /**
+     * @param {?} e
+     * @return {?}
+     */
+    JdbPlgInputComponent.prototype.compositionStart = /**
+     * @param {?} e
+     * @return {?}
+     */
+    function (e) {
+        this._composing = true;
+    };
+    /**
+     * @param {?} e
+     * @return {?}
+     */
+    JdbPlgInputComponent.prototype.compositionEnd = /**
+     * @param {?} e
+     * @return {?}
+     */
+    function (e) {
+        this._composing = false;
+        this.onChange(this._value);
+    };
+    Object.defineProperty(JdbPlgInputComponent.prototype, "jdbType", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._type;
+        },
+        set: /**
+         * @param {?} type
+         * @return {?}
+         */
+        function (type) {
+            this._type = type;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgInputComponent.prototype, "jdbPlaceHolder", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._placeHolder;
+        },
+        set: /**
+         * @param {?} placeHolder
+         * @return {?}
+         */
+        function (placeHolder) {
+            this._placeHolder = placeHolder;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgInputComponent.prototype, "jdbSize", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._size;
+        },
+        set: /**
+         * @param {?} size
+         * @return {?}
+         */
+        function (size) {
+            this._size = { large: 'lg', small: 'sm' }[size];
+            this.setClassMap();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgInputComponent.prototype, "jdbDisabled", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._disabled;
+        },
+        set: /**
+         * @param {?} disabled
+         * @return {?}
+         */
+        function (disabled) {
+            this._disabled = this.toBoolean(disabled);
+            this.setClassMap();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgInputComponent.prototype, "jdbReadonly", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._readonly;
+        },
+        set: /**
+         * @param {?} readonly
+         * @return {?}
+         */
+        function (readonly) {
+            this._readonly = this.toBoolean(readonly);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgInputComponent.prototype, "jdbValue", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            if (this._value == '0') {
+                return '0';
+            }
+            return this._value || '';
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            if ((this._value === value) || ((this._value == null) && (value == null))) {
+                return;
+            }
+            this._value = value;
+            if (!this._composing) {
+                this.onChange(value);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgInputComponent.prototype, "jdbError", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._error;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._error = this.toBoolean(value);
+            this.setClassMap();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgInputComponent.prototype, "jdbClear", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._clear;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._clear = this.toBoolean(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgInputComponent.prototype, "jdbMaxLength", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._maxlength;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._maxlength = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgInputComponent.prototype, "jdbPromptData", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._autoPromptData;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._autoPromptData = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    JdbPlgInputComponent.prototype.writeValue = /**
+     * @param {?} value
+     * @return {?}
+     */
+    function (value) {
+        this._value = value;
+    };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    JdbPlgInputComponent.prototype.registerOnChange = /**
+     * @param {?} fn
+     * @return {?}
+     */
+    function (fn) {
+        this.onChange = fn;
+    };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    JdbPlgInputComponent.prototype.registerOnTouched = /**
+     * @param {?} fn
+     * @return {?}
+     */
+    function (fn) {
+    };
+    /**
+     * @param {?} $event
+     * @return {?}
+     */
+    JdbPlgInputComponent.prototype._emitBlur = /**
+     * @param {?} $event
+     * @return {?}
+     */
+    function ($event) {
+        this.jdbBlur.emit($event);
+    };
+    /**
+     * @param {?} $event
+     * @return {?}
+     */
+    JdbPlgInputComponent.prototype._emitFocus = /**
+     * @param {?} $event
+     * @return {?}
+     */
+    function ($event) {
+        this.jdbFocus.emit($event);
+    };
+    /**
+     * @param {?} $event
+     * @return {?}
+     */
+    JdbPlgInputComponent.prototype.textareaOnChange = /**
+     * @param {?} $event
+     * @return {?}
+     */
+    function ($event) {
+    };
+    /**
+     * @return {?}
+     */
+    JdbPlgInputComponent.prototype.setClassMap = /**
+     * @return {?}
+     */
+    function () {
+        var _a;
+        this._classMap = (_a = {},
+            _a["input-" + this._type + "-" + this._size] = true,
+            _a['input-disabled'] = this._disabled,
+            _a['input-error'] = this._error,
+            _a);
+    };
+    /**
+     * @return {?}
+     */
+    JdbPlgInputComponent.prototype.clearTxt = /**
+     * @return {?}
+     */
+    function () {
+        this._value = '';
+        this.onChange('');
+    };
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    JdbPlgInputComponent.prototype.toBoolean = /**
+     * @param {?} value
+     * @return {?}
+     */
+    function (value) {
+        return value === '' || (value && value !== 'false');
+    };
+    JdbPlgInputComponent.decorators = [
+        { type: Component, args: [{
+                    selector: 'app-jdb-plg-input',
+                    template: "<span class=\"input-group-addon\" *ngIf=\"_addOnContentBefore\"> <ng-template [ngTemplateOutlet]=\"_addOnContentBefore\"> </ng-template> </span> <ng-template [ngIf]=\"_type=='text'\"> <div class=\"input-text-wrap\" [ngClass]=\"_inputWrapClass\"> <span class=\"input-prefix\" *ngIf=\"_prefixContent\"> <ng-template [ngTemplateOutlet]=\"_prefixContent\"> </ng-template> </span> <input (blur)=\"_emitBlur($event)\" (focus)=\"_emitFocus($event)\" [disabled]=\"_disabled\" [readonly]=\"_readonly\" [attr.type]=\"_type\" class=\"input\" [ngClass]=\"_classMap\" [attr.placeholder]=\"_placeHolder\" [(ngModel)]=\"jdbValue\" [style.width]=\"width\" maxlength=\"{{jdbMaxLength}}\" /> <span class=\"input-clear\" *ngIf=\"_clear && _value && _type=='text'\" (click)=\"clearTxt()\"> <i class=\"close-icon icon-empty\"></i> </span> <span class=\"ant-input-suffix\" *ngIf=\"_suffixContent\"> <i class=\"iconfont icon-guanbi2fill\"></i> <ng-template [ngTemplateOutlet]=\"_suffixContent\"> </ng-template> </span> </div> <div class=\"input-error-tip\" *ngIf=\"jdbError && _errorContent\"> <i class=\"icon-message-error error-tip\"></i> <span> <ng-template [ngTemplateOutlet]=\"_errorContent\"> </ng-template> </span> </div> </ng-template> <span class=\"input-group-addon\" *ngIf=\"_addOnContentAfter\"> <ng-template [ngTemplateOutlet]=\"_addOnContentAfter\"> </ng-template> </span> <ng-template [ngIf]=\"_type=='textarea'\"> <div class=\"input-text-wrap\"> <textarea (blur)=\"_emitBlur($event)\" (focus)=\"_emitFocus($event)\" (input)=\"textareaOnChange($event)\" #inputTextarea [disabled]=\"_disabled\" [readonly]=\"_readonly\" type=\"textarea\" class=\"input input-textarea\" [ngClass]=\"_classMap\" [attr.placeholder]=\"jdbPlaceHolder\" [(ngModel)]=\"jdbValue\" maxlength=\"{{jdbMaxLength}}\" [style.width]=\"width\"></textarea> <span class=\"textarea-wc-tip\" [ngClass]=\"{'textarea-wc-tip-red': jdbValue&&jdbValue.length == jdbMaxLength}\" *ngIf=\"jdbMaxLength && !_disabled &&!_readonly\">{{(jdbValue&&jdbValue.length)||0}}/{{jdbMaxLength}}</span> </div> </ng-template>",
+                    // styleUrls:  ['./jdb-plg-input.component.scss'],
+                    encapsulation: ViewEncapsulation.None,
+                    providers: [
+                        {
+                            provide: NG_VALUE_ACCESSOR,
+                            useExisting: forwardRef(function () { return JdbPlgInputComponent; }),
+                            multi: true
+                        }
+                    ],
+                },] },
+    ];
+    /** @nocollapse */
+    JdbPlgInputComponent.propDecorators = {
+        "width": [{ type: Input },],
+        "_errorContent": [{ type: ContentChild, args: ['jdbErrorContent',] },],
+        "_addOnContentBefore": [{ type: ContentChild, args: ['addContentBefore',] },],
+        "_addOnContentAfter": [{ type: ContentChild, args: ['addContentAfter',] },],
+        "_prefixContent": [{ type: ContentChild, args: ['prefixContent',] },],
+        "_suffixContent": [{ type: ContentChild, args: ['suffixContent',] },],
+        "jdbBlur": [{ type: Output },],
+        "jdbFocus": [{ type: Output },],
+        "compositionStart": [{ type: HostListener, args: ['compositionstart', ['$event'],] },],
+        "compositionEnd": [{ type: HostListener, args: ['compositionend', ['$event'],] },],
+        "jdbType": [{ type: Input },],
+        "jdbPlaceHolder": [{ type: Input },],
+        "jdbSize": [{ type: Input },],
+        "jdbDisabled": [{ type: Input },],
+        "jdbReadonly": [{ type: Input },],
+        "jdbValue": [{ type: Input },],
+        "jdbError": [{ type: Input },],
+        "jdbClear": [{ type: Input },],
+        "jdbMaxLength": [{ type: Input },],
+        "jdbPromptData": [{ type: Input },],
+    };
+    return JdbPlgInputComponent;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 var FillTableService = /** @class */ (function () {
     function FillTableService() {
     }
@@ -6273,7 +6362,9 @@ var JdbPlgUiModule = /** @class */ (function () {
                     imports: [
                         CommonModule,
                         FormsModule,
-                        ReactiveFormsModule
+                        ReactiveFormsModule,
+                        HttpModule,
+                        HttpClientModule
                     ],
                     exports: MDL_MODULES,
                     declarations: [

@@ -1,5 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { JdbPlgToastComponent } from './components/jdb-plg-toast/jdb-plg-toast.component';
 import { JdbTabComponent } from './components/jdb-plg-tab/jdb-tab.component';
 import { ShowPictureComponent } from './components/show-picture/show-picture.component';
@@ -43,7 +45,9 @@ const MDL_MODULES = [
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpModule,
+    HttpClientModule
   ],
   exports: MDL_MODULES,
   declarations: [

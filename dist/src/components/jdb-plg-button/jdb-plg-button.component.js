@@ -3,10 +3,12 @@
  * @suppress {checkTypes} checked by tsc
  */
 import { Component, Input, Renderer2, ElementRef } from '@angular/core';
+import { JdbPlgBaseService } from '../../services/jdb-plg-base/jdb-plg-base.service';
 var JdbPlgButtonComponent = /** @class */ (function () {
-    function JdbPlgButtonComponent(_elementRef, _renderer) {
+    function JdbPlgButtonComponent(_elementRef, _renderer, jdbPlgBaseService) {
         this._elementRef = _elementRef;
         this._renderer = _renderer;
+        this.jdbPlgBaseService = jdbPlgBaseService;
         this._prefixCls = 'jdb-plg-btn';
         this._el = this._elementRef.nativeElement;
         this.nativeElement = this._elementRef.nativeElement;
@@ -112,6 +114,7 @@ var JdbPlgButtonComponent = /** @class */ (function () {
     JdbPlgButtonComponent.ctorParameters = function () { return [
         { type: ElementRef, },
         { type: Renderer2, },
+        { type: JdbPlgBaseService, },
     ]; };
     JdbPlgButtonComponent.propDecorators = {
         "jdbSize": [{ type: Input },],
@@ -147,5 +150,7 @@ function JdbPlgButtonComponent_tsickle_Closure_declarations() {
     JdbPlgButtonComponent.prototype._elementRef;
     /** @type {?} */
     JdbPlgButtonComponent.prototype._renderer;
+    /** @type {?} */
+    JdbPlgButtonComponent.prototype.jdbPlgBaseService;
 }
 //# sourceMappingURL=jdb-plg-button.component.js.map
