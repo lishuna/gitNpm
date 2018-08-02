@@ -1,17 +1,16 @@
 @import '../../scss/base/variables';
-
 @keyframes loadingCircle {
-  0% {
-    transform-origin: 50% 50%;
-    transform: rotate(0deg);
-  }
-  100% {
-    transform-origin: 50% 50%;
-    transform: rotate(360deg);
-  }
+    0% {
+        transform-origin: 50% 50%;
+        transform: rotate(0deg);
+    }
+    100% {
+        transform-origin: 50% 50%;
+        transform: rotate(360deg);
+    }
 }
 
-:host.jdb-plg-btn {
+.jdb-plg-btn {
     // display: inline-block;
     font-weight: 500;
     white-space: nowrap;
@@ -24,16 +23,17 @@
         display: inline-block;
         vertical-align: middle;
     }
-    .action:before{
-      display: inline-block;
-      animation: loadingCircle 1s infinite linear;
+    .action:before {
+        display: inline-block;
+        animation: loadingCircle 1s infinite linear;
     }
     .action2 {
         display: inline-block;
         transform: translateY(-37%);
     }
 }
-:host.large {
+
+.large {
     min-width: 120px;
     // height: 40px;
     line-height: 40px;
@@ -41,7 +41,7 @@
     padding: 0 16px;
 }
 
-:host.default {
+.default {
     min-width: 100px;
     // height: 30px;
     line-height: 30px;
@@ -49,7 +49,7 @@
     padding: 0 12px;
 }
 
-:host.small {
+.small {
     min-width: 60px;
     // height: 24px;
     line-height: 24px;
@@ -61,7 +61,7 @@
     }
 }
 
-:host.primary {
+.primary {
     background-color: $btn-blue-n;
     color: $white;
     border: 1px solid $btn-blue-n;
@@ -79,7 +79,7 @@
     }
 }
 
-:host.gray {
+.gray {
     background-color: $btn-gray-n;
     color: #575757;
     border: 1px solid #d7d8db;
@@ -94,7 +94,7 @@
     }
 }
 
-:host.danger {
+.danger {
     background-color: $btn-red-n;
     color: $white;
     border: 1px solid $btn-red-n;
@@ -112,7 +112,7 @@
     }
 }
 
-:host.buleline {
+.buleline {
     background-color: $white;
     color: $btn-blue-n;
     border: 1px solid $btn-blue-n;
@@ -129,7 +129,7 @@
     }
 }
 
-:host.white {
+.white {
     background-color: $white;
     color: #575757;
     border: 1px solid #afb0b3;
@@ -145,9 +145,9 @@
         background-color: $btn-gray-n;
     }
 }
-:host.loading_disable{
+
+.loading_disable {
     background-color: $btn-blue-d;
     border: 1px solid $btn-blue-d;
     pointer-events: none;
 }
-

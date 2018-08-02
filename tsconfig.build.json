@@ -10,7 +10,21 @@
         "target": "es2015",
         "types": [
             "node"
-        ]
+        ],
+        "paths": {
+            "@components": [
+                "core/components/"
+            ],
+            "@components/*": [
+                "core/components/*"
+            ],
+            "@service": [
+                "core/services/jdb-plg-base/"
+            ],
+            "@service/*": [
+                "core/services/jdb-plg-base/*"
+            ]
+        }
     },
     "files": [
         "./__jdbui_components/jdb-plg-ui.module.ts"

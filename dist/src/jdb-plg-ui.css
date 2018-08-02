@@ -430,108 +430,108 @@ li {
     transform-origin: 50% 50%;
     transform: rotate(360deg); } }
 
-:host.jdb-plg-btn {
+.jdb-plg-btn {
   font-weight: 500;
   white-space: nowrap;
   cursor: pointer;
   outline: none; }
-  :host.jdb-plg-btn .action {
+  .jdb-plg-btn .action {
     display: inline-block;
     vertical-align: middle; }
-  :host.jdb-plg-btn .action:before {
+  .jdb-plg-btn .action:before {
     display: inline-block;
     animation: loadingCircle 1s infinite linear; }
-  :host.jdb-plg-btn .action2 {
+  .jdb-plg-btn .action2 {
     display: inline-block;
     transform: translateY(-37%); }
 
-:host.large {
+.large {
   min-width: 120px;
   line-height: 40px;
   border-radius: 4px;
   padding: 0 16px; }
 
-:host.default {
+.default {
   min-width: 100px;
   line-height: 30px;
   border-radius: 3px;
   padding: 0 12px; }
 
-:host.small {
+.small {
   min-width: 60px;
   line-height: 24px;
   border-radius: 2px;
   padding: 0 10px; }
-  :host.small .action {
+  .small .action {
     width: 24px;
     height: 24px; }
 
-:host.primary {
+.primary {
   background-color: #3f69f2;
   color: #ffffff;
   border: 1px solid #3f69f2; }
-  :host.primary:hover {
+  .primary:hover {
     background-color: #4d76ff;
     border: 1px solid #4d76ff; }
-  :host.primary:active {
+  .primary:active {
     background-color: #264199;
     border: 1px solid #264199; }
-  :host.primary:disabled {
+  .primary:disabled {
     background-color: #aabbf2;
     border: 1px solid #aabbf2; }
 
-:host.gray {
+.gray {
   background-color: #f0f1f5;
   color: #575757;
   border: 1px solid #d7d8db; }
-  :host.gray:hover {
+  .gray:hover {
     background-color: #ffffff; }
-  :host.gray:active {
+  .gray:active {
     background-color: #d7d8db; }
-  :host.gray:disabled {
+  .gray:disabled {
     background-color: #f0f1f5; }
 
-:host.danger {
+.danger {
   background-color: #f84a4a;
   color: #ffffff;
   border: 1px solid #f84a4a; }
-  :host.danger:hover {
+  .danger:hover {
     background-color: #ff6666;
     border: 1px solid #ff6666; }
-  :host.danger:active {
+  .danger:active {
     background-color: #c32929;
     border: 1px solid #c32929; }
-  :host.danger:disabled {
+  .danger:disabled {
     background-color: #e6bcbc;
     border: 1px solid #e6bcbc; }
 
-:host.buleline {
+.buleline {
   background-color: #ffffff;
   color: #3f69f2;
   border: 1px solid #3f69f2; }
-  :host.buleline:hover {
+  .buleline:hover {
     background-color: #ebf0fe; }
-  :host.buleline:active {
+  .buleline:active {
     background-color: #d7d8db; }
-  :host.buleline:disabled {
+  .buleline:disabled {
     color: #afb0b3;
     border: 1px solid #afb0b3;
     background-color: #f0f1f5; }
 
-:host.white {
+.white {
   background-color: #ffffff;
   color: #575757;
   border: 1px solid #afb0b3; }
-  :host.white:hover {
+  .white:hover {
     background-color: #f0f1f5; }
-  :host.white:active {
+  .white:active {
     background-color: #d7d8db; }
-  :host.white:disabled {
+  .white:disabled {
     color: #afb0b3;
     border: 1px solid #afb0b3;
     background-color: #f0f1f5; }
 
-:host.loading_disable {
+.loading_disable {
   background-color: #aabbf2;
   border: 1px solid #aabbf2;
   pointer-events: none; }
