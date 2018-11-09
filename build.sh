@@ -11,12 +11,21 @@ cp -r ./core __jdbui_components
 node build-script/inline-template.js
 # node build-script/inline-styles.js
 
+#-c, --config                Use this config file (if argument is used but value
+#                             is unspecified, defaults to rollup.config.js)
+#-w, --watch                 Watch files in bundle and rebuild on changes
+#-i, --input                 Input (alternative to <entry file>)
+#-o, --file <output>         Output (if absent, prints to stdout)
+#-f, --format [es]           Type of output (amd, cjs, es, iife, umd)
+#-e, --external              Comma-separate list of module IDs to exclude
+#-g, --globals  
+
 # 先用ngc将代码编译成es2015 输出路径是publish-es2015
 $(npm bin)/ngc -p tsconfig.build.json -t es2015 --outDir publish-es2015/src
 
 # 用rollup将编译好的es2015打包成es到 publish-es2015/esm2015/jdb-plg-ui.js
 echo 'Bundling to es module of es2015'
-export ROLLUP_TARGET=esm
+export ROLLUP_TARGET=es
 $(npm bin)/rollup -c rollup.config.js -f es -i publish-es2015/src/index.js -o publish-es2015/esm2015/jdb-plg-ui.js
 
 # 将源码编译成es5
@@ -42,7 +51,7 @@ $(npm bin)/rollup -c rollup.config.js -f umd -i publish-es5/esm5/jdb-plg-ui.js -
 echo 'Unifying publish folder'
 mv publish-es5 dist
 mv publish-es2015/esm2015 dist/esm2015
-rm -rf publish-es2015
+# rm -rf publish-es2015
 
 # 清除存储模板包 
 echo 'Cleaning up temporary files'
