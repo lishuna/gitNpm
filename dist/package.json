@@ -12,9 +12,9 @@
   },
   "private": true,
   "files": [
-    "./dist/core/",
+    "./dist/core/**",
     "README.md",
-    "tsconfig.js"
+    "./tsconfig.js"
   ],
   "repository": {
     "type": "git",
