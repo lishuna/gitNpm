@@ -58,6 +58,7 @@ echo 'Cleaning up temporary files'
 rm -rf __jdbui_components
 rm -rf dist/src/*.js
 rm -rf dist/src/**/*.js
+rm -rf publish-es2015
 
 echo 'Normalizing entry files'
 sed -e "s/from '.\//from '.\/src\//g" dist/src/index.d.ts > dist/jdb-plg-ui.d.ts

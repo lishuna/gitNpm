@@ -11,13 +11,15 @@
     "packagr": "ng-packagr -p ng-package.json"
   },
   "private": true,
+  "files": [
+    "./dist/core/",
+    "README.md",
+    "tsconfig.js"
+  ],
   "repository": {
     "type": "git",
     "url": "git@github.com:lishuna/gitNpm.git"
   },
-  "files": [
-    "./dist/**/*.ts|*.js"
-  ],
   "author": "",
   "license": "ISC",
   "peerDependencies": {
