@@ -15,6 +15,9 @@
     "type": "git",
     "url": "git@github.com:lishuna/gitNpm.git"
   },
+  "files": [
+    "./dist/**/*.ts|*.js"
+  ],
   "author": "",
   "license": "ISC",
   "peerDependencies": {

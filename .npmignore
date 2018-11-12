@@ -1,6 +1,13 @@
-node_modules
+node_modules/
 tsconfig.json
 .gitignore
 .npmignore
 *.ts
 !*.d.ts
+./core
+./build-script
+ng-package.json
+rollup.config.json
+tslint.json
+webpack.config.js
+build.sh
