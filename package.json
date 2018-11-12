@@ -12,7 +12,7 @@
   },
   "private": true,
   "files": [
-    "./dist/core/**",
+    "./dist/core/**/*",
     "README.md",
     "./tsconfig.js"
   ],
