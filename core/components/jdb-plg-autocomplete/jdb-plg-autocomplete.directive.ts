@@ -1,6 +1,6 @@
 import { Directive, Input, EventEmitter, Output, HostListener, ElementRef, ViewChild, Inject, Renderer2, OnInit} from '@angular/core';
 import { Http,Response } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
 import { AutoCompleteResult } from './autocomplete.result';
 @Directive({
@@ -14,13 +14,20 @@ export class JdbPlgAutocompleteDirective implements OnInit{
   @Output('dataReady') dataReady: EventEmitter<AutoCompleteResult[]> = new EventEmitter(); 
 
   constructor(private el: ElementRef,
-    @Inject('jdbPlgBaseApi') private jdbPlgBaseApi,
+    // @Inject('jdbPlgBaseApi') private jdbPlgBaseApi,
     private render: Renderer2) { }
 
+  // @HostListener('input',['$event']) OnInput(event: Event){
+  //     if(this.searchWord){
+  //       this.popupList();
+  //     }
+  //   console.log(this.el.nativeElement.value);
+  // }
   @HostListener('paste',['$event']) OnPaste(event: Event){
     if(this.searchWord){
       this.popupList();
     }
+    console.log(this.el.nativeElement.value);
   }
   ngOnInit(){
 

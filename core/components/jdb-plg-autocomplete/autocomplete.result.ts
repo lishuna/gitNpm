@@ -1,5 +1,5 @@
 
   export interface AutoCompleteResult{
-    id: string;
     value: string;
+    text: string;
 }

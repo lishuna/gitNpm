@@ -8,21 +8,23 @@ import {
   ViewChild,
   ElementRef,
   Renderer,
-  animate,
-  style,
-  transition,
-  trigger,
-  state,
   HostListener,
   OnDestroy,
   ChangeDetectionStrategy,
   AfterViewInit
 } from '@angular/core';
 
+import {
+  animate,
+  style,
+  transition,
+  trigger,
+  state
+} from '@angular/animations';
 @Component({
   selector: 'app-picture-viewer',
   templateUrl: './picture-viewer.component.html',
-  // styleUrls:  ['./picture-viewer.component.scss'],
+  // styleUrls: ['./picture-viewer.component.scss'],
   animations: [
     trigger('imgMove', [
       /** 不显示 */

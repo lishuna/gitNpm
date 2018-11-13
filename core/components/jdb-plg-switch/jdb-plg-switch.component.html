@@ -1,0 +1,10 @@
+<span [ngClass]="outBoxClass">
+  <span class="inner-content">
+    <ng-container *ngIf="checked">
+        {{jdbCheckedText}}
+    </ng-container>
+    <ng-container *ngIf="!checked">
+        {{jdbUncheckedText}}
+    </ng-container>
+  </span>
+</span>

@@ -1,7 +1,5 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpModule } from '@angular/http';
-import { HttpClientModule } from '@angular/common/http';
 import { JdbPlgToastComponent } from './components/jdb-plg-toast/jdb-plg-toast.component';
 import { JdbTabComponent } from './components/jdb-plg-tab/jdb-tab.component';
 import { ShowPictureComponent } from './components/show-picture/show-picture.component';
@@ -11,43 +9,51 @@ import { JdbPlgPaginationComponent } from './components/jdb-plg-pagination/jdb-p
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JdbPlgButtonComponent } from './components/jdb-plg-button/jdb-plg-button.component';
 import { JdbPlgDialogComponent } from './components/jdb-plg-dialog/jdb-plg-dialog.component';
+
 import { OnlyNumberDirective } from './directive/only-number.directive';
+import { WatermarkDirective } from './directive/watermark.directive';
 import { JdbPlgSelectComponent } from './components/jdb-plg-select/jdb-plg-select.component';
 import { JdbPlgInputComponent } from './components/jdb-plg-input/jdb-plg-input.component';
-//import { JdbPlgAutocompleteDirective } from './components/jdb-plg-autocomplete/jdb-plg-autocomplete.directive';
-//import { JdbPlgAutocompleteComponent } from './components/jdb-plg-autocomplete/jdb-plg-autocomplete.component';
+// import { JdbPlgAutocompleteDirective } from './components/jdb-plg-autocomplete/jdb-plg-autocomplete.directive';
+import { JdbPlgAutocompleteComponent } from './components/jdb-plg-autocomplete/jdb-plg-autocomplete.component';
 import { JdbPlgBaseService } from './services/jdb-plg-base/jdb-plg-base.service';
 import { FillTableService } from './services/jdb-plg-base/fill-table.service';
 import { CommonMethodService } from './services/jdb-plg-base/common-method.service';
+import { SendStatisticService } from './services/jdb-plg-base/send-statistic.service';
+import { JdbModalService } from './services/jdb-plg-base/jdb-modal.service';
 
 import { JdbPlgTableErrorComponent } from './components/jdb-plg-table-error/jdb-plg-table-error.component';
 import { ProvinceReformPipe } from './pipe/province-reform.pipe';
 import { AmountReformPipe } from './pipe/amount-reform.pipe';
+import { JdbPlgTimelineItemComponent } from './components/jdb-plg-timeline-item/jdb-plg-timeline-item.component';
+import { JdbPlgSwitchComponent } from './components/jdb-plg-switch/jdb-plg-switch.component';
 
 
 const MDL_MODULES = [
   ShowPictureComponent,
   PictureViewerComponent,
   DragDirective,
+  WatermarkDirective,
   JdbPlgPaginationComponent,
   JdbPlgButtonComponent,
   JdbPlgDialogComponent,
   JdbPlgSelectComponent,
   JdbPlgInputComponent,
- // JdbPlgAutocompleteDirective,
-  //JdbPlgAutocompleteComponent,
+  JdbPlgTimelineItemComponent,
+  // JdbPlgAutocompleteDirective,
+  JdbPlgAutocompleteComponent,
   JdbTabComponent,
   JdbPlgTableErrorComponent,
   ProvinceReformPipe,
-  AmountReformPipe
+  AmountReformPipe,
+  JdbPlgSwitchComponent
 ];
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
-    HttpModule,
-    HttpClientModule
+    ReactiveFormsModule
   ],
   exports: MDL_MODULES,
   declarations: [
@@ -58,42 +64,33 @@ const MDL_MODULES = [
     DragDirective,
     JdbPlgPaginationComponent,
     OnlyNumberDirective,
+    WatermarkDirective,
     JdbPlgSelectComponent,
     JdbPlgButtonComponent,
     JdbPlgDialogComponent,
     JdbPlgInputComponent,
-    //JdbPlgAutocompleteDirective,
-    //JdbPlgAutocompleteComponent,
+    JdbPlgTimelineItemComponent,
+    // JdbPlgAutocompleteDirective,
+    JdbPlgAutocompleteComponent,
     JdbPlgTableErrorComponent,
     ProvinceReformPipe,
-    AmountReformPipe
+    AmountReformPipe,
+    JdbPlgSwitchComponent,
   ],
-  providers: [JdbPlgBaseService, CommonMethodService, FillTableService],
-  entryComponents: [JdbPlgToastComponent]
+  providers: [JdbPlgBaseService, CommonMethodService, FillTableService, SendStatisticService, JdbModalService],
+  entryComponents: [JdbPlgToastComponent,JdbPlgDialogComponent],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
+  ]
+
 })
-export class JdbPlgUiModule { 
-    /**
-//    * @deprecated Use `NgZorroAntdModule` instead.
-//    */
-//   static forRoot(): ModuleWithProviders {
-//     return {
-//       ngModule: JdbPlgUiModule
-//     };
-//   }
+export class JdbPlgUiModule {
 }
-// export * from './components/jdb-plg-autocomplete/jdb-plg-autocomplete.component';
-export * from './components/jdb-plg-button/jdb-plg-button.component';
-export * from './components/jdb-plg-dialog/jdb-plg-dialog.component';
-export * from './components/jdb-plg-input/jdb-plg-input.component';
-export * from './components/jdb-plg-pagination/jdb-plg-pagination.component';
-export * from './components/jdb-plg-select/jdb-plg-select.component';
-export * from './components/jdb-plg-tab/jdb-tab.component';
-export * from './components/jdb-plg-table-error/jdb-plg-table-error.component';
-export * from './components/jdb-plg-toast/jdb-plg-toast.component';
-export * from './components/picture-viewer/picture-viewer.component';
-export * from './components/show-picture/show-picture.component';
+
+export { JdbPlgBaseService } from './services/jdb-plg-base/jdb-plg-base.service';
+export { FillTableService } from './services/jdb-plg-base/fill-table.service';
 
 export { CommonMethodService } from './services/jdb-plg-base/common-method.service';
-export { FillTableService } from './services/jdb-plg-base/fill-table.service';
-export { JdbPlgBaseService } from './services/jdb-plg-base/jdb-plg-base.service';
-// TODO 暴露服务方式
+
+export { SendStatisticService } from './services/jdb-plg-base/send-statistic.service';
+export { JdbModalService } from './services/jdb-plg-base/jdb-modal.service';

@@ -22,12 +22,14 @@ export declare class JdbPlgSelectComponent implements OnInit, OnChanges {
     _jdbItemDisabled: string;
     _jdbSureDisabled: number;
     _jdbNoDisabled: number;
+    _jdbError: boolean;
     jdbClassName: string;
     jdbItemDisabled: string;
+    jdbError: boolean;
     jdbSureDisabled: any;
     jdbPlaceHolder: any;
     jdbClear: boolean;
-    jdbSelectList: string;
+    jdbSelectList: any;
     jdbSize: string;
     jdbWidth: string;
     jdbOptionText: string;
@@ -38,7 +40,7 @@ export declare class JdbPlgSelectComponent implements OnInit, OnChanges {
     optionList: ElementRef;
     show: boolean;
     inputText: any;
-    ngModelValue: string;
+    ngModelValue: any;
     constructor(renderer2: Renderer2, renderer: Renderer);
     ngOnInit(): void;
     ngAfterViewInit(): void;
@@ -63,8 +65,4 @@ export declare class JdbPlgSelectComponent implements OnInit, OnChanges {
     toBoolean(value: boolean | string): boolean;
     getTop(e: any): any;
     getScrollTop(e: any): any;
-    parseTranslateY(val: any): {
-        isPercent: any;
-        translateY: any;
-    };
 }

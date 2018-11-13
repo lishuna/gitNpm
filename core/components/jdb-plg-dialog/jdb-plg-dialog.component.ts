@@ -2,200 +2,180 @@ import {
   Component,
   OnInit,
   AfterViewInit,
-  OnChanges,
   ViewChild,
   Output,
   Input,
-  SimpleChanges,
-  OnDestroy,
-  Inject,
   ElementRef,
-  HostListener,
-  ViewEncapsulation,
-  TemplateRef,
   EventEmitter,
   ViewContainerRef,
   Type,
-  ComponentFactory,
-  ComponentFactoryResolver
+  ComponentFactoryResolver,
+  ComponentRef,
+  Renderer2
 } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 @Component({
   selector: 'app-jdb-plg-dialog',
   templateUrl: './jdb-plg-dialog.component.html',
-  // styleUrls:  ['./jdb-plg-dialog.component.scss'],
   animations: [
     trigger('optionsState', [
       state('showM', style({
         transform: 'translate(-50%, -50%)',
         opacity: '1',
-        // display: 'block',
       })),
       state('hideM', style({
         transform: 'translate(-50%, -80%)',
         opacity: '0',
-        // display: 'none',
       })),
       transition('showM <=> hideM', animate('200ms ease-out'))
     ])]
 })
-export class JdbPlgDialogComponent implements OnInit, AfterViewInit, OnChanges {
-  _customClass = '';
-  _maskClass = '';
-  _bodyStyleMap;
-  modalId: number;
-  _visible = false;
-  _title = '';
-  _closeable = true;
-  _titleTpl: TemplateRef<void>;
-  _content: string | Type<any>;
-  _contentTpl: TemplateRef<void>;
-  _animationStatus = '11';
-  _bodyClass: string;
-  _width = '400px';
-  _footerHide = false;
-  _isConfirm = false;
-  _okText = '';
-  _cancelText = '';
-  _RogerText = '';
-  _state = 'hideM';
-  _footerTpl: TemplateRef<void>;
+export class JdbPlgDialogComponent implements OnInit, AfterViewInit {
+  _visible = false;                 //弹框显示隐藏
+  _title = '提示';                   //弹框标题
+  _bodyStyleMap;                    //弹框样式 
+  _customClass = '';                //自定义容器样式
+  _maskClass = '';                  //自定义遮罩样式
+  _closeable = true;                //是否显示左上角关闭按钮
+  _content: string | Type<void>;    //内容模板
+  _footer = true;                   //是否显示底部按钮
+  _isConfirm = false;               //是否是确认类型的模态框
+  _okText = '';                     //确认按钮文案
+  _cancelText = '';                 //取消按钮文案
+  _state = '';                      //模态框状态
+  _closeType = 'mask';              //自定义关闭模态框的热区
+  _componentParams = {};            //模板参数
+  _text = '';                       //文本内容
+  _class = '';                      //文本类名
+  _style = null;                    //文本样式
+  contentComponentRef: ComponentRef<void>;
   @ViewChild('modal_content') contentEl: ElementRef;
-  @ViewChild('modal_component', { read: ViewContainerRef }) bodyEl: ViewContainerRef;
-  @Output() MvisibileChange: EventEmitter<boolean> = new EventEmitter();
-  @Output() MOnOk: EventEmitter<MouseEvent> = new EventEmitter();
-  @Output() MOnCancel: EventEmitter<MouseEvent | KeyboardEvent> = new EventEmitter();
-  // 弹框显隐
-  @Input()
-  set Mvisible(value: boolean) {
-    const visible = this.toBoolean(value);
-    if (this._visible === visible) {
-      return;
-    }
-
-    this._visible = visible;
-    this.MvisibileChange.emit(this._visible);
-  }
-  get Mvisible(): boolean {
-    return this._visible;
-  }
-  // 隐藏footer
-  @Input()
-  set MfooterHiden(value: boolean) {
-    const visible = this.toBoolean(value);
-    if (this._visible === visible) {
-      return;
-    }
-    this._footerHide = visible;
-  }
-  get MfooterHiden(): boolean {
-    return this._footerHide;
-  }
-  // 标题
-  @Input()
-  set Mtitle(value: string | TemplateRef<void>) {
-    if (value instanceof TemplateRef) {
-      this._titleTpl = value;
-    } else {
-      this._title = value;
-    }
-  }
-  @Input()
-  set Mcontent(value: string | TemplateRef<void>) {
-    if (value instanceof TemplateRef) {
-      this._contentTpl = value;
-    } else {
-      this._content = value;
-    }
-  }
-  @Input()
-  set Mfooter(value:string|TemplateRef<void>){
-    if (value instanceof TemplateRef){
-      this._footerTpl = value;
-    } 
-  }
-  
-  // 自定义宽度
-  @Input()
-  set Mwidth(value: string | number) {
-    this._width = typeof value === 'number' ? value + 'px' : value;
-  }
-
-  // 定位modal位置和样式
-  setStyle() {
-    const el = this.contentEl.nativeElement;
-    this._bodyStyleMap = {
-      ...{ width: this._width }
-    };
-  }
+  @ViewChild('modal_text') textEl: ElementRef;
+  @ViewChild('modal_component', { read: ViewContainerRef}) bodyEl: ViewContainerRef;
+  @Output() onClose: EventEmitter<MouseEvent> = new EventEmitter();
+  @Output() onOk: EventEmitter<MouseEvent> = new EventEmitter();
+  @Output() onCancel: EventEmitter<MouseEvent | KeyboardEvent> = new EventEmitter();
 
 
-  @HostListener('keydown.esc', ['$event'])
-  onEsc(e: KeyboardEvent): void {
-    this.clickCancel(e);
-  }
+  //模态框内容模板
+  @Input()
+  _contentTpl: string | Type<void>;
 
-  // 自定义样式
+  //弹框显示隐藏
   @Input()
-  set Mclass(value: string) {
-    this._customClass = value;
-  }
-
-  @Input()
-  set MOkText(value: string) {
-    this._okText = value;
-  }
-  @Input()
-  set McancelText(value: string) {
-    this._cancelText = value;
-  }
-  @Input()
-  set MRogerText(value: string) {
-    this._isConfirm = true;
-    this._RogerText = value;
-  }
-
-  constructor(private resolver: ComponentFactoryResolver) { }
-  ngOnInit() {
-    this.setStyle();
-  }
-  createDynamicComponent(component: Type<any>) {
-    const factory = this.resolver.resolveComponentFactory(this._content as Type<any>);
-    this.bodyEl.createComponent(factory);
-  }
-  ngAfterViewInit() {
-    
-  }
-  ngOnChanges(changes: SimpleChanges) {
+  set visible(value) {
+    this._visible = value;
+    //控制切入和切出动画
     if (this._visible) {
       this._state = 'showM';
-      setTimeout(() => {
-        this.contentEl.nativeElement.parentNode.focus();
-      }, 200);
     } else {
       this._state = 'hideM';
     }
   }
-  clickCancel(e): void {
-    this._visible = false;
+  get visible() {
+    return this._visible;
+  }
+
+  //弹框宽度
+  @Input()
+  set _width(value) {
+    this._bodyStyleMap = {
+      width: value
+    }
+  }
+
+  constructor(
+    private resolver: ComponentFactoryResolver,
+    private renderer: Renderer2
+  ) { }
+
+  ngOnInit() {
+    //判断_contentTpl是不是组件实例
+    if (this._contentTpl instanceof Type) {
+      this.createDynamicComponent(this._contentTpl as Type<void>);
+    } else {
+      this.createDynamicDom();
+    }
+  }
+  
+  //创建文本模板内容
+  createDynamicDom(){
+    let insertDiv = this.renderer.createElement('div');
+      let text = this.renderer.createText(this._text);
+      this.renderer.addClass(insertDiv,this._class);
+      this.renderer.appendChild(insertDiv, text);
+      if(this._style){
+        for(let key in this._style){
+          this.renderer.setStyle(insertDiv,key,this._style[key]);
+        }
+      }
+      this.renderer.appendChild(document.querySelector('._modalTextBody'), insertDiv);
+  }
+
+  createDynamicComponent(component: Type<any>): void {
+    //生成组件工厂函数
+    const factory = this.resolver.resolveComponentFactory(component);
+    //生成组件实例
+    this.contentComponentRef = this.bodyEl.createComponent(factory);
+    //模板的输入属性
+    for (let key in this._componentParams) {
+      this.contentComponentRef.instance[key] = this._componentParams[key];
+    }
+    //立刻执行一次变更检测
+    this.contentComponentRef.changeDetectorRef.detectChanges();
+  }
+
+  ngAfterViewInit() {
+    //动态组件实例存在 插入到视图容器中
+    if (this.contentComponentRef) {
+      this.bodyEl.insert(this.contentComponentRef.hostView);
+    }
+  }
+
+  //关闭弹框
+  closeModel(e: MouseEvent): void {
+    this.onClose.emit(e);
     this._state = 'hideM';
-    this.MOnCancel.emit(e);
   }
-  clickOk(e): void {
-    if (this.MOnOk) {
-      this.MOnOk.emit(e);
-    } else {
-      this._visible = false;
+
+  //确认弹框
+  confirmModel(e: MouseEvent): void {
+    this.onOk.emit(e);
+    this._state = 'hideM';
+  }
+
+  //取消弹框
+  cancelModel(e: MouseEvent): void {
+    this.onCancel.emit(e);
+    this._state = 'hideM';
+  }
+
+  //点击遮罩关闭
+  cusCloseModal(e: MouseEvent): void {
+    let flag = this.isChildOf(e.target, this.contentEl.nativeElement);
+    if (this._closeType === 'mask' && !flag) {
+      this.onClose.emit(e);
       this._state = 'hideM';
     }
   }
-  closeModal(e): void {
-    if ((e.target as HTMLElement).getAttribute('role') === 'dialog') {
-      this.clickCancel(e);
-      this._state = 'hideM';
+
+  //阻止冒泡
+  // selfCloseModal(e: MouseEvent): void {
+  //   e.stopPropagation();
+  //   e.cancelBubble = true;
+  // }
+
+  isChildOf(child, parent) {
+    var parentNode;
+    if (child && parent) {
+      parentNode = child.parentNode;
+      while (parentNode) {
+        if (parent === parentNode) {
+          return true;
+        }
+        parentNode = parentNode.parentNode;
+      }
     }
-  }
-  toBoolean(value: boolean | string): boolean {
-    return value === '' || (value && value !== false);
+    return false;
   }
 }

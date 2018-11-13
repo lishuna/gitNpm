@@ -1,6 +1,7 @@
-import { OnInit, EventEmitter, TemplateRef } from '@angular/core';
+import { OnInit, EventEmitter, TemplateRef, ElementRef, AfterViewInit, Renderer2 } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
-export declare class JdbPlgInputComponent implements OnInit, ControlValueAccessor {
+export declare class JdbPlgInputComponent implements OnInit, AfterViewInit, ControlValueAccessor {
+    private render;
     _value: string;
     _type: string;
     _placeHolder: string;
@@ -23,7 +24,11 @@ export declare class JdbPlgInputComponent implements OnInit, ControlValueAccesso
     _suffixContent: TemplateRef<any>;
     jdbBlur: EventEmitter<MouseEvent>;
     jdbFocus: EventEmitter<MouseEvent>;
+    inputEl: ElementRef;
+    clearBtnEl: ElementRef;
+    constructor(render: Renderer2);
     ngOnInit(): void;
+    ngAfterViewInit(): void;
     compositionStart(e: CompositionEvent): void;
     compositionEnd(e: CompositionEvent): void;
     jdbType: string;

@@ -1,54 +1,65 @@
-import {Cookie} from 'ng2-cookies/ng2-cookies';
-import {Injectable, ComponentFactoryResolver} from '@angular/core';
-import {Http, Headers, Response, RequestOptions} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
-// import {environment} from '../../../../../environments/environment';
-import {JdbPlgToastComponent} from '../../components/jdb-plg-toast/jdb-plg-toast.component';
-import {jQueryLikeParamSerializer} from './query-string';
-import {objectAssign} from './object-assign';
-import {Router} from '@angular/router';
+import { CommonMethodService } from './common-method.service';
+//import { Cookie } from 'ng2-cookies';
+// let Cookie = require('ng2-cookies');
 
-// const DEFAULTHOST = environment.apiConfig.defaultHost;
-// const APIS = environment.apiConfig.apis;
-// const ENV = environment.env;
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { filter, catchError } from 'rxjs/operators';
+// import 'rxjs/add/operator/filter';
+// import 'rxjs/add/operator/catch';
+import { jQueryLikeParamSerializer } from './query-string';
+import { objectAssign } from './object-assign';
 
+import { StatisticData } from '../../config/statistic.config';
+import { SendStatisticService } from './send-statistic.service';
+
+let statisticList = [];
 @Injectable()
 export class JdbPlgBaseService {
   vRef;
+  timer: any = null;
+  //收集的每一个接口的数据结构
+  newStatisticData: StatisticData = {
+    from: '',
+    operator: '',
+    memberId: '',
+    service: {
+      apiException: {
+        requestTime: null,
+        url: '',
+        params: null,
+        resCode: null,
+        resMessage: '',
+        errorMessage: ''
+      }
+    }
+  };
+  //收集的每一个接口的公共信息
+  baseObj: any = {
+    from: null,
+    operator: null,
+    memberId: null,
+  };
 
-  constructor(private http: Http, private componentFactoryResolver: ComponentFactoryResolver, private route: Router) {
+  constructor(
+    private http: HttpClient,
+    private commonService: CommonMethodService,
+    private sendStatisticService: SendStatisticService
+  ) {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+    //轮询去发送数据，并清空队列
+    this.timer = setInterval(() => {
+      this.sendStatisticService.emitStatisticData(statisticList);
+      statisticList = [];
+    }, 10000);
   }
-
-  // 处理不同环境的Url，在原来的基础上做了优化
-  // getUrl(apiName: string) {
-  //   let api = APIS[apiName];
-  //   if (ENV == 'serve' && api.serve) {
-  //     return api.serve;
-  //   }
-  //   if (api.host && api.host[ENV]) {
-  //     return api.host[ENV] + api.path;
-  //   }
-  //   return DEFAULTHOST[ENV] + api.path;
-  // }
 
   setRootViewContainerRef(vRef) {
     this.vRef = vRef;
-
-  }
-
-  toast(msg, delayTime = 3000) {
-    //通过ComponentFactoryResolver 创建出动态组件的实例
-    const childComponent = this.componentFactoryResolver.resolveComponentFactory(JdbPlgToastComponent);
-    let comInstance = this.vRef.createComponent(childComponent);
-    comInstance.instance.msg = msg;
-    comInstance.changeDetectorRef.detectChanges();
-    setTimeout(() => {
-      comInstance.destroy();
-    }, delayTime);
-  }
-
-  test() {
-    alert('jdb services....');
+    this.commonService.setRootViewContainerRef(this.vRef);
   }
 
   /**
@@ -62,10 +73,24 @@ export class JdbPlgBaseService {
     let loginToken;
     let loginWay;
     let orgUid;
+    // 系统来源
+    let from;
+    // 获取接口的apiException
+    this.newStatisticData.service.apiException = {
+      requestTime: null,
+      url: '',
+      params: null,
+      resCode: null,
+      resMessage: '',
+      errorMessage: ''
+    };
+    let apiException = JSON.parse(JSON.stringify(this.newStatisticData.service.apiException));
+    this.newStatisticData.service.apiException = apiException;
     if (options && options.tokenObj) {
       loginToken = localStorage.getItem(options.tokenObj.loginToken);
       loginWay = localStorage.getItem(options.tokenObj.loginWay);
       orgUid = localStorage.getItem(options.tokenObj.orgUid);
+      from = localStorage.getItem(options.tokenObj.from);
     }
     let loginObj: any = {};
     let data: any = {};
@@ -85,31 +110,38 @@ export class JdbPlgBaseService {
           'jdbDhTraceId': time + '-' + parseInt(Math.random() * (100000 + 1) + 1 + '')
         };
       }
-
       data = objectAssign({}, loginObj, dataObj);
     } else {
       data = objectAssign({}, dataObj);
     }
+    // 請求參數
+    apiException.params = data;
     data = jQueryLikeParamSerializer(data);
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
+    const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' });
+    const requestoptions = {
+      headers: headers
+    };
     let reqUrl = apiName;
-    let that = this;
-    let requestoptions = new RequestOptions({
-      headers: headers,
-      method: 'post',
-      body: data || {}
-    });
-    console.log(this.http);
-    return this.http.request(reqUrl, requestoptions)
-      .map((res: Response) => res.json())
-      .filter((res: any) => {
-
+    //统计数据添加from和operator字段
+    this.baseObj.from = from;
+    this.baseObj.operator = localStorage.getItem('nickName');
+    this.baseObj.memberId = localStorage.getItem('memberId');
+    //统计数据添加请求url
+    apiException.url = reqUrl;
+    return this.http.post(reqUrl, data || {}, requestoptions)
+      .pipe(filter((res: any) => {
+        // 根据joinTraceId是否为true 判断是否需要拼接日志号 （目前只有电催系统需要）
+        if ( currentRoute != 'login' && options && options.joinTraceId) {
+          res.error.returnUserMessage = res.error.returnUserMessage + '<br/>(日志号:' + loginObj.jdbDhTraceId + ')';
+        }
+        const endTime = new Date().getTime();
+        //统计接口请求时长
+        apiException.requestTime = endTime - time;
         //校验接口返回的数据结构格式
-        if(!(res.hasOwnProperty('data') && res.hasOwnProperty('error'))){
-           this.toast('系统接口格式错误！');
-           options && options.reset && options.reset();
-           return false;
+        if (!(res.hasOwnProperty('data') && res.hasOwnProperty('error'))) {
+          this.commonService.toast('系统接口格式错误！');
+          options && options.reset && options.reset();
+          return false;
         }
         if (options.fns && options.fns.length != 0) {
           let len = options.fns.length;
@@ -121,80 +153,53 @@ export class JdbPlgBaseService {
           }
         }
         if (res.error && res.error.returnCode * 1 == 0) {
+          //统计数据添加returnCode，returnUserMessage信息
+          apiException.resCode = res.error.returnCode;
+          apiException.resMessage = res.error.returnUserMessage;
+          //拷贝公共信息
+          this.newStatisticData = Object.assign(this.newStatisticData, this.baseObj);
+          //去除logDataApi、loginApi、qrcodeApi三个接口
+          if (options && !options.noLog) {
+            statisticList.push(this.newStatisticData);
+          }
           return true;
         }
+        // 统计数据添加returnCode，returnUserMessage信息
+        apiException.resCode = res.error.returnCode;
+        apiException.resMessage = res.error.returnUserMessage;
+        this.newStatisticData = Object.assign(this.newStatisticData, this.baseObj);
+        if (options && !options.noLog ) {
+          statisticList.push(this.newStatisticData);
+        }
         //兼容登录组件中qrcodeApi和loginApi两个接口老的写法
-        if(typeof(options) === 'boolean'){
-          if(options){
-            this.toast(res && res.error && res.error.returnUserMessage);
+        if (typeof (options) === 'boolean') {
+          if (options) {
+            this.commonService.toast(res && res.error && res.error.returnUserMessage);
             return false;
-          }else{
+          } else {
             return true;
           }
         }
         //是否拦截处理
-        if(options.isIntercept){
-          this.toast(res && res.error && res.error.returnUserMessage);
+        if (options.isIntercept) {
+          this.commonService.toast(res && res.error && res.error.returnUserMessage);
           return false;
-        }else {
+        } else {
           return true;
         }
-
-      })
-      .catch((error: any) => {
+      }))
+      .pipe(catchError((error: any) => {
+        // 统计错误信息
+        apiException.errorMessage = error;
+        this.newStatisticData = Object.assign(this.newStatisticData, this.baseObj);
+        if (options && !options.noLog ) {
+          statisticList.push(this.newStatisticData);
+        }
         return Observable.throw(error || 'Server error');
-      });
+      }));
   }
 
-  postJSON(apiName, dataObj) {
-    // let headers = new Headers({
-    //     'Content-Type': 'application/json',
-    //     'withCredentials': true
-    // });
 
-    let headers = new Headers();
-    // headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
-    headers.append('Content-Type', 'application/json;charset=utf-8');
-
-    // headers.append('withCredentials','true');
-    // let urlData = new URLSearchParams();
-    // if (Object.keys(dataObj).length > 0) {
-    //     for (let key in dataObj) {
-    //         urlData.append(key, dataObj[key]);
-    //     }
-    // }
-    // let loanMarketToken = Cookie.get('loanMarketToken');
-    // urlData.append('loanMarketToken', loanMarketToken);
-
-    let reqUrl = apiName;
-    let that = this;
-    // let requestoptions = new RequestOptions({
-    //     method: RequestMethod.Post,
-    //     url: reqUrl,
-    //     headers: headers,
-    //     body: testData
-    // })
-    let options = new RequestOptions({
-      headers: headers,
-      method: 'post',
-      url: reqUrl,
-      body: dataObj || {}
-    });
-    return this.http.request(reqUrl, options)
-      .map((res: Response) => res.json())
-      .filter((res: any) => {
-        if (res.error && res.error.returnCode * 1 == 0) {
-          return true;
-        }
-        else {
-          return false;
-        }
-
-      })
-      .catch((error: any) => {
-        return Observable.throw(error || 'Server error');
-      });
-  }
 
   stamp2string(stamp) {
     if (stamp) {
@@ -204,22 +209,22 @@ export class JdbPlgBaseService {
     return null;
   }
 
-  export(apiName, params) {
-    let cookieStr = Cookie.get('loginInfo');
+  download(apiName, params) {
+    // let cookieStr = Cookie.get('loginInfo');
     let cookieObj: any = {};
     let cookieData: any = {};
-    if (cookieStr) {
-      try {
-        cookieObj = JSON.parse(cookieStr);
-        cookieData = {
-          loginToken: cookieObj.loginToken,
-          employeeId: cookieObj.empId
-        };
-      }
-      catch (e) {
-        console.log('parse cookie error...');
-      }
-    }
+    // if (cookieStr) {
+    //   try {
+    //     cookieObj = JSON.parse(cookieStr);
+    //     cookieData = {
+    //       loginToken: cookieObj.loginToken,
+    //       employeeId: cookieObj.empId
+    //     };
+    //   }
+    //   catch (e) {
+    //     console.log('parse cookie error...');
+    //   }
+    // }
 
     let paramsObj = objectAssign({}, cookieData, params);
     let url = apiName + '?';

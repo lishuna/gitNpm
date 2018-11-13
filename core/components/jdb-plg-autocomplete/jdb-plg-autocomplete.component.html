@@ -1,11 +1,12 @@
 <div class="autoprompt">
-    <app-jdb-plg-input [jdbType]="'text'" [jdbPlaceHolder]="jdbPlaceHolder" [jdbClear]="true" [(ngModel)]="_searchWord" [width]="width">
+    <app-jdb-plg-input [jdbType]="'text'" [jdbPlaceHolder]="jdbPlaceHolder" [jdbClear]="true" [(ngModel)]="_searchWord" [width]="width" (ngModelChange)="changeInput()">
     </app-jdb-plg-input>
-    <ul *ngIf="_searchWord && _listShow" [style.width]="width">
-        <li *ngFor="let item of items;index as i" [ngClass]="{'selected': activeIndex == i}" (click)="selectedItem(item,i)">
+    <ul #resultele [hidden]="!_listShow" [style.width]="width">
+        <li *ngFor="let item of searchResult;index as i" [ngClass]="{'selected': activeIndex == i}" (click)="selectedItem(item,i)">
             <p>
-                {{item.value}}
+                {{item.text}}
             </p>
         </li>
     </ul>
 </div>
+<!-- <div class="autoprompt-mask" [hidden]="!_listShow" (click)="closePop($event)"></div> -->

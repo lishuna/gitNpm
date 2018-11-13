@@ -2,10 +2,11 @@
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-import { Component, EventEmitter, TemplateRef, Input, Output, ContentChild, forwardRef, HostListener, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, TemplateRef, Input, Output, ElementRef, ContentChild, forwardRef, HostListener, ViewEncapsulation, Renderer2, ViewChild } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 var JdbPlgInputComponent = /** @class */ (function () {
-    function JdbPlgInputComponent() {
+    function JdbPlgInputComponent(render) {
+        this.render = render;
         this._value = '';
         this._type = 'text';
         this._placeHolder = '';
@@ -33,6 +34,17 @@ var JdbPlgInputComponent = /** @class */ (function () {
         // this._inputWrapClass =[`input-text-wrap-${this._size}`];
         if (this._prefixContent) {
             this._inputWrapClass.push('prefix');
+        }
+    };
+    /**
+     * @return {?}
+     */
+    JdbPlgInputComponent.prototype.ngAfterViewInit = /**
+     * @return {?}
+     */
+    function () {
+        if (this.clearBtnEl) {
+            this.render.setStyle(this.clearBtnEl.nativeElement, 'top', this.inputEl.nativeElement.height / 2);
         }
     };
     /**
@@ -150,9 +162,6 @@ var JdbPlgInputComponent = /** @class */ (function () {
          * @return {?}
          */
         function () {
-            if (this._value == '0') {
-                return '0';
-            }
             return this._value || '';
         },
         set: /**
@@ -342,8 +351,8 @@ var JdbPlgInputComponent = /** @class */ (function () {
     JdbPlgInputComponent.decorators = [
         { type: Component, args: [{
                     selector: 'app-jdb-plg-input',
-                    template: "<span class=\"input-group-addon\" *ngIf=\"_addOnContentBefore\"> <ng-template [ngTemplateOutlet]=\"_addOnContentBefore\"> </ng-template> </span> <ng-template [ngIf]=\"_type=='text'\"> <div class=\"input-text-wrap\" [ngClass]=\"_inputWrapClass\"> <span class=\"input-prefix\" *ngIf=\"_prefixContent\"> <ng-template [ngTemplateOutlet]=\"_prefixContent\"> </ng-template> </span> <input (blur)=\"_emitBlur($event)\" (focus)=\"_emitFocus($event)\" [disabled]=\"_disabled\" [readonly]=\"_readonly\" [attr.type]=\"_type\" class=\"input\" [ngClass]=\"_classMap\" [attr.placeholder]=\"_placeHolder\" [(ngModel)]=\"jdbValue\" [style.width]=\"width\" maxlength=\"{{jdbMaxLength}}\" /> <span class=\"input-clear\" *ngIf=\"_clear && _value && _type=='text'\" (click)=\"clearTxt()\"> <i class=\"close-icon icon-empty\"></i> </span> <span class=\"ant-input-suffix\" *ngIf=\"_suffixContent\"> <i class=\"iconfont icon-guanbi2fill\"></i> <ng-template [ngTemplateOutlet]=\"_suffixContent\"> </ng-template> </span> </div> <div class=\"input-error-tip\" *ngIf=\"jdbError && _errorContent\"> <i class=\"icon-message-error error-tip\"></i> <span> <ng-template [ngTemplateOutlet]=\"_errorContent\"> </ng-template> </span> </div> </ng-template> <span class=\"input-group-addon\" *ngIf=\"_addOnContentAfter\"> <ng-template [ngTemplateOutlet]=\"_addOnContentAfter\"> </ng-template> </span> <ng-template [ngIf]=\"_type=='textarea'\"> <div class=\"input-text-wrap\"> <textarea (blur)=\"_emitBlur($event)\" (focus)=\"_emitFocus($event)\" (input)=\"textareaOnChange($event)\" #inputTextarea [disabled]=\"_disabled\" [readonly]=\"_readonly\" type=\"textarea\" class=\"input input-textarea\" [ngClass]=\"_classMap\" [attr.placeholder]=\"jdbPlaceHolder\" [(ngModel)]=\"jdbValue\" maxlength=\"{{jdbMaxLength}}\" [style.width]=\"width\"></textarea> <span class=\"textarea-wc-tip\" [ngClass]=\"{'textarea-wc-tip-red': jdbValue&&jdbValue.length == jdbMaxLength}\" *ngIf=\"jdbMaxLength && !_disabled &&!_readonly\">{{(jdbValue&&jdbValue.length)||0}}/{{jdbMaxLength}}</span> </div> </ng-template>",
-                    // styleUrls:  ['./jdb-plg-input.component.scss'],
+                    template: "<span class=\"input-group-addon\" *ngIf=\"_addOnContentBefore\"> <ng-template [ngTemplateOutlet]=\"_addOnContentBefore\"> </ng-template> </span> <ng-template [ngIf]=\"_type=='text'\"> <div class=\"input-text-wrap\" [ngClass]=\"_inputWrapClass\"> <span class=\"input-prefix\" *ngIf=\"_prefixContent\"> <ng-template [ngTemplateOutlet]=\"_prefixContent\"> </ng-template> </span> <span class=\"input-content\"> <input (blur)=\"_emitBlur($event)\" (focus)=\"_emitFocus($event)\" [disabled]=\"_disabled\" [readonly]=\"_readonly\" [attr.id]=\"jdbId\" [attr.type]=\"_type\" class=\"input\" [ngClass]=\"_classMap\" [attr.placeholder]=\"_placeHolder\" [(ngModel)]=\"jdbValue\" [style.width]=\"width\" maxlength=\"{{jdbMaxLength}}\" #input /> <span class=\"input-clear\" *ngIf=\"_clear && _value && _type=='text'\" (click)=\"clearTxt()\"> <i class=\"close-icon icon-empty\"></i> </span> </span> <span class=\"ant-input-suffix\" *ngIf=\"_suffixContent\"> <i class=\"iconfont icon-guanbi2fill\"></i> <ng-template [ngTemplateOutlet]=\"_suffixContent\"> </ng-template> </span> <div class=\"input-error-tip\" *ngIf=\"jdbError && _errorContent\" [style.width]=\"width\"> <i class=\"icon-message-error error-tip\"></i> <p class=\"input-error-content\"> <ng-template [ngTemplateOutlet]=\"_errorContent\"> </ng-template> </p> </div> </div> </ng-template> <span class=\"input-group-addon\" *ngIf=\"_addOnContentAfter\"> <ng-template [ngTemplateOutlet]=\"_addOnContentAfter\"> </ng-template> </span> <ng-template [ngIf]=\"_type=='textarea'\"> <div class=\"input-text-wrap\"> <textarea (blur)=\"_emitBlur($event)\" (focus)=\"_emitFocus($event)\" (input)=\"textareaOnChange($event)\" [attr.id]=\"jdbId\" #inputTextarea [disabled]=\"_disabled\" [readonly]=\"_readonly\" type=\"textarea\" class=\"input input-textarea\" [ngClass]=\"_classMap\" [attr.placeholder]=\"jdbPlaceHolder\" [(ngModel)]=\"jdbValue\" maxlength=\"{{jdbMaxLength}}\" [style.width]=\"width\"></textarea> <span class=\"textarea-wc-tip\" [ngClass]=\"{'textarea-wc-tip-red': jdbValue&&jdbValue.length == jdbMaxLength}\" *ngIf=\"jdbMaxLength && !_disabled &&!_readonly\">{{(jdbValue&&jdbValue.length)||0}}/{{jdbMaxLength}}</span> </div> </ng-template>",
+                    // styleUrls: ['./jdb-plg-input.component.scss'],
                     encapsulation: ViewEncapsulation.None,
                     providers: [
                         {
@@ -355,6 +364,9 @@ var JdbPlgInputComponent = /** @class */ (function () {
                 },] },
     ];
     /** @nocollapse */
+    JdbPlgInputComponent.ctorParameters = function () { return [
+        { type: Renderer2, },
+    ]; };
     JdbPlgInputComponent.propDecorators = {
         "width": [{ type: Input },],
         "_errorContent": [{ type: ContentChild, args: ['jdbErrorContent',] },],
@@ -364,6 +376,8 @@ var JdbPlgInputComponent = /** @class */ (function () {
         "_suffixContent": [{ type: ContentChild, args: ['suffixContent',] },],
         "jdbBlur": [{ type: Output },],
         "jdbFocus": [{ type: Output },],
+        "inputEl": [{ type: ViewChild, args: ['input',] },],
+        "clearBtnEl": [{ type: ViewChild, args: ['clearBtn',] },],
         "compositionStart": [{ type: HostListener, args: ['compositionstart', ['$event'],] },],
         "compositionEnd": [{ type: HostListener, args: ['compositionend', ['$event'],] },],
         "jdbType": [{ type: Input },],
@@ -434,5 +448,11 @@ function JdbPlgInputComponent_tsickle_Closure_declarations() {
     JdbPlgInputComponent.prototype.jdbBlur;
     /** @type {?} */
     JdbPlgInputComponent.prototype.jdbFocus;
+    /** @type {?} */
+    JdbPlgInputComponent.prototype.inputEl;
+    /** @type {?} */
+    JdbPlgInputComponent.prototype.clearBtnEl;
+    /** @type {?} */
+    JdbPlgInputComponent.prototype.render;
 }
 //# sourceMappingURL=jdb-plg-input.component.js.map

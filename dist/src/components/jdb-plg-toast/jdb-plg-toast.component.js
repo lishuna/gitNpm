@@ -18,7 +18,7 @@ var JdbPlgToastComponent = /** @class */ (function () {
     JdbPlgToastComponent.decorators = [
         { type: Component, args: [{
                     selector: 'app-jdb-plg-toast',
-                    template: "<div class=\"toast-wraper\"> {{msg}} </div> ",
+                    template: "<div class=\"toast-wraper\" [innerHtml]=\"msg\"> </div> ",
                 },] },
     ];
     /** @nocollapse */

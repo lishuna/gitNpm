@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, Renderer2, HostListener, ElementRef } from '@angular/core';
-import { JdbPlgBaseService } from '../../services/jdb-plg-base/jdb-plg-base.service';
+
 export type buttonSize = 'small' | 'large' | 'default';
 export type buttonType = 'primary' | 'gray' | 'danger' | 'buleline' | 'white';
 
 @Component({
-  selector: '[app-jdb-plg-button]',
-  templateUrl: './jdb-plg-button.component.html',
- // styleUrls:  ['./jdb-plg-button.component.scss']
+  selector: 'button[app-jdb-plg-button]',
+  templateUrl: './jdb-plg-button.component.html'
+  // styleUrls: ['./jdb-plg-button.component.scss']
 })
 
 export class JdbPlgButtonComponent implements OnInit {
@@ -46,7 +46,7 @@ export class JdbPlgButtonComponent implements OnInit {
 
   @Input()
   get jdbLoading() {
-    return this.loading;
+    return this.loading; 
   }
 
   set jdbLoading(value: boolean | string) {
@@ -55,7 +55,7 @@ export class JdbPlgButtonComponent implements OnInit {
     this._setClassMap(this.loading);
   }
 
-  constructor(private _elementRef: ElementRef, private _renderer: Renderer2,public jdbPlgBaseService: JdbPlgBaseService) {
+  constructor(private _elementRef: ElementRef, private _renderer: Renderer2) {
 
     this._el = this._elementRef.nativeElement;
 

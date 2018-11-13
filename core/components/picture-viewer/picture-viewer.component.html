@@ -10,9 +10,9 @@
 
         <!-- 图片box -->
         <ul class="img-box" #img>
-            <!-- <li *ngFor="let item of pictureList;let i=index" [@imgMove]="ImgState(i)">
+            <li *ngFor="let item of pictureList;let i=index" [@imgMove]="ImgState(i)">
                 <img appDragDirective  [src]="item.imgUrl" alt="" style="max-height: 600px;max-width: 800px;">
-            </li> -->
+            </li>
         </ul>
         <!-- 上一页下一页 -->
         <div [hidden]="current==0" class="prev-page" (click)="Prev()">

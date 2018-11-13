@@ -29,6 +29,7 @@ var JdbPlgSelectComponent = /** @class */ (function () {
         this._jdbItemDisabled = 'disabled';
         this._jdbSureDisabled = 2;
         this._jdbNoDisabled = 1;
+        this._jdbError = false;
         // 自定义类名
         this.jdbClassName = '';
         this.show = false;
@@ -48,6 +49,23 @@ var JdbPlgSelectComponent = /** @class */ (function () {
          */
         function (value) {
             this._jdbItemDisabled = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgSelectComponent.prototype, "jdbError", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._jdbError;
+        },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._jdbError = this.toBoolean(value);
         },
         enumerable: true,
         configurable: true
@@ -116,14 +134,25 @@ var JdbPlgSelectComponent = /** @class */ (function () {
          */
         function (value) {
             var _this = this;
-            this._selectList = value;
             // 循环数组，判断是否需要展示带有图片下拉框
-            if (this._selectList) {
-                this._selectList.forEach(function (element) {
-                    if (element.imgUrl) {
-                        _this._showImgBox = true;
+            if (value) {
+                var /** @type {?} */ arr_1 = [];
+                value.forEach(function (element) {
+                    var /** @type {?} */ type = typeof element;
+                    if (type === 'string' || type === 'number') {
+                        arr_1.push({
+                            text: element,
+                            value: element
+                        });
+                    }
+                    else {
+                        arr_1.push(element);
+                        if (element.imgUrl) {
+                            _this._showImgBox = true;
+                        }
                     }
                 });
+                this._selectList = arr_1;
             }
         },
         enumerable: true,
@@ -237,8 +266,7 @@ var JdbPlgSelectComponent = /** @class */ (function () {
     JdbPlgSelectComponent.prototype.ngOnInit = /**
      * @return {?}
      */
-    function () {
-    };
+    function () { };
     // tslint:disable-next-line:use-life-cycle-interface
     /**
      * @return {?}
@@ -257,30 +285,28 @@ var JdbPlgSelectComponent = /** @class */ (function () {
             // 监听输入框元素，若有内容时则滑上显示x
             this.renderer2.listen(this.inputDom.nativeElement, 'mouseenter', function () {
                 // 若输入框不存在内容，则不做任何操作
-                if (_this._jdbMode === 'chooseOne' || _this._jdbMode === 'chooseNum') {
-                    if (!_this.inputText || _this.show) {
-                        return;
-                    }
+                if (_this._jdbMode === 'chooseOne' && (_this.inputText === '' || _this.show)) {
+                    return;
                 }
-                else if (_this._jdbMode === 'chooseMore') {
-                    if (_this.inputText.length === 0 || _this.show) {
-                        return;
-                    }
+                else if (_this._jdbMode === 'chooseNum' && (_this.inputText === 0 || _this.show)) {
+                    return;
+                }
+                else if (_this._jdbMode === 'chooseMore' && (_this.inputText.length === 0 || _this.show)) {
+                    return;
                 }
                 _this.isShowClear = true;
                 _this.renderer.setElementClass(_this.inputDom.nativeElement, 'jdb-plg-select-active', _this.show);
             });
             this.renderer2.listen(this.inputDom.nativeElement, 'mouseleave', function () {
                 // 若输入框不存在内容，则不做任何操作
-                if (_this._jdbMode === 'chooseOne' || _this._jdbMode === 'chooseNum') {
-                    if (!_this.inputText || _this.show) {
-                        return;
-                    }
+                if (_this._jdbMode === 'chooseOne' && (_this.inputText === '' || _this.show)) {
+                    return;
                 }
-                else if (_this._jdbMode === 'chooseMore') {
-                    if (_this.inputText.length === 0 || _this.show) {
-                        return;
-                    }
+                else if (_this._jdbMode === 'chooseNum' && (_this.inputText === 0 || _this.show)) {
+                    return;
+                }
+                else if (_this._jdbMode === 'chooseMore' && (_this.inputText.length === 0 || _this.show)) {
+                    return;
                 }
                 _this.isShowClear = false;
                 _this.renderer.setElementClass(_this.inputDom.nativeElement, 'jdb-plg-select-active', _this.show);
@@ -294,14 +320,34 @@ var JdbPlgSelectComponent = /** @class */ (function () {
      * @return {?}
      */
     function () {
-        if (this._jdbMode === 'chooseOne') {
-            this.inputText = '';
-        }
-        else if (this._jdbMode === 'chooseMore') {
-            this.inputText = [];
-        }
-        else if (this._jdbMode === 'chooseNum') {
-            this.inputText = 0;
+        // 当数组取到后重新判断ngModel绑定的值，解决异步数据不回显问题
+        if (this._selectList) {
+            if (this.ngModelValue === null || this.ngModelValue === '' || this.ngModelValue === undefined) {
+                // 若传入值为null，则清空数据
+                if (this._jdbMode === 'chooseMore') {
+                    this.inputText = [];
+                    this._chooseMoreArray = [];
+                }
+                else if (this._jdbMode === 'chooseNum') {
+                    this.inputText = 0;
+                    this._chooseMoreArray = [];
+                }
+                else {
+                    this.inputText = '';
+                }
+            }
+            else {
+                if (this._jdbMode === 'chooseOne') {
+                    this.forOneStart(this.ngModelValue);
+                }
+                else if (this._jdbMode === 'chooseMore') {
+                    this.forMoreStart(this.ngModelValue);
+                    this.setClassMap();
+                }
+                else if (this._jdbMode === 'chooseNum') {
+                    this.forNumStart(this.ngModelValue);
+                }
+            }
         }
         this.setClassMap();
     };
@@ -319,6 +365,8 @@ var JdbPlgSelectComponent = /** @class */ (function () {
                 _a["jdb-plg-select-bottom-" + this._size] = this.inputText.length !== 0,
                 _a['jdb-plg-select-disabled'] = this._jdbDisabled,
                 _a[this.jdbClassName] = true,
+                _a['jdb-plg-select-error'] = this._jdbError // 输入项报错标红
+            ,
                 _a);
         }
         else {
@@ -326,6 +374,8 @@ var JdbPlgSelectComponent = /** @class */ (function () {
                 _b["" + this._size] = true,
                 _b['jdb-plg-select-disabled'] = this._jdbDisabled,
                 _b[this.jdbClassName] = true,
+                _b['jdb-plg-select-error'] = this._jdbError // 输入项报错标红
+            ,
                 _b);
         }
     };
@@ -430,19 +480,15 @@ var JdbPlgSelectComponent = /** @class */ (function () {
      */
     function (value) {
         this.ngModelValue = value;
-        // 若有初始项，则需要处理一下
-        // if (this._jdbMode === 'chooseOne') {
-        //   this.forOneStart(value);
-        // } else if (this._jdbMode === 'chooseMore') {
-        //   this.forMoreStart(value);
-        //   this.setClassMap();
-        // } else if (this._jdbMode === 'chooseNum') {
-        //   this.forNumStart(value);
-        // }
         if (value === null || value === '' || value === undefined) {
             // 若传入值为null，则清空数据
             if (this._jdbMode === 'chooseMore') {
                 this.inputText = [];
+                this._chooseMoreArray = [];
+            }
+            else if (this._jdbMode === 'chooseNum') {
+                this.inputText = 0;
+                this._chooseMoreArray = [];
             }
             else {
                 this.inputText = '';
@@ -480,8 +526,7 @@ var JdbPlgSelectComponent = /** @class */ (function () {
      * @param {?} fn
      * @return {?}
      */
-    function (fn) {
-    };
+    function (fn) { };
     /**
      * @param {?} isDisabled
      * @return {?}
@@ -490,8 +535,7 @@ var JdbPlgSelectComponent = /** @class */ (function () {
      * @param {?} isDisabled
      * @return {?}
      */
-    function (isDisabled) {
-    };
+    function (isDisabled) { };
     // 单选，若有初始选项，则遍历数组
     /**
      * @param {?} value
@@ -520,17 +564,27 @@ var JdbPlgSelectComponent = /** @class */ (function () {
      */
     function (value) {
         var _this = this;
-        value = value.split(',');
+        // 判断传入值类型 老版本为string,新版本为数组，兼容新老版本
+        if (typeof value === 'string') {
+            value = value.toString().split(',');
+        }
         value.forEach(function (item) {
             _this._selectList.forEach(function (elem) {
                 if (elem[_this._optionValue] === item) {
-                    // inputText为输入框中展示的内容
-                    var /** @type {?} */ text = _this._optionText;
-                    var /** @type {?} */ value_1 = _this._optionValue;
-                    _this.inputText.push({
-                        text: elem[_this._optionText],
-                        value: elem[_this._optionValue]
-                    });
+                    // inputText为输入框中展示的内容 判断是否有重新赋值text和value字段
+                    var /** @type {?} */ textName = _this._optionText;
+                    var /** @type {?} */ valueName = _this._optionValue;
+                    if (_this.jdbOptionText) {
+                        textName = _this.jdbOptionText;
+                    }
+                    if (_this.jdbOptionValue) {
+                        valueName = _this.jdbOptionValue;
+                    }
+                    // key为变量的赋值方法
+                    var /** @type {?} */ obj = {};
+                    obj[textName] = elem[_this._optionText];
+                    obj[valueName] = elem[_this._optionValue];
+                    _this.inputText.push(obj);
                     // this._chooseMoreArray为传出去的数据
                     // this._chooseMoreArray为传出去的数据
                     _this._chooseMoreArray.push(elem[_this._optionValue]);
@@ -550,7 +604,10 @@ var JdbPlgSelectComponent = /** @class */ (function () {
      */
     function (value) {
         var _this = this;
-        value = value.split(',');
+        // 判断传入值类型 老版本为string,新版本为数组，兼容新老版本
+        if (typeof value === 'string') {
+            value = value.toString().split(',');
+        }
         value.forEach(function (item) {
             _this._selectList.forEach(function (elem) {
                 if (elem[_this._optionValue] === item) {
@@ -625,15 +682,21 @@ var JdbPlgSelectComponent = /** @class */ (function () {
             return;
         }
         // inputText为输入框中展示的内容
-        var /** @type {?} */ text = this._optionText;
-        var /** @type {?} */ value = this._optionValue;
-        this.inputText.push({
-            text: item[this._optionText],
-            value: item[this._optionValue]
-        });
+        var /** @type {?} */ textName = this._optionText;
+        var /** @type {?} */ valueName = this._optionValue;
+        if (this.jdbOptionText) {
+            textName = this.jdbOptionText;
+        }
+        if (this.jdbOptionValue) {
+            valueName = this.jdbOptionValue;
+        }
+        var /** @type {?} */ obj = {};
+        obj[textName] = item[this._optionText];
+        obj[valueName] = item[this._optionValue];
+        this.inputText.push(obj);
         // this._chooseMoreArray为传出去的数据
         this._chooseMoreArray.push(item[this._optionValue]);
-        this.ngModelValue = this._chooseMoreArray.toString();
+        this.ngModelValue = this._chooseMoreArray; // 传出数据格式为数组
         this.onChange(this._chooseMoreArray);
         this.show = true;
         this.setClassMap();
@@ -677,7 +740,7 @@ var JdbPlgSelectComponent = /** @class */ (function () {
         this.inputText++;
         this.show = true;
         this._chooseMoreArray.push(item[this._optionValue]);
-        this.ngModelValue = this._chooseMoreArray.toString();
+        this.ngModelValue = this._chooseMoreArray; // 传出格式为数组
         this.onChange(this._chooseMoreArray);
     };
     // 判断某一项是否存在于inputText中
@@ -729,7 +792,7 @@ var JdbPlgSelectComponent = /** @class */ (function () {
                 return;
             }
         });
-        this.ngModelValue = this._chooseMoreArray.toString();
+        this.ngModelValue = this._chooseMoreArray; // 传出格式为数组
         this.onChange(this._chooseMoreArray);
         this.setClassMap();
     };
@@ -757,11 +820,6 @@ var JdbPlgSelectComponent = /** @class */ (function () {
     function (e) {
         var /** @type {?} */ offset = e.offsetTop;
         if (e.offsetParent != null) {
-            //解析translateY
-            if (e.style.transform) {
-                var /** @type {?} */ ret = this.parseTranslateY(e.style.transform);
-                offset += ret.isPercent ? e.clientHeight * ret.translateY / 100 : ret.translateY;
-            }
             offset += this.getTop(e.offsetParent);
         }
         return offset;
@@ -782,56 +840,11 @@ var JdbPlgSelectComponent = /** @class */ (function () {
         }
         return offset;
     };
-    //正则解析translateY
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    JdbPlgSelectComponent.prototype.parseTranslateY = /**
-     * @param {?} val
-     * @return {?}
-     */
-    function (val) {
-        var /** @type {?} */ reg = /\(([^()]+)\)/g;
-        var /** @type {?} */ translate = reg.exec(val)[1];
-        var /** @type {?} */ translatArr = translate.split(',');
-        var /** @type {?} */ translateY;
-        var /** @type {?} */ isPercent;
-        //如果不包含translate
-        if (val.indexOf('translate') === -1) {
-            return {
-                isPercent: false,
-                translateY: 0
-            };
-        }
-        //判断是translate还是translateY
-        if (translatArr.length === 2) {
-            translateY = translate.split(',')[1];
-        }
-        else if (translatArr.length === 1 && val.indexOf('translateY') !== -1) {
-            translateY = translate;
-        }
-        //判断是百分比还是px
-        if (translateY.indexOf('px') !== -1) {
-            //截取px
-            isPercent = false;
-            translateY = Number(translateY.slice(0, -2));
-        }
-        else if (translateY.indexOf('%') !== -1) {
-            isPercent = true;
-            translateY = Number(translateY.slice(0, -1));
-        }
-        //返回百分比或普通number值
-        return {
-            isPercent: isPercent,
-            translateY: translateY
-        };
-    };
     JdbPlgSelectComponent.decorators = [
         { type: Component, args: [{
                     selector: 'app-jdb-plg-select',
-                    template: "<!-- \u5355\u9009 --> <div *ngIf=\"_jdbMode=='chooseOne'\" #inputDom class=\"jdb-plg-select-one\" (click)=\"dialogShow($event)\" [ngClass]=\"_classMap\" [ngStyle]=\"{'width':_width}\"> <!-- placeHolder --> <div class=\"jdb-plg-select-placeholder\" [hidden]=\"inputText!=''\">{{_placeHolder}}</div> <!-- \u5355\u9009 --> <!-- <span class=\"chooseOne\" [hidden]=\"inputText==''\">{{inputText}}</span> --> <input class=\"chooseOne chooseOneInput\" [hidden]=\"inputText==''\" type=\"text\" [(ngModel)]=\"inputText\" readonly> <ul #optionList [ngClass]=\"{ 'options-show':show, 'options-no-margin':!spaceFlex} \" class=\"options \"> <!-- \u5355\u9009 --> <li *ngFor=\"let option of _selectList \" (click)=\"item($event,option) \" [ngClass]=\"{active:ngModelValue===option[_optionValue],disabled:option[_jdbItemDisabled] === _jdbSureDisabled} \"> <img class=\"img-box\" *ngIf=\"_showImgBox&&option.imgUrl\" [src]=\"option.imgUrl\" alt=\"\"> <span class=\"img-box\" *ngIf=\"_showImgBox&&!option.imgUrl\"></span> <span class=\"text-box\">{{_optionText=='option'?option:option[_optionText]}}</span> </li> </ul> <!-- \u6E05\u7A7A\u56FE\u6807 --> <span class=\"close-icon icon-empty \" [hidden]=\"!isShowClear \" (click)=\"clearInputText($event) \"></span> <!-- \u5355\u9009\u65F6\u4E0B\u62C9\u56FE\u6807 --> <span class=\"select-icon icon-select-arrow \" [hidden]=\"isShowClear \"></span> </div> <!-- \u591A\u9009 --> <div *ngIf=\"_jdbMode=='chooseMore' \" #inputDom class=\"jdb-plg-select-more \" (click)=\"dialogShow($event) \" [ngClass]=\"_classMap \" [ngStyle]=\"{ 'width':_width} \"> <!-- placeHolder --> <div class=\"jdb-plg-select-placeholder \" [hidden]=\"inputText.length !=0 \">{{_placeHolder}}</div> <!-- \u591A\u9009item --> <ul class=\"chooseMore \"> <li *ngFor=\"let item of inputText \"> {{item.text}} <span class=\"item-delete icon-close \" (click)=\"deleteMoreItem($event,item) \"></span> </li> </ul> <ul #optionList [ngClass]=\"{ 'options-show':show, 'options-no-margin':!spaceFlex} \" class=\"options \"> <li class=\"choose-more \" *ngFor=\"let option of _selectList \" (click)=\"chooseMore($event,option) \" [ngClass]=\"{ 'active':moreIndex(option),disabled:option[_jdbItemDisabled] === _jdbSureDisabled} \"> <!-- {{_optionText=='option'?option:option[_optionText]}} --> <img class=\"img-box\" *ngIf=\"_showImgBox&&option.imgUrl\" [src]=\"option.imgUrl\" alt=\"\"> <span class=\"img-box\" *ngIf=\"_showImgBox&&!option.imgUrl\"></span> <span class=\"text-box\">{{_optionText=='option'?option:option[_optionText]}}</span> <span [hidden]=\"!moreIndex(option) \" class=\"choose-right icon-selected \"></span> </li> </ul> <!-- \u6E05\u7A7A\u56FE\u6807 --> <span class=\"close-icon icon-empty \" [hidden]=\"!isShowClear \" (click)=\"clearInputText($event) \"></span> </div> <!-- \u9009\u4E2D\u51E0\u9879 --> <div *ngIf=\"_jdbMode=='chooseNum' \" #inputDom class=\"jdb-plg-select-num \" (click)=\"dialogShow($event) \" [ngClass]=\"_classMap \" [ngStyle]=\"{ 'width':_width} \"> <!-- placeHolder --> <div class=\"jdb-plg-select-placeholder \" [hidden]=\"inputText!=0 \">{{_placeHolder}}</div> <span class=\"choose-tip \" [hidden]=\"inputText==0 \">\u5DF2\u9009\u4E2D{{inputText}}\u9879</span> <ul #optionList [ngClass]=\"{ 'options-show':show, 'options-no-margin':!spaceFlex} \" class=\"options \"> <li class=\"choose-more \" *ngFor=\"let option of _selectList \" (click)=\"numClick($event,option) \" [ngClass]=\"{ 'active':moreIndex(option),disabled:option[_jdbItemDisabled] === _jdbSureDisabled} \"> <!-- {{_optionText=='option'?option:option[_optionText]}} --> <img class=\"img-box\" *ngIf=\"_showImgBox&&option.imgUrl\" [src]=\"option.imgUrl\" alt=\"\"> <span class=\"img-box\" *ngIf=\"_showImgBox&&!option.imgUrl\"></span> <span class=\"text-box\">{{_optionText=='option'?option:option[_optionText]}}</span> <span [hidden]=\"!moreIndex(option) \" class=\"choose-right icon-selected \"></span> </li> </ul> <!-- \u6E05\u7A7A\u56FE\u6807 --> <span class=\"close-icon icon-empty \" [hidden]=\"!isShowClear \" (click)=\"clearInputText($event) \"></span> <span class=\"select-icon icon-select-arrow \" [hidden]=\"isShowClear \"></span> </div> <!-- \u906E\u7F69\u5C42 --> <div class=\"jdb-plg-select-master \" *ngIf=\"show \"></div>",
-                    // styleUrls:  ['./jdb-plg-select.component.scss'],
+                    template: "<!-- \u5355\u9009 --> <div *ngIf=\"_jdbMode=='chooseOne'\" #inputDom class=\"jdb-plg-select-one\" (click)=\"dialogShow($event)\" [ngClass]=\"_classMap\" [ngStyle]=\"{'width':_width}\"> <!-- placeHolder --> <div class=\"jdb-plg-select-placeholder\" [hidden]=\"inputText!==''\">{{_placeHolder}}</div> <!-- \u5355\u9009 --> <!-- <span class=\"chooseOne\" [hidden]=\"inputText==''\">{{inputText}}</span> --> <input class=\"chooseOne chooseOneInput\" [hidden]=\"inputText===''\" type=\"text\" [(ngModel)]=\"inputText\" readonly> <ul #optionList [ngClass]=\"{ 'options-show':show, 'options-no-margin':!spaceFlex} \" class=\"options \"> <!-- \u5355\u9009 --> <li *ngFor=\"let option of _selectList \" (click)=\"item($event,option) \" [ngClass]=\"{active:ngModelValue===option[_optionValue],disabled:option[_jdbItemDisabled] === _jdbSureDisabled} \"> <img class=\"img-box\" *ngIf=\"_showImgBox&&option.imgUrl\" [src]=\"option.imgUrl\" alt=\"\"> <span class=\"img-box\" *ngIf=\"_showImgBox&&!option.imgUrl\"></span> <span class=\"text-box\">{{_optionText=='option'?option:option[_optionText]}}</span> </li> </ul> <!-- \u6E05\u7A7A\u56FE\u6807 --> <span class=\"close-icon icon-empty \" [hidden]=\"!isShowClear \" (click)=\"clearInputText($event) \"></span> <!-- \u5355\u9009\u65F6\u4E0B\u62C9\u56FE\u6807 --> <span class=\"select-icon icon-select-arrow \" [hidden]=\"isShowClear \"></span> </div> <!-- \u591A\u9009 --> <div *ngIf=\"_jdbMode=='chooseMore' \" #inputDom class=\"jdb-plg-select-more \" (click)=\"dialogShow($event) \" [ngClass]=\"_classMap \" [ngStyle]=\"{ 'width':_width} \"> <!-- placeHolder --> <div class=\"jdb-plg-select-placeholder \" [hidden]=\"inputText.length !=0 \">{{_placeHolder}}</div> <!-- \u591A\u9009item --> <ul class=\"chooseMore \"> <li *ngFor=\"let item of inputText \"> {{item[_optionText]}} <span class=\"item-delete icon-close \" (click)=\"deleteMoreItem($event,item) \"></span> </li> </ul> <ul #optionList [ngClass]=\"{ 'options-show':show, 'options-no-margin':!spaceFlex} \" class=\"options \"> <li class=\"choose-more \" *ngFor=\"let option of _selectList \" (click)=\"chooseMore($event,option) \" [ngClass]=\"{ 'active':moreIndex(option),disabled:option[_jdbItemDisabled] === _jdbSureDisabled} \"> <!-- {{_optionText=='option'?option:option[_optionText]}} --> <img class=\"img-box\" *ngIf=\"_showImgBox&&option.imgUrl\" [src]=\"option.imgUrl\" alt=\"\"> <span class=\"img-box\" *ngIf=\"_showImgBox&&!option.imgUrl\"></span> <span class=\"text-box\">{{_optionText=='option'?option:option[_optionText]}}</span> <span [hidden]=\"!moreIndex(option) \" class=\"choose-right icon-selected \"></span> </li> </ul> <!-- \u6E05\u7A7A\u56FE\u6807 --> <span class=\"close-icon icon-empty \" [hidden]=\"!isShowClear \" (click)=\"clearInputText($event) \"></span> </div> <!-- \u9009\u4E2D\u51E0\u9879 --> <div *ngIf=\"_jdbMode=='chooseNum' \" #inputDom class=\"jdb-plg-select-num \" (click)=\"dialogShow($event) \" [ngClass]=\"_classMap \" [ngStyle]=\"{ 'width':_width} \"> <!-- placeHolder --> <div class=\"jdb-plg-select-placeholder \" [hidden]=\"inputText!==0 \">{{_placeHolder}}</div> <span class=\"choose-tip \" [hidden]=\"inputText===0 \">\u5DF2\u9009\u4E2D{{inputText}}\u9879</span> <ul #optionList [ngClass]=\"{ 'options-show':show, 'options-no-margin':!spaceFlex} \" class=\"options \"> <li class=\"choose-more \" *ngFor=\"let option of _selectList \" (click)=\"numClick($event,option) \" [ngClass]=\"{ 'active':moreIndex(option),disabled:option[_jdbItemDisabled] === _jdbSureDisabled} \"> <!-- {{_optionText=='option'?option:option[_optionText]}} --> <img class=\"img-box\" *ngIf=\"_showImgBox&&option.imgUrl\" [src]=\"option.imgUrl\" alt=\"\"> <span class=\"img-box\" *ngIf=\"_showImgBox&&!option.imgUrl\"></span> <span class=\"text-box\">{{_optionText=='option'?option:option[_optionText]}}</span> <span [hidden]=\"!moreIndex(option) \" class=\"choose-right icon-selected \"></span> </li> </ul> <!-- \u6E05\u7A7A\u56FE\u6807 --> <span class=\"close-icon icon-empty \" [hidden]=\"!isShowClear \" (click)=\"clearInputText($event) \"></span> <span class=\"select-icon icon-select-arrow \" [hidden]=\"isShowClear \"></span> </div> <!-- \u906E\u7F69\u5C42 --> <div class=\"jdb-plg-select-master \" *ngIf=\"show \"></div>",
+                    // styleUrls: ['./jdb-plg-select.component.scss'],
                     providers: [
                         {
                             // 注册成为表单控件
@@ -850,6 +863,7 @@ var JdbPlgSelectComponent = /** @class */ (function () {
     JdbPlgSelectComponent.propDecorators = {
         "jdbClassName": [{ type: Input },],
         "jdbItemDisabled": [{ type: Input },],
+        "jdbError": [{ type: Input },],
         "jdbSureDisabled": [{ type: Input },],
         "jdbPlaceHolder": [{ type: Input },],
         "jdbClear": [{ type: Input },],
@@ -916,6 +930,8 @@ function JdbPlgSelectComponent_tsickle_Closure_declarations() {
     JdbPlgSelectComponent.prototype._jdbSureDisabled;
     /** @type {?} */
     JdbPlgSelectComponent.prototype._jdbNoDisabled;
+    /** @type {?} */
+    JdbPlgSelectComponent.prototype._jdbError;
     /** @type {?} */
     JdbPlgSelectComponent.prototype.jdbClassName;
     /** @type {?} */
