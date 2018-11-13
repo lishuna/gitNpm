@@ -1,4 +1,4 @@
-import { Component, Input, ViewContainerRef, ViewChild, ComponentFactoryResolver, Injector, Output, EventEmitter, ElementRef, Renderer, HostListener, Directive, Renderer2, Type, forwardRef, ContentChild, ViewEncapsulation, Injectable, Pipe, NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, Input, ViewContainerRef, ViewChild, ComponentFactoryResolver, Injector, Output, EventEmitter, ElementRef, Renderer, HostListener, Directive, Renderer2, TemplateRef, Type, forwardRef, ContentChild, ViewEncapsulation, Injectable, Pipe, NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { animate, style, transition, trigger, state } from '@angular/animations';
 import { Subject, Observable } from 'rxjs';
 import { NG_VALUE_ACCESSOR, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class JdbPlgToastComponent {
     constructor() {
@@ -29,12 +29,12 @@ JdbPlgToastComponent.decorators = [
 /** @nocollapse */
 JdbPlgToastComponent.ctorParameters = () => [];
 JdbPlgToastComponent.propDecorators = {
-    "msg": [{ type: Input },],
+    msg: [{ type: Input }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class JdbTabComponent {
     /**
@@ -47,15 +47,24 @@ class JdbTabComponent {
         this.onTabChange = new EventEmitter();
         this.onTabRemove = new EventEmitter();
         this.onTopComMsg = new EventEmitter();
+        this.totalTipChange = new EventEmitter();
         this.items = [];
         this.tabComs = [];
         this.curTabIndex = 0;
         this.tabIdComMap = {};
+        this.totalTip = {
+            isShow: false
+        };
     }
     /**
      * @return {?}
      */
-    ngOnInit() {
+    ngOnInit() { }
+    /**
+     * @return {?}
+     */
+    ngOnChanges() {
+        // console.log('changes:totalTip:' + this.totalTip);
     }
     /**
      *
@@ -96,24 +105,40 @@ class JdbTabComponent {
      * @param {?=} isCloseFlag
      * @return {?}
      */
-    addItem(ChildComponent, attrs, title, comId = "", isCloseFlag = false) {
+    addItem(ChildComponent, attrs, title, comId = '', isCloseFlag = false) {
         if (comId && this.tabIdComMap[comId]) {
-            let /** @type {?} */ com = this.tabIdComMap[comId];
+            /** @type {?} */
+            let com = this.tabIdComMap[comId];
             this.tabChange(com.index);
             return;
         }
-        const /** @type {?} */ childComponent = this.componentFactoryResolver.resolveComponentFactory(ChildComponent);
-        var /** @type {?} */ comInstance = this.target.createComponent(childComponent);
-        var /** @type {?} */ keys = Object.keys(attrs);
+        /** @type {?} */
+        const childComponent = this.componentFactoryResolver.resolveComponentFactory(ChildComponent);
+        /** @type {?} */
+        var comInstance = this.target.createComponent(childComponent);
+        /** @type {?} */
+        var keys = Object.keys(attrs);
         this.items.push({
             title: title,
             isCloseFlag: isCloseFlag,
-            theme: (attrs.theme ? (attrs.theme.name ? attrs.theme.name : null) : null),
-            style: (attrs.theme ? (attrs.theme.style ? attrs.theme.style : null) : null),
-            height: (attrs.theme ? (attrs.theme.height ? attrs.theme.height : null) : null),
-            borderLength: (attrs.theme ? (attrs.theme.borderLength ? attrs.theme.borderLength : null) : null)
+            theme: attrs.theme ? (attrs.theme.name ? attrs.theme.name : null) : null,
+            style: attrs.theme
+                ? attrs.theme.style
+                    ? attrs.theme.style
+                    : null
+                : null,
+            height: attrs.theme
+                ? attrs.theme.height
+                    ? attrs.theme.height
+                    : null
+                : null,
+            borderLength: attrs.theme
+                ? attrs.theme.borderLength
+                    ? attrs.theme.borderLength
+                    : null
+                : null
         });
-        keys.forEach((value) => {
+        keys.forEach(value => {
             comInstance.instance[value] = attrs[value];
         });
         this.tabComs.push(comInstance);
@@ -121,7 +146,7 @@ class JdbTabComponent {
             this.setOneComHide(this.curTabIndex);
         }
         this.tabSubs = comInstance.instance['onTopComMsg'] = new EventEmitter();
-        this.tabSubs.subscribe((value) => {
+        this.tabSubs.subscribe(value => {
             this.onTopComMsg.emit(value);
         });
         this.curTabIndex = this.items.length - 1;
@@ -138,14 +163,14 @@ class JdbTabComponent {
      * @return {?}
      */
     setOneComHide(tabIndex) {
-        this.tabComs[tabIndex].location.nativeElement.style.display = "none";
+        this.tabComs[tabIndex].location.nativeElement.style.display = 'none';
     }
     /**
      * @param {?} tabIndex
      * @return {?}
      */
     setOneComShow(tabIndex) {
-        this.tabComs[tabIndex].location.nativeElement.style.display = "block";
+        this.tabComs[tabIndex].location.nativeElement.style.display = 'block';
     }
     /**
      * @param {?} index
@@ -159,7 +184,8 @@ class JdbTabComponent {
         this.setOneComShow(index);
         this.curTabIndex = index;
         this.onTabChange.emit(index);
-        this.tabComs[index].instance.tabRefresh && this.tabComs[index].instance.tabRefresh({});
+        this.tabComs[index].instance.tabRefresh &&
+            this.tabComs[index].instance.tabRefresh({});
         // this.tabComs[index].destroy();
     }
     /**
@@ -185,8 +211,9 @@ class JdbTabComponent {
         }
         this.setOneComShow(this.curTabIndex);
         this.onTabRemove.emit(index);
-        let /** @type {?} */ tabIdComMap = this.tabIdComMap;
-        for (let /** @type {?} */ key in tabIdComMap) {
+        /** @type {?} */
+        let tabIdComMap = this.tabIdComMap;
+        for (let key in tabIdComMap) {
             if (tabIdComMap[key].index == index) {
                 delete tabIdComMap[key];
                 break;
@@ -198,8 +225,9 @@ class JdbTabComponent {
      * @return {?}
      */
     removeTabById(id) {
-        let /** @type {?} */ tabIdComMap = this.tabIdComMap;
-        for (let /** @type {?} */ key in tabIdComMap) {
+        /** @type {?} */
+        let tabIdComMap = this.tabIdComMap;
+        for (let key in tabIdComMap) {
             if (key == id) {
                 this.removeTab(tabIdComMap[key]['index']);
                 break;
@@ -219,24 +247,26 @@ class JdbTabComponent {
 JdbTabComponent.decorators = [
     { type: Component, args: [{
                 selector: 'jdb-tab',
-                template: `<div class="tab-wraper"> <div class="tab-nav-wraper"> <div *ngFor="let item of items;let i = index;" class="tab-item {{item.theme}} {{item.style}} tab-item-hei{{item.height}}" [ngClass]="{'tab-selected':i == curTabIndex, 'trapezoid1':item.theme === 'trapezoid'&&(i == 0)}" title='{{item.title}}'> <div (click)="tabChange(i)" class="tab-text" [ngClass]="{'trapezoid-div':item.theme === 'trapezoid'}"> {{item.title}}</div> <span class="close-btn" (click)="removeTab(i)" *ngIf="i !== 0 && item.isCloseFlag != true">&times;</span> <div *ngIf="item.borderLength === 'short'" class="self-border"></div> </div> </div> <div class="tab-content-wraper"> <div #tabContent class="place-holder"></div> </div> </div> `,
+                template: `<div class="tab-wraper"> <div class="tab-nav-wraper"> <div *ngFor="let item of items;let i = index;" class="tab-item {{item.theme}} {{item.style}} tab-item-hei{{item.height}}" [ngClass]="{'tab-selected':i == curTabIndex, 'trapezoid1':item.theme === 'trapezoid'&&(i == 0)}" title='{{item.title}}'> <div (click)="tabChange(i)" class="tab-text" [ngClass]="{'trapezoid-div':item.theme === 'trapezoid'}"> {{item.title}}<span *ngIf="totalTip.isShow ? totalTip.isShow : false" class="tab-total">{{totalTip[i]}}</span> </div> <span class="close-btn" (click)="removeTab(i)" *ngIf="i !== 0 && item.isCloseFlag != true">&times;</span> <div *ngIf="item.borderLength === 'short'" class="self-border"></div> </div> </div> <div class="tab-content-wraper"> <div #tabContent class="place-holder"></div> </div> </div> `
             },] },
 ];
 /** @nocollapse */
 JdbTabComponent.ctorParameters = () => [
-    { type: ComponentFactoryResolver, },
-    { type: Injector, },
+    { type: ComponentFactoryResolver },
+    { type: Injector }
 ];
 JdbTabComponent.propDecorators = {
-    "target": [{ type: ViewChild, args: ['tabContent', { read: ViewContainerRef },] },],
-    "onTabChange": [{ type: Output },],
-    "onTabRemove": [{ type: Output },],
-    "onTopComMsg": [{ type: Output },],
+    target: [{ type: ViewChild, args: ['tabContent', { read: ViewContainerRef },] }],
+    onTabChange: [{ type: Output }],
+    onTabRemove: [{ type: Output }],
+    onTopComMsg: [{ type: Output }],
+    totalTip: [{ type: Input }],
+    totalTipChange: [{ type: Output }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ShowPictureComponent {
     constructor() {
@@ -263,13 +293,13 @@ ShowPictureComponent.decorators = [
 /** @nocollapse */
 ShowPictureComponent.ctorParameters = () => [];
 ShowPictureComponent.propDecorators = {
-    "pictureUrl": [{ type: Input },],
-    "update": [{ type: Output },],
+    pictureUrl: [{ type: Input }],
+    update: [{ type: Output }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class PictureViewerComponent {
     /**
@@ -355,7 +385,8 @@ class PictureViewerComponent {
      * @return {?}
      */
     ngAfterViewInit() {
-        const /** @type {?} */ imgContent = this.imgContent.nativeElement;
+        /** @type {?} */
+        const imgContent = this.imgContent.nativeElement;
         this.renderer.setElementStyle(imgContent, 'height', this.maxHeight + 'px');
         this.renderer.setElementStyle(imgContent, 'width', this.maxWidth + 'px');
         if (this.jdbShowType == 1) {
@@ -368,15 +399,19 @@ class PictureViewerComponent {
      * @return {?}
      */
     resetPosition(index) {
-        const /** @type {?} */ image = new Image();
+        /** @type {?} */
+        const image = new Image();
         image.onload = () => {
-            // 获取当前加载图片宽高
-            let /** @type {?} */ w = image.width;
-            let /** @type {?} */ h = image.height;
-            let /** @type {?} */ hRatio;
-            let /** @type {?} */ wRatio;
-            // 设置默认比例以及容器宽高
-            const /** @type {?} */ imgRate = w / h; // 图片宽高比
+            /** @type {?} */
+            let w = image.width;
+            /** @type {?} */
+            let h = image.height;
+            /** @type {?} */
+            let hRatio;
+            /** @type {?} */
+            let wRatio;
+            /** @type {?} */
+            const imgRate = w / h; // 图片宽高比
             // const maxWidth = 800;
             // const maxHeight = 600;
             wRatio = this.maxWidth / w;
@@ -493,7 +528,8 @@ class PictureViewerComponent {
         if (this.imgOperate.num > 4) {
             this.imgOperate.num = 4;
         }
-        const /** @type {?} */ rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
+        /** @type {?} */
+        const rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
         this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
     }
     /**
@@ -504,7 +540,8 @@ class PictureViewerComponent {
         if (this.imgOperate.num < 1) {
             this.imgOperate.num = 0.5;
         }
-        const /** @type {?} */ rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
+        /** @type {?} */
+        const rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
         this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
     }
     /**
@@ -512,7 +549,8 @@ class PictureViewerComponent {
      */
     routateNi() {
         this.imgOperate.degnum++;
-        const /** @type {?} */ rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
+        /** @type {?} */
+        const rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
         this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
     }
     /**
@@ -520,7 +558,8 @@ class PictureViewerComponent {
      */
     routateShun() {
         this.imgOperate.degnum--;
-        const /** @type {?} */ rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
+        /** @type {?} */
+        const rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
         this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
     }
     /**
@@ -531,7 +570,8 @@ class PictureViewerComponent {
             num: 1,
             degnum: 0
         };
-        const /** @type {?} */ rate = 'scale(1,1) rotate(0deg)';
+        /** @type {?} */
+        const rate = 'scale(1,1) rotate(0deg)';
         this.renderer.setElementStyle(this.elem[this.current].children[0], 'transition', 'transform 0.2s linear 0.4s');
         this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
     }
@@ -588,24 +628,24 @@ PictureViewerComponent.decorators = [
 ];
 /** @nocollapse */
 PictureViewerComponent.ctorParameters = () => [
-    { type: Renderer, },
+    { type: Renderer }
 ];
 PictureViewerComponent.propDecorators = {
-    "pictureList": [{ type: Input },],
-    "update": [{ type: Output },],
-    "imgBox": [{ type: ViewChild, args: ['img',] },],
-    "imgContent": [{ type: ViewChild, args: ['imgContent',] },],
-    "maxWidth": [{ type: Input },],
-    "maxHeight": [{ type: Input },],
-    "jdbShowType": [{ type: Input },],
-    "jdbMaster": [{ type: Input },],
-    "jdbClear": [{ type: Input },],
-    "jdbCurrent": [{ type: Input },],
+    pictureList: [{ type: Input }],
+    update: [{ type: Output }],
+    imgBox: [{ type: ViewChild, args: ['img',] }],
+    imgContent: [{ type: ViewChild, args: ['imgContent',] }],
+    maxWidth: [{ type: Input }],
+    maxHeight: [{ type: Input }],
+    jdbShowType: [{ type: Input }],
+    jdbMaster: [{ type: Input }],
+    jdbClear: [{ type: Input }],
+    jdbCurrent: [{ type: Input }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class DragDirective {
     /**
@@ -623,8 +663,10 @@ class DragDirective {
      * @return {?}
      */
     onMousedown(event) {
-        const /** @type {?} */ wRate = localStorage.getItem('dragWidth');
-        const /** @type {?} */ hRate = localStorage.getItem('dragHeight');
+        /** @type {?} */
+        const wRate = localStorage.getItem('dragWidth');
+        /** @type {?} */
+        const hRate = localStorage.getItem('dragHeight');
         this.isDown = true;
         this.disLeft = this.elem.nativeElement.offsetLeft;
         this.disTop = this.elem.nativeElement.offsetTop;
@@ -641,8 +683,10 @@ class DragDirective {
         event.preventDefault();
         // 判断该元素是否被点击了。
         if (this.isDown) {
-            const /** @type {?} */ newdisX = event.clientX - this.disX;
-            const /** @type {?} */ newdisY = event.clientY - this.disY;
+            /** @type {?} */
+            const newdisX = event.clientX - this.disX;
+            /** @type {?} */
+            const newdisY = event.clientY - this.disY;
             this.elem.nativeElement.style.left = newdisX + this.disLeft + 'px';
             this.elem.nativeElement.style.top = newdisY + this.disTop + 'px';
         }
@@ -680,19 +724,19 @@ DragDirective.decorators = [
 ];
 /** @nocollapse */
 DragDirective.ctorParameters = () => [
-    { type: ElementRef, },
-    { type: Renderer, },
+    { type: ElementRef },
+    { type: Renderer }
 ];
 DragDirective.propDecorators = {
-    "onMousedown": [{ type: HostListener, args: ['mousedown', ['$event'],] },],
-    "onMousemove": [{ type: HostListener, args: ['mousemove', ['$event'],] },],
-    "onMouseup": [{ type: HostListener, args: ['mouseup', ['$event'],] },],
-    "onMouseleave": [{ type: HostListener, args: ['mouseleave', ['$event'],] },],
+    onMousedown: [{ type: HostListener, args: ['mousedown', ['$event'],] }],
+    onMousemove: [{ type: HostListener, args: ['mousemove', ['$event'],] }],
+    onMouseup: [{ type: HostListener, args: ['mouseup', ['$event'],] }],
+    onMouseleave: [{ type: HostListener, args: ['mouseleave', ['$event'],] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class JdbPlgPaginationComponent {
     /**
@@ -720,6 +764,7 @@ class JdbPlgPaginationComponent {
             { value: 50, text: '50条/页' }
         ];
         this._jdbSimple = false;
+        this._jdbSelectWidth = '90px';
         this.jdbPageSizeChange = new EventEmitter();
         this.jdbPageIndexChange = new EventEmitter();
     }
@@ -815,9 +860,11 @@ class JdbPlgPaginationComponent {
         }
         // 判断是否为数组
         if (Object.prototype.toString.call(value) === '[object Array]') {
-            const /** @type {?} */ optionsArr = [];
+            /** @type {?} */
+            const optionsArr = [];
             value.forEach(elem => {
-                const /** @type {?} */ obj = {
+                /** @type {?} */
+                const obj = {
                     value: elem,
                     text: elem + '条/页'
                 };
@@ -859,29 +906,41 @@ class JdbPlgPaginationComponent {
         return this.jdbSimple;
     }
     /**
+     * @param {?} value
+     * @return {?}
+     */
+    set jdbSelectWidth(value) {
+        this._jdbSelectWidth = value;
+    }
+    /**
+     * @return {?}
+     */
+    get jdbSelectWidth() {
+        return this._jdbSelectWidth;
+    }
+    /**
      * @return {?}
      */
     setPageNo() {
         // 向上取整
         this._lastIndex = Math.ceil(this._total / this._pageSize);
-        // 如果当前页码大于尾页，则等于尾页
-        // if (this._current > this._lastIndex) {
-        //   this.jdbPageIndex = this._lastIndex;
-        //   this.jdbPageIndexChange.emit(this.jdbPageIndex);
-        // }
-        const /** @type {?} */ tmpPages = [];
+        /** @type {?} */
+        const tmpPages = [];
         if (this._lastIndex <= 9) {
             // 若总页数不超过9，则全部展示在页面上
-            for (let /** @type {?} */ i = 2; i <= this._lastIndex - 1; i++) {
+            for (let i = 2; i <= this._lastIndex - 1; i++) {
                 tmpPages.push({
                     index: i
                 });
             }
         }
         else {
-            const /** @type {?} */ current = +this._current;
-            let /** @type {?} */ left = Math.max(2, current - 2);
-            let /** @type {?} */ right = Math.min(current + 2, this._lastIndex - 1);
+            /** @type {?} */
+            const current = +this._current;
+            /** @type {?} */
+            let left = Math.max(2, current - 2);
+            /** @type {?} */
+            let right = Math.min(current + 2, this._lastIndex - 1);
             // 特殊处理正数第五个数和倒数第五个数
             if (current === 5) {
                 left = 2;
@@ -895,7 +954,7 @@ class JdbPlgPaginationComponent {
             if (this._lastIndex - current <= 3) {
                 left = this._lastIndex - 6;
             }
-            for (let /** @type {?} */ i = left; i <= right; i++) {
+            for (let i = left; i <= right; i++) {
                 tmpPages.push({ index: i });
             }
         }
@@ -904,9 +963,13 @@ class JdbPlgPaginationComponent {
     /**
      * @param {?} status
      * @param {?} num
+     * @param {?=} e
      * @return {?}
      */
-    dataChange(status, num) {
+    dataChange(status, num, e) {
+        if (e) {
+            e.stopPropagation();
+        }
         if (status) {
             if (num === this._firstIndex - 1 || num === this._lastIndex + 1) {
                 return;
@@ -946,18 +1009,20 @@ class JdbPlgPaginationComponent {
         this.jdbPageIndexChange.emit(this.jdbPageIndex);
     }
     /**
+     * @param {?} e
      * @param {?} pageSize
      * @return {?}
      */
-    jumpBefore(pageSize) {
-        this.dataChange(true, this._current - Math.round(pageSize / 2));
+    jumpBefore(e, pageSize) {
+        this.dataChange(true, this._current - Math.round(pageSize / 2), e);
     }
     /**
+     * @param {?} e
      * @param {?} pageSize
      * @return {?}
      */
-    jumpAfter(pageSize) {
-        this.dataChange(true, this._current + Math.round(pageSize / 2));
+    jumpAfter(e, pageSize) {
+        this.dataChange(true, this._current + Math.round(pageSize / 2), e);
     }
     /**
      * @param {?} value
@@ -971,7 +1036,8 @@ class JdbPlgPaginationComponent {
      * @return {?}
      */
     isNumber(obj) {
-        const /** @type {?} */ reg = /^[0-9]*$/;
+        /** @type {?} */
+        const reg = /^[0-9]*$/;
         return reg.test(obj);
     }
 }
@@ -987,53 +1053,53 @@ JdbPlgPaginationComponent.decorators = [
     <div class="operate-box">
         <!-- 条数切换 -->
         <div class="jdb-plg-pagination-options" *ngIf="_showPageSize">
-            <app-jdb-plg-select (ngModelChange)="dataChange(false,$event)" [jdbSize]="'small'" [jdbWidth]="'90px'" [(ngModel)]="_pageSize" [jdbSelectList]="_options"></app-jdb-plg-select>
+            <app-jdb-plg-select (ngModelChange)="dataChange(false,$event)" [jdbSize]="'small'" [jdbWidth]="_jdbSelectWidth" [(ngModel)]="_pageSize" [jdbSelectList]="_options"></app-jdb-plg-select>
         </div>
         <!-- 基本分页样式 -->
         <ul *ngIf="!_jdbSimple" class="base-pagination">
             <!-- 上一页按钮 -->
-            <li class="jdb-plg-pagination-prev" title="上一页" [ngClass]="{'disabled':_current===_firstIndex}" (click)="dataChange(true,_current-1)">
+            <li class="jdb-plg-pagination-prev" title="上一页" [ngClass]="{'disabled':_current===_firstIndex}" (click)="dataChange(true,_current-1,$event)">
                 <span class="jdbIcon icon-pagination-prev"></span>
             </li>
             <!-- 首页按钮 -->
-            <li class="jdb-plg-pagination-first" title="首页" [ngClass]="{'active':_current===_firstIndex}" (click)="dataChange(true,_firstIndex)">
+            <li class="jdb-plg-pagination-first" title="首页" [ngClass]="{'active':_current===_firstIndex}" (click)="dataChange(true,_firstIndex,$event)">
                 {{_firstIndex}}
             </li>
             <!-- 省略号 -->
-            <li class="jdb-plg-pagination-forward" *ngIf="(_lastIndex >9)&&(_current-4>_firstIndex)" (click)="jumpBefore(_pageSize)">
+            <li class="jdb-plg-pagination-forward" *ngIf="(_lastIndex >9)&&(_current-4>_firstIndex)" (click)="jumpBefore($event,_pageSize)">
                 <span class="icon-pagination-more"></span>
                 <span class="icon-pagination-jump-prev"></span>
             </li>
             <!-- 按钮 -->
-            <li class="jdb-plg-pagination-pager" *ngFor="let page of pages" [ngClass]="{'active':_current===page.index}" (click)="dataChange(true,page.index)">
+            <li class="jdb-plg-pagination-pager" *ngFor="let page of pages" [ngClass]="{'active':_current===page.index}" (click)="dataChange(true,page.index,$event)">
                 {{page.index}}
             </li>
             <!-- 省略号 -->
-            <li class="jdb-plg-pagination-backward" *ngIf="(_lastIndex >9)&&(_current+4<_lastIndex)" (click)="jumpAfter(_pageSize)">
+            <li class="jdb-plg-pagination-backward" *ngIf="(_lastIndex >9)&&(_current+4<_lastIndex)" (click)="jumpAfter($event,_pageSize)">
                 <span class="icon-pagination-more"></span>
                 <span class="icon-pagination-jump-next"></span>
             </li>
             <!-- 尾页按钮 -->
-            <li class="jdb-plg-pagination-last" *ngIf="(_lastIndex>0)&&(_lastIndex!==_firstIndex)" title="尾页" [ngClass]="{'active':_current===_lastIndex}" (click)="dataChange(true,_lastIndex)">
+            <li class="jdb-plg-pagination-last" *ngIf="(_lastIndex>0)&&(_lastIndex!==_firstIndex)" title="尾页" [ngClass]="{'active':_current===_lastIndex}" (click)="dataChange(true,_lastIndex,$event)">
                 {{_lastIndex}}
             </li>
             <!-- 下一页按钮 -->
-            <li class="jdb-plg-pagination-next" title="下一页" [ngClass]="{'disabled':_current===_lastIndex}" (click)="dataChange(true,_current+1)">
+            <li class="jdb-plg-pagination-next" title="下一页" [ngClass]="{'disabled':_current===_lastIndex}" (click)="dataChange(true,_current+1,$event)">
                 <span class="jdbIcon icon-pagination-next"></span>
             </li>
         </ul>
         <!-- 简单分页样式 -->
         <div class="simple-pagination" *ngIf="_jdbSimple">
             <div class="left-box">
-                <span class="icon-pagination-first" [ngClass]="{'disabled':_current===_firstIndex}" (click)="dataChange(true,_firstIndex)"></span>
-                <span class="icon-pagination-prev" [ngClass]="{'disabled':_current===_firstIndex}" (click)="dataChange(true,_current-1)"></span>
+                <span class="icon-pagination-first" [ngClass]="{'disabled':_current===_firstIndex}" (click)="dataChange(true,_firstIndex,$event)"></span>
+                <span class="icon-pagination-prev" [ngClass]="{'disabled':_current===_firstIndex}" (click)="dataChange(true,_current-1,$event)"></span>
             </div>
             <div class="center-box">
                 {{_current}} / {{_lastIndex}}
             </div>
             <div class="right-box">
-                <span class="icon-pagination-next" [ngClass]="{'disabled':_current===_lastIndex}" (click)="dataChange(true,_current+1)"></span>
-                <span class="icon-pagination-last" [ngClass]="{'disabled':_current===_lastIndex}" (click)="dataChange(true,_lastIndex)"></span>
+                <span class="icon-pagination-next" [ngClass]="{'disabled':_current===_lastIndex}" (click)="dataChange(true,_current+1,$event)"></span>
+                <span class="icon-pagination-last" [ngClass]="{'disabled':_current===_lastIndex}" (click)="dataChange(true,_lastIndex,$event)"></span>
             </div>
         </div>
         <!-- 快速跳转 -->
@@ -1048,26 +1114,27 @@ JdbPlgPaginationComponent.decorators = [
 ];
 /** @nocollapse */
 JdbPlgPaginationComponent.ctorParameters = () => [
-    { type: ElementRef, },
-    { type: Renderer2, },
+    { type: ElementRef },
+    { type: Renderer2 }
 ];
 JdbPlgPaginationComponent.propDecorators = {
-    "jdbPageSizeChange": [{ type: Output },],
-    "jdbPageIndexChange": [{ type: Output },],
-    "inputJump": [{ type: ViewChild, args: ['inputJump',] },],
-    "jdbShowTotal": [{ type: Input },],
-    "jdbTotal": [{ type: Input },],
-    "jdbPageIndex": [{ type: Input },],
-    "jdbShowPageSize": [{ type: Input },],
-    "jdbPageSize": [{ type: Input },],
-    "jdbSizeOptions": [{ type: Input },],
-    "jdbShowQuickJump": [{ type: Input },],
-    "jdbSimple": [{ type: Input },],
+    jdbPageSizeChange: [{ type: Output }],
+    jdbPageIndexChange: [{ type: Output }],
+    inputJump: [{ type: ViewChild, args: ['inputJump',] }],
+    jdbShowTotal: [{ type: Input }],
+    jdbTotal: [{ type: Input }],
+    jdbPageIndex: [{ type: Input }],
+    jdbShowPageSize: [{ type: Input }],
+    jdbPageSize: [{ type: Input }],
+    jdbSizeOptions: [{ type: Input }],
+    jdbShowQuickJump: [{ type: Input }],
+    jdbSimple: [{ type: Input }],
+    jdbSelectWidth: [{ type: Input }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class JdbPlgButtonComponent {
     /**
@@ -1162,20 +1229,286 @@ JdbPlgButtonComponent.decorators = [
 ];
 /** @nocollapse */
 JdbPlgButtonComponent.ctorParameters = () => [
-    { type: ElementRef, },
-    { type: Renderer2, },
+    { type: ElementRef },
+    { type: Renderer2 }
 ];
 JdbPlgButtonComponent.propDecorators = {
-    "jdbSize": [{ type: Input },],
-    "jdbType": [{ type: Input },],
-    "jdbLoading": [{ type: Input },],
+    jdbSize: [{ type: Input }],
+    jdbType: [{ type: Input }],
+    jdbLoading: [{ type: Input }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class JdbPlgDialogComponent {
+    /**
+     * @param {?} resolver
+     */
+    constructor(resolver) {
+        this.resolver = resolver;
+        this._customClass = '';
+        this._maskClass = '';
+        this._visible = false;
+        this._title = '';
+        this._closeable = true;
+        this._animationStatus = '11';
+        this._width = '400px';
+        this._footerHide = false;
+        this._isConfirm = false;
+        this._okText = '';
+        this._cancelText = '';
+        this._RogerText = '';
+        this._state = 'hideM';
+        this.MvisibileChange = new EventEmitter();
+        this.MOnOk = new EventEmitter();
+        this.MOnCancel = new EventEmitter();
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set Mvisible(value) {
+        /** @type {?} */
+        const visible = this.toBoolean(value);
+        if (this._visible === visible) {
+            return;
+        }
+        this._visible = visible;
+        this.MvisibileChange.emit(this._visible);
+    }
+    /**
+     * @return {?}
+     */
+    get Mvisible() {
+        return this._visible;
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set MfooterHiden(value) {
+        /** @type {?} */
+        const visible = this.toBoolean(value);
+        if (this._visible === visible) {
+            return;
+        }
+        this._footerHide = visible;
+    }
+    /**
+     * @return {?}
+     */
+    get MfooterHiden() {
+        return this._footerHide;
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set Mtitle(value) {
+        if (value instanceof TemplateRef) {
+            this._titleTpl = value;
+        }
+        else {
+            this._title = value;
+        }
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set Mcontent(value) {
+        if (value instanceof TemplateRef) {
+            this._contentTpl = value;
+        }
+        else {
+            this._content = value;
+        }
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set Mfooter(value) {
+        if (value instanceof TemplateRef) {
+            this._footerTpl = value;
+        }
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set Mwidth(value) {
+        this._width = typeof value === 'number' ? value + 'px' : value;
+    }
+    /**
+     * @return {?}
+     */
+    setStyle() {
+        /** @type {?} */
+        const el = this.contentEl.nativeElement;
+        this._bodyStyleMap = Object.assign({ width: this._width });
+    }
+    /**
+     * @param {?} e
+     * @return {?}
+     */
+    onEsc(e) {
+        this.clickCancel(e);
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set Mclass(value) {
+        this._customClass = value;
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set MOkText(value) {
+        this._okText = value;
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set McancelText(value) {
+        this._cancelText = value;
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set MRogerText(value) {
+        this._isConfirm = true;
+        this._RogerText = value;
+    }
+    /**
+     * @return {?}
+     */
+    ngOnInit() {
+        this.setStyle();
+    }
+    /**
+     * @param {?} component
+     * @return {?}
+     */
+    createDynamicComponent(component) {
+        /** @type {?} */
+        const factory = this.resolver.resolveComponentFactory(/** @type {?} */ (this._content));
+        this.bodyEl.createComponent(factory);
+    }
+    /**
+     * @return {?}
+     */
+    ngAfterViewInit() {
+    }
+    /**
+     * @param {?} changes
+     * @return {?}
+     */
+    ngOnChanges(changes) {
+        if (this._visible) {
+            this._state = 'showM';
+            setTimeout(() => {
+                this.contentEl.nativeElement.parentNode.focus();
+            }, 200);
+        }
+        else {
+            this._state = 'hideM';
+        }
+    }
+    /**
+     * @param {?} e
+     * @return {?}
+     */
+    clickCancel(e) {
+        this._visible = false;
+        this._state = 'hideM';
+        this.MOnCancel.emit(e);
+    }
+    /**
+     * @param {?} e
+     * @return {?}
+     */
+    clickOk(e) {
+        if (this.MOnOk) {
+            this.MOnOk.emit(e);
+        }
+        else {
+            this._visible = false;
+            this._state = 'hideM';
+        }
+    }
+    /**
+     * @param {?} e
+     * @return {?}
+     */
+    closeModal(e) {
+        if ((/** @type {?} */ (e.target)).getAttribute('role') === 'dialog') {
+            this.clickCancel(e);
+            this._state = 'hideM';
+        }
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    toBoolean(value) {
+        return value === '' || (value && value !== false);
+    }
+}
+JdbPlgDialogComponent.decorators = [
+    { type: Component, args: [{
+                selector: 'app-jdb-plg-dialog',
+                template: `<div [ngClass]="_customClass"> <div class="_maskClass" [ngClass]="{'hid':!_visible}" [style.zIndex]="1000"></div> <div class="jdb-modal" tabindex="-1" role="dialog" [ngClass]="{'hid':!_visible}" [ngStyle]="{'dispaly':!_visible}" (click)="closeModal($event)" class="_wrapClass" [ngClass]="_wrapClass" [style.zIndex]="1000" [attr.aria-modalId]="modalId"> <div #modal_content class="modal" [@optionsState]="_state" [ngStyle]="_bodyStyleMap"> <div class="modal-content"> <ng-template [ngIf]="_closeable"> <button class="modal-close" (click)="clickCancel($event)"> <!-- <span class="modal-close-x"></span> --> <span class="icon-close"></span> </button> </ng-template> <div class="modal-header" *ngIf="_title||_titleTpl"> <div class="modal-title" [attr.id]="modalId"> <ng-template #defaultTitle> {{_title}} </ng-template> <ng-template [ngTemplateOutlet]="_titleTpl||defaultTitle"> </ng-template> </div> </div> <div class="modal-body"> <ng-template #defaultContent>{{_content}}</ng-template> <ng-template [ngTemplateOutlet]="_contentTpl||defaultContent"></ng-template> <ng-template #modal_component></ng-template> </div> <div class="modal-footer" *ngIf="!_footerHide"> <ng-template #defalutFooter> <button *ngIf="!_isConfirm" app-jdb-plg-button [jdbSize]="'default'" [jdbType]="'white'" (click)="clickCancel($event)"><span>{{_cancelText||'取消'}}</span></button> <button *ngIf="!_isConfirm" class="right-btn" app-jdb-plg-button [jdbSize]="'default'" [jdbType]="'primary'" (click)="clickOk($event)"><span>{{_okText||'确认'}}</span></button> <button *ngIf="_isConfirm" class="right-btn" app-jdb-plg-button [jdbSize]="'default'" [jdbType]="'primary'" (click)="clickOk($event)" (click)="clickOk($event)"><span>{{_RogerText}}</span></button> </ng-template> <ng-template [ngTemplateOutlet]="_footerTpl||defalutFooter"></ng-template> </div> <div tabindex="0" style="width:0px;height:0px;overflow:hidden;">aaa</div> </div> </div> </div> </div>`,
+                // styleUrls: ['./jdb-plg-dialog.component.scss'],
+                animations: [
+                    trigger('optionsState', [
+                        state('showM', style({
+                            transform: 'translate(-50%, -50%)',
+                            opacity: '1',
+                        })),
+                        state('hideM', style({
+                            transform: 'translate(-50%, -80%)',
+                            opacity: '0',
+                        })),
+                        transition('showM <=> hideM', animate('200ms ease-out'))
+                    ])
+                ]
+            },] },
+];
+/** @nocollapse */
+JdbPlgDialogComponent.ctorParameters = () => [
+    { type: ComponentFactoryResolver }
+];
+JdbPlgDialogComponent.propDecorators = {
+    contentEl: [{ type: ViewChild, args: ['modal_content',] }],
+    bodyEl: [{ type: ViewChild, args: ['modal_component', { read: ViewContainerRef },] }],
+    MvisibileChange: [{ type: Output }],
+    MOnOk: [{ type: Output }],
+    MOnCancel: [{ type: Output }],
+    Mvisible: [{ type: Input }],
+    MfooterHiden: [{ type: Input }],
+    Mtitle: [{ type: Input }],
+    Mcontent: [{ type: Input }],
+    Mfooter: [{ type: Input }],
+    Mwidth: [{ type: Input }],
+    onEsc: [{ type: HostListener, args: ['keydown.esc', ['$event'],] }],
+    Mclass: [{ type: Input }],
+    MOkText: [{ type: Input }],
+    McancelText: [{ type: Input }],
+    MRogerText: [{ type: Input }]
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+class JdbPlgNewDialogComponent {
     /**
      * @param {?} resolver
      * @param {?} renderer
@@ -1247,12 +1580,14 @@ class JdbPlgDialogComponent {
      * @return {?}
      */
     createDynamicDom() {
-        let /** @type {?} */ insertDiv = this.renderer.createElement('div');
-        let /** @type {?} */ text = this.renderer.createText(this._text);
+        /** @type {?} */
+        let insertDiv = this.renderer.createElement('div');
+        /** @type {?} */
+        let text = this.renderer.createText(this._text);
         this.renderer.addClass(insertDiv, this._class);
         this.renderer.appendChild(insertDiv, text);
         if (this._style) {
-            for (let /** @type {?} */ key in this._style) {
+            for (let key in this._style) {
                 this.renderer.setStyle(insertDiv, key, this._style[key]);
             }
         }
@@ -1263,12 +1598,12 @@ class JdbPlgDialogComponent {
      * @return {?}
      */
     createDynamicComponent(component) {
-        //生成组件工厂函数
-        const /** @type {?} */ factory = this.resolver.resolveComponentFactory(component);
+        /** @type {?} */
+        const factory = this.resolver.resolveComponentFactory(component);
         //生成组件实例
         this.contentComponentRef = this.bodyEl.createComponent(factory);
         //模板的输入属性
-        for (let /** @type {?} */ key in this._componentParams) {
+        for (let key in this._componentParams) {
             this.contentComponentRef.instance[key] = this._componentParams[key];
         }
         //立刻执行一次变更检测
@@ -1312,7 +1647,8 @@ class JdbPlgDialogComponent {
      * @return {?}
      */
     cusCloseModal(e) {
-        let /** @type {?} */ flag = this.isChildOf(e.target, this.contentEl.nativeElement);
+        /** @type {?} */
+        let flag = this.isChildOf(e.target, this.contentEl.nativeElement);
         if (this._closeType === 'mask' && !flag) {
             this.onClose.emit(e);
             this._state = 'hideM';
@@ -1324,7 +1660,8 @@ class JdbPlgDialogComponent {
      * @return {?}
      */
     isChildOf(child, parent) {
-        var /** @type {?} */ parentNode;
+        /** @type {?} */
+        var parentNode;
         if (child && parent) {
             parentNode = child.parentNode;
             while (parentNode) {
@@ -1337,18 +1674,16 @@ class JdbPlgDialogComponent {
         return false;
     }
 }
-JdbPlgDialogComponent.decorators = [
+JdbPlgNewDialogComponent.decorators = [
     { type: Component, args: [{
-                selector: 'app-jdb-plg-dialog',
-                template: `<div [ngClass]="_customClass"> <div class="_maskClass" [ngClass]="{'hid':!_visible}" [style.zIndex]="1000"></div> <div class="jdb-modal" tabindex="-1" role="dialog" [ngClass]="{'hid':!_visible}" [ngStyle]="{'dispaly':!_visible}" (click)="cusCloseModal($event)" class="_wrapClass" [ngClass]="_wrapClass" [style.zIndex]="1000"> <div #modal_content class="modal" [@optionsState]="_state" [ngStyle]="_bodyStyleMap"> <div class="modal-content"> <ng-template [ngIf]="_closeable"> <button class="modal-close" style="outline: none" (click)="closeModel($event)"> <span class="icon-close"></span> </button> </ng-template> <div class="modal-header" *ngIf="_title"> <div class="modal-title" [attr.id]="modalId">{{_title}}</div> </div> <div class="modal-body _modalTextBody"> <ng-template #modal_component></ng-template> <ng-template #modal_text></ng-template> </div> <div class="modal-footer" *ngIf="_footer"> <button *ngIf="!_isConfirm" app-jdb-plg-button [jdbSize]="'default'" [jdbType]="'gray'" (click)="cancelModel($event)"><span>{{_cancelText}}</span></button> <button *ngIf="!_isConfirm" class="right-btn" app-jdb-plg-button [jdbSize]="'default'" [jdbType]="'primary'" (click)="confirmModel($event)"><span>{{_okText}}</span></button> <button *ngIf="_isConfirm" class="right-btn confirm-btn" app-jdb-plg-button [jdbSize]="'default'" [jdbType]="'primary'" (click)="confirmModel($event)"><span>{{_okText}}</span></button> </div> </div> </div> </div> </div>`,
+                selector: 'app-jdb-plg-new-dialog',
+                template: `<div [ngClass]="_customClass"> <div class="_newMaskClass" [ngClass]="{'hid':!_visible}" [style.zIndex]="900"></div> <div class="jdb-modal" tabindex="-1" role="dialog" [ngClass]="{'hid':!_visible}" [ngStyle]="{'dispaly':!_visible}" (click)="cusCloseModal($event)" class="_newWrapClass" [ngClass]="_newWrapClass" [style.zIndex]="900"> <div #modal_content class="new-modal" [@optionsState]="_state" [ngStyle]="_bodyStyleMap"> <div class="modal-content"> <ng-template [ngIf]="_closeable"> <button class="new-modal-close" style="outline: none" (click)="closeModel($event)"> <span class="icon-close"></span> </button> </ng-template> <div class="new-modal-header" *ngIf="_title"> <div class="new-modal-title" [attr.id]="modalId">{{_title}}</div> </div> <div class="new-modal-body _modalTextBody"> <ng-template #modal_component></ng-template> <ng-template #modal_text></ng-template> </div> <div class="new-modal-footer" *ngIf="_footer"> <button *ngIf="!_isConfirm" app-jdb-plg-button [jdbSize]="'default'" [jdbType]="'gray'" (click)="cancelModel($event)"><span>{{_cancelText}}</span></button> <button *ngIf="!_isConfirm" class="right-btn" app-jdb-plg-button [jdbSize]="'default'" [jdbType]="'primary'" (click)="confirmModel($event)"><span>{{_okText}}</span></button> <button *ngIf="_isConfirm" class="right-btn confirm-btn" app-jdb-plg-button [jdbSize]="'default'" [jdbType]="'primary'" (click)="confirmModel($event)"><span>{{_okText}}</span></button> </div> </div> </div> </div> </div>`,
                 animations: [
                     trigger('optionsState', [
                         state('showM', style({
-                            transform: 'translate(-50%, -50%)',
                             opacity: '1',
                         })),
                         state('hideM', style({
-                            transform: 'translate(-50%, -80%)',
                             opacity: '0',
                         })),
                         transition('showM <=> hideM', animate('200ms ease-out'))
@@ -1357,25 +1692,25 @@ JdbPlgDialogComponent.decorators = [
             },] },
 ];
 /** @nocollapse */
-JdbPlgDialogComponent.ctorParameters = () => [
-    { type: ComponentFactoryResolver, },
-    { type: Renderer2, },
+JdbPlgNewDialogComponent.ctorParameters = () => [
+    { type: ComponentFactoryResolver },
+    { type: Renderer2 }
 ];
-JdbPlgDialogComponent.propDecorators = {
-    "contentEl": [{ type: ViewChild, args: ['modal_content',] },],
-    "textEl": [{ type: ViewChild, args: ['modal_text',] },],
-    "bodyEl": [{ type: ViewChild, args: ['modal_component', { read: ViewContainerRef },] },],
-    "onClose": [{ type: Output },],
-    "onOk": [{ type: Output },],
-    "onCancel": [{ type: Output },],
-    "_contentTpl": [{ type: Input },],
-    "visible": [{ type: Input },],
-    "_width": [{ type: Input },],
+JdbPlgNewDialogComponent.propDecorators = {
+    contentEl: [{ type: ViewChild, args: ['modal_content',] }],
+    textEl: [{ type: ViewChild, args: ['modal_text',] }],
+    bodyEl: [{ type: ViewChild, args: ['modal_component', { read: ViewContainerRef },] }],
+    onClose: [{ type: Output }],
+    onOk: [{ type: Output }],
+    onCancel: [{ type: Output }],
+    _contentTpl: [{ type: Input }],
+    visible: [{ type: Input }],
+    _width: [{ type: Input }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class OnlyNumberDirective {
     /**
@@ -1390,7 +1725,8 @@ class OnlyNumberDirective {
      * @return {?}
      */
     onKeyDown(event) {
-        const /** @type {?} */ e = /** @type {?} */ (event);
+        /** @type {?} */
+        const e = /** @type {?} */ (event);
         if (this.appOnlyNumber) {
             if ([46, 8, 9, 27, 13, 110, 190].indexOf(e.keyCode) !== -1 ||
                 // Allow: Ctrl+A
@@ -1406,8 +1742,10 @@ class OnlyNumberDirective {
                 // let it happen, don't do anything
                 return;
             }
-            const /** @type {?} */ ch = String.fromCharCode(e.keyCode);
-            const /** @type {?} */ regEx = new RegExp(this.regexStr);
+            /** @type {?} */
+            const ch = String.fromCharCode(e.keyCode);
+            /** @type {?} */
+            const regEx = new RegExp(this.regexStr);
             if (regEx.test(ch)) {
                 return;
             }
@@ -1431,17 +1769,17 @@ OnlyNumberDirective.decorators = [
 ];
 /** @nocollapse */
 OnlyNumberDirective.ctorParameters = () => [
-    { type: ElementRef, },
+    { type: ElementRef }
 ];
 OnlyNumberDirective.propDecorators = {
-    "appOnlyNumber": [{ type: Input },],
-    "onKeyDown": [{ type: HostListener, args: ['keydown', ['$event'],] },],
-    "onKeyUp": [{ type: HostListener, args: ['keyup', ['$event'],] },],
+    appOnlyNumber: [{ type: Input }],
+    onKeyDown: [{ type: HostListener, args: ['keydown', ['$event'],] }],
+    onKeyUp: [{ type: HostListener, args: ['keyup', ['$event'],] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class WatermarkDirective {
     /**
@@ -1477,11 +1815,13 @@ class WatermarkDirective {
         // const phone = localStorage.getItem('cxPhone') || '';
         // const str = `CXWEB-${name}${phone.slice(-4)}`;
         if (WatermarkDirective._text) {
-            const /** @type {?} */ node = document.createElement('canvas');
+            /** @type {?} */
+            const node = document.createElement('canvas');
             node.width = 500;
             node.height = 200;
             node.style.display = 'none';
-            const /** @type {?} */ ctx = node.getContext('2d');
+            /** @type {?} */
+            const ctx = node.getContext('2d');
             ctx.rotate(-10 * Math.PI / 180);
             ctx.font = '16px microsoft yahei';
             ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
@@ -1523,13 +1863,13 @@ WatermarkDirective.decorators = [
 ];
 /** @nocollapse */
 WatermarkDirective.ctorParameters = () => [
-    { type: ElementRef, },
-    { type: Renderer2, },
+    { type: ElementRef },
+    { type: Renderer2 }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class JdbPlgSelectComponent {
     /**
@@ -1634,9 +1974,11 @@ class JdbPlgSelectComponent {
     set jdbSelectList(value) {
         // 循环数组，判断是否需要展示带有图片下拉框
         if (value) {
-            const /** @type {?} */ arr = [];
+            /** @type {?} */
+            const arr = [];
             value.forEach((element) => {
-                const /** @type {?} */ type = typeof element;
+                /** @type {?} */
+                const type = typeof element;
                 if (type === 'string' || type === 'number') {
                     arr.push({
                         text: element,
@@ -1750,9 +2092,9 @@ class JdbPlgSelectComponent {
             this.show = false;
             this.renderer.setElementClass(this.inputDom.nativeElement, 'jdb-plg-select-active', this.show);
         });
-        if (this._jdbClear && !this._jdbDisabled) {
-            // 监听输入框元素，若有内容时则滑上显示x
-            this.renderer2.listen(this.inputDom.nativeElement, 'mouseenter', () => {
+        // 监听输入框元素，若有内容时则滑上显示x
+        this.renderer2.listen(this.inputDom.nativeElement, 'mouseenter', () => {
+            if (this._jdbClear && !this._jdbDisabled) {
                 // 若输入框不存在内容，则不做任何操作
                 if (this._jdbMode === 'chooseOne' && (this.inputText === '' || this.show)) {
                     return;
@@ -1765,8 +2107,10 @@ class JdbPlgSelectComponent {
                 }
                 this.isShowClear = true;
                 this.renderer.setElementClass(this.inputDom.nativeElement, 'jdb-plg-select-active', this.show);
-            });
-            this.renderer2.listen(this.inputDom.nativeElement, 'mouseleave', () => {
+            }
+        });
+        this.renderer2.listen(this.inputDom.nativeElement, 'mouseleave', () => {
+            if (this._jdbClear && !this._jdbDisabled) {
                 // 若输入框不存在内容，则不做任何操作
                 if (this._jdbMode === 'chooseOne' && (this.inputText === '' || this.show)) {
                     return;
@@ -1779,8 +2123,35 @@ class JdbPlgSelectComponent {
                 }
                 this.isShowClear = false;
                 this.renderer.setElementClass(this.inputDom.nativeElement, 'jdb-plg-select-active', this.show);
-            });
-        }
+            }
+        });
+        // if (this._jdbClear && !this._jdbDisabled) {
+        // 	// 监听输入框元素，若有内容时则滑上显示x
+        // 	this.renderer2.listen(this.inputDom.nativeElement, 'mouseenter', () => {
+        // 		// 若输入框不存在内容，则不做任何操作
+        // 		if (this._jdbMode === 'chooseOne' && (this.inputText === '' || this.show)) {
+        // 			return;
+        // 		} else if (this._jdbMode === 'chooseNum' && (this.inputText === 0 || this.show)) {
+        // 			return;
+        // 		} else if (this._jdbMode === 'chooseMore' && (this.inputText.length === 0 || this.show)) {
+        // 			return;
+        // 		}
+        // 		this.isShowClear = true;
+        // 		this.renderer.setElementClass(this.inputDom.nativeElement, 'jdb-plg-select-active', this.show);
+        // 	});
+        // 	this.renderer2.listen(this.inputDom.nativeElement, 'mouseleave', () => {
+        // 		// 若输入框不存在内容，则不做任何操作
+        // 		if (this._jdbMode === 'chooseOne' && (this.inputText === '' || this.show)) {
+        // 			return;
+        // 		} else if (this._jdbMode === 'chooseNum' && (this.inputText === 0 || this.show)) {
+        // 			return;
+        // 		} else if (this._jdbMode === 'chooseMore' && (this.inputText.length === 0 || this.show)) {
+        // 			return;
+        // 		}
+        // 		this.isShowClear = false;
+        // 		this.renderer.setElementClass(this.inputDom.nativeElement, 'jdb-plg-select-active', this.show);
+        // 	});
+        // }
     }
     /**
      * @return {?}
@@ -1882,11 +2253,16 @@ class JdbPlgSelectComponent {
      * @return {?}
      */
     optionPosition(listHeight) {
-        const /** @type {?} */ offetTop = this.getTop(this.inputDom.nativeElement); // 元素offetTop
-        const /** @type {?} */ scrollTop = this.getScrollTop(this.inputDom.nativeElement.parentElement);
-        const /** @type {?} */ clientHeight = document.documentElement.clientHeight || document.body.clientHeight; // 屏幕高度
-        const /** @type {?} */ elemHeight = this.inputDom.nativeElement.clientHeight; // 元素高度
-        let /** @type {?} */ paddingHeight;
+        /** @type {?} */
+        const offetTop = this.getTop(this.inputDom.nativeElement);
+        /** @type {?} */
+        const scrollTop = this.getScrollTop(this.inputDom.nativeElement.parentElement);
+        /** @type {?} */
+        const clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+        /** @type {?} */
+        const elemHeight = this.inputDom.nativeElement.clientHeight;
+        /** @type {?} */
+        let paddingHeight;
         if (this.jdbSize === 'small') {
             paddingHeight = 2;
         }
@@ -1896,7 +2272,16 @@ class JdbPlgSelectComponent {
         else if (this.jdbSize === 'middle') {
             paddingHeight = 5;
         }
-        const /** @type {?} */ flexHeight = clientHeight - offetTop - elemHeight - paddingHeight + scrollTop; // 剩余高度
+        /** @type {?} */
+        const flexHeight = clientHeight - offetTop - elemHeight - paddingHeight + scrollTop; // 剩余高度
+        // console.log(
+        // 	'元素offsetTop', offetTop,
+        // 	'父元素scrollTop', scrollTop,
+        // 	'元素高度', elemHeight,
+        // 	'屏幕高度', clientHeight,
+        // 	'计算后剩余高度', flexHeight,
+        // 	'浮层元素高度', listHeight,
+        // );
         if (flexHeight < listHeight) {
             // 空间不足
             this.spaceFlex = false;
@@ -1987,17 +2372,18 @@ class JdbPlgSelectComponent {
         value.forEach((item) => {
             this._selectList.forEach((elem) => {
                 if (elem[this._optionValue] === item) {
-                    // inputText为输入框中展示的内容 判断是否有重新赋值text和value字段
-                    let /** @type {?} */ textName = this._optionText;
-                    let /** @type {?} */ valueName = this._optionValue;
+                    /** @type {?} */
+                    let textName = this._optionText;
+                    /** @type {?} */
+                    let valueName = this._optionValue;
                     if (this.jdbOptionText) {
                         textName = this.jdbOptionText;
                     }
                     if (this.jdbOptionValue) {
                         valueName = this.jdbOptionValue;
                     }
-                    // key为变量的赋值方法
-                    const /** @type {?} */ obj = {};
+                    /** @type {?} */
+                    const obj = {};
                     obj[textName] = elem[this._optionText];
                     obj[valueName] = elem[this._optionValue];
                     this.inputText.push(obj);
@@ -2055,7 +2441,8 @@ class JdbPlgSelectComponent {
      * @return {?}
      */
     chooseMore(e, item) {
-        let /** @type {?} */ flag = false;
+        /** @type {?} */
+        let flag = false;
         // 阻止事件冒泡
         e.stopPropagation();
         // 判断show是否为true
@@ -2077,16 +2464,18 @@ class JdbPlgSelectComponent {
             this.deleteMoreItem(e, item);
             return;
         }
-        // inputText为输入框中展示的内容
-        let /** @type {?} */ textName = this._optionText;
-        let /** @type {?} */ valueName = this._optionValue;
+        /** @type {?} */
+        let textName = this._optionText;
+        /** @type {?} */
+        let valueName = this._optionValue;
         if (this.jdbOptionText) {
             textName = this.jdbOptionText;
         }
         if (this.jdbOptionValue) {
             valueName = this.jdbOptionValue;
         }
-        const /** @type {?} */ obj = {};
+        /** @type {?} */
+        const obj = {};
         obj[textName] = item[this._optionText];
         obj[valueName] = item[this._optionValue];
         this.inputText.push(obj);
@@ -2103,7 +2492,8 @@ class JdbPlgSelectComponent {
      * @return {?}
      */
     numClick(e, item) {
-        let /** @type {?} */ flag = false;
+        /** @type {?} */
+        let flag = false;
         // 阻止事件冒泡
         e.stopPropagation();
         // 判断show是否为true
@@ -2137,7 +2527,8 @@ class JdbPlgSelectComponent {
      * @return {?}
      */
     moreIndex(item) {
-        let /** @type {?} */ flag = false;
+        /** @type {?} */
+        let flag = false;
         this._chooseMoreArray.forEach((element, index) => {
             if (element === item[this._optionValue]) {
                 flag = true;
@@ -2184,7 +2575,8 @@ class JdbPlgSelectComponent {
      * @return {?}
      */
     getTop(e) {
-        let /** @type {?} */ offset = e.offsetTop;
+        /** @type {?} */
+        let offset = e.offsetTop;
         if (e.offsetParent != null) {
             offset += this.getTop(e.offsetParent);
         }
@@ -2195,7 +2587,8 @@ class JdbPlgSelectComponent {
      * @return {?}
      */
     getScrollTop(e) {
-        let /** @type {?} */ offset = e.scrollTop;
+        /** @type {?} */
+        let offset = e.scrollTop;
         if (e.parentElement != null) {
             offset += this.getScrollTop(e.parentElement);
         }
@@ -2219,30 +2612,30 @@ JdbPlgSelectComponent.decorators = [
 ];
 /** @nocollapse */
 JdbPlgSelectComponent.ctorParameters = () => [
-    { type: Renderer2, },
-    { type: Renderer, },
+    { type: Renderer2 },
+    { type: Renderer }
 ];
 JdbPlgSelectComponent.propDecorators = {
-    "jdbClassName": [{ type: Input },],
-    "jdbItemDisabled": [{ type: Input },],
-    "jdbError": [{ type: Input },],
-    "jdbSureDisabled": [{ type: Input },],
-    "jdbPlaceHolder": [{ type: Input },],
-    "jdbClear": [{ type: Input },],
-    "jdbSelectList": [{ type: Input },],
-    "jdbSize": [{ type: Input },],
-    "jdbWidth": [{ type: Input },],
-    "jdbOptionText": [{ type: Input },],
-    "jdbOptionValue": [{ type: Input },],
-    "jdbDisabled": [{ type: Input },],
-    "jdbMode": [{ type: Input },],
-    "inputDom": [{ type: ViewChild, args: ['inputDom',] },],
-    "optionList": [{ type: ViewChild, args: ['optionList',] },],
+    jdbClassName: [{ type: Input }],
+    jdbItemDisabled: [{ type: Input }],
+    jdbError: [{ type: Input }],
+    jdbSureDisabled: [{ type: Input }],
+    jdbPlaceHolder: [{ type: Input }],
+    jdbClear: [{ type: Input }],
+    jdbSelectList: [{ type: Input }],
+    jdbSize: [{ type: Input }],
+    jdbWidth: [{ type: Input }],
+    jdbOptionText: [{ type: Input }],
+    jdbOptionValue: [{ type: Input }],
+    jdbDisabled: [{ type: Input }],
+    jdbMode: [{ type: Input }],
+    inputDom: [{ type: ViewChild, args: ['inputDom',] }],
+    optionList: [{ type: ViewChild, args: ['optionList',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class JdbPlgInputComponent {
     /**
@@ -2489,9 +2882,11 @@ class JdbPlgInputComponent {
         };
     }
     /**
+     * @param {?} e
      * @return {?}
      */
-    clearTxt() {
+    clearTxt(e) {
+        e.stopPropagation();
         this._value = '';
         this.onChange('');
     }
@@ -2506,7 +2901,7 @@ class JdbPlgInputComponent {
 JdbPlgInputComponent.decorators = [
     { type: Component, args: [{
                 selector: 'app-jdb-plg-input',
-                template: `<span class="input-group-addon" *ngIf="_addOnContentBefore"> <ng-template [ngTemplateOutlet]="_addOnContentBefore"> </ng-template> </span> <ng-template [ngIf]="_type=='text'"> <div class="input-text-wrap" [ngClass]="_inputWrapClass"> <span class="input-prefix" *ngIf="_prefixContent"> <ng-template [ngTemplateOutlet]="_prefixContent"> </ng-template> </span> <span class="input-content"> <input (blur)="_emitBlur($event)" (focus)="_emitFocus($event)" [disabled]="_disabled" [readonly]="_readonly" [attr.id]="jdbId" [attr.type]="_type" class="input" [ngClass]="_classMap" [attr.placeholder]="_placeHolder" [(ngModel)]="jdbValue" [style.width]="width" maxlength="{{jdbMaxLength}}" #input /> <span class="input-clear" *ngIf="_clear && _value && _type=='text'" (click)="clearTxt()"> <i class="close-icon icon-empty"></i> </span> </span> <span class="ant-input-suffix" *ngIf="_suffixContent"> <i class="iconfont icon-guanbi2fill"></i> <ng-template [ngTemplateOutlet]="_suffixContent"> </ng-template> </span> <div class="input-error-tip" *ngIf="jdbError && _errorContent" [style.width]="width"> <i class="icon-message-error error-tip"></i> <p class="input-error-content"> <ng-template [ngTemplateOutlet]="_errorContent"> </ng-template> </p> </div> </div> </ng-template> <span class="input-group-addon" *ngIf="_addOnContentAfter"> <ng-template [ngTemplateOutlet]="_addOnContentAfter"> </ng-template> </span> <ng-template [ngIf]="_type=='textarea'"> <div class="input-text-wrap"> <textarea (blur)="_emitBlur($event)" (focus)="_emitFocus($event)" (input)="textareaOnChange($event)" [attr.id]="jdbId" #inputTextarea [disabled]="_disabled" [readonly]="_readonly" type="textarea" class="input input-textarea" [ngClass]="_classMap" [attr.placeholder]="jdbPlaceHolder" [(ngModel)]="jdbValue" maxlength="{{jdbMaxLength}}" [style.width]="width"></textarea> <span class="textarea-wc-tip" [ngClass]="{'textarea-wc-tip-red': jdbValue&&jdbValue.length == jdbMaxLength}" *ngIf="jdbMaxLength && !_disabled &&!_readonly">{{(jdbValue&&jdbValue.length)||0}}/{{jdbMaxLength}}</span> </div> </ng-template>`,
+                template: `<span class="input-group-addon" *ngIf="_addOnContentBefore"> <ng-template [ngTemplateOutlet]="_addOnContentBefore"> </ng-template> </span> <ng-template [ngIf]="_type=='text'"> <div class="input-text-wrap" [ngClass]="_inputWrapClass"> <span class="input-prefix" *ngIf="_prefixContent"> <ng-template [ngTemplateOutlet]="_prefixContent"> </ng-template> </span> <span class="input-content"> <input (blur)="_emitBlur($event)" (focus)="_emitFocus($event)" [disabled]="_disabled" [readonly]="_readonly" [attr.id]="jdbId" [attr.type]="_type" class="input" [ngClass]="_classMap" [attr.placeholder]="_placeHolder" [(ngModel)]="jdbValue" [style.width]="width" maxlength="{{jdbMaxLength}}" #input /> <span class="input-clear" *ngIf="_clear && _value && _type=='text'" (click)="clearTxt($event)"> <i class="close-icon icon-empty"></i> </span> </span> <span class="ant-input-suffix" *ngIf="_suffixContent"> <i class="iconfont icon-guanbi2fill"></i> <ng-template [ngTemplateOutlet]="_suffixContent"> </ng-template> </span> <div class="input-error-tip" *ngIf="jdbError && _errorContent" [style.width]="width"> <i class="icon-message-error error-tip"></i> <p class="input-error-content"> <ng-template [ngTemplateOutlet]="_errorContent"> </ng-template> </p> </div> </div> </ng-template> <span class="input-group-addon" *ngIf="_addOnContentAfter"> <ng-template [ngTemplateOutlet]="_addOnContentAfter"> </ng-template> </span> <ng-template [ngIf]="_type=='textarea'"> <div class="input-text-wrap"> <textarea (blur)="_emitBlur($event)" (focus)="_emitFocus($event)" (input)="textareaOnChange($event)" [attr.id]="jdbId" #inputTextarea [disabled]="_disabled" [readonly]="_readonly" type="textarea" class="input input-textarea" [ngClass]="_classMap" [attr.placeholder]="jdbPlaceHolder" [(ngModel)]="jdbValue" maxlength="{{jdbMaxLength}}" [style.width]="width"></textarea> <span class="textarea-wc-tip" [ngClass]="{'textarea-wc-tip-red': jdbValue&&jdbValue.length == jdbMaxLength}" *ngIf="jdbMaxLength && !_disabled &&!_readonly">{{(jdbValue&&jdbValue.length)||0}}/{{jdbMaxLength}}</span> </div> </ng-template>`,
                 // styleUrls: ['./jdb-plg-input.component.scss'],
                 encapsulation: ViewEncapsulation.None,
                 providers: [
@@ -2520,38 +2915,39 @@ JdbPlgInputComponent.decorators = [
 ];
 /** @nocollapse */
 JdbPlgInputComponent.ctorParameters = () => [
-    { type: Renderer2, },
+    { type: Renderer2 }
 ];
 JdbPlgInputComponent.propDecorators = {
-    "width": [{ type: Input },],
-    "_errorContent": [{ type: ContentChild, args: ['jdbErrorContent',] },],
-    "_addOnContentBefore": [{ type: ContentChild, args: ['addContentBefore',] },],
-    "_addOnContentAfter": [{ type: ContentChild, args: ['addContentAfter',] },],
-    "_prefixContent": [{ type: ContentChild, args: ['prefixContent',] },],
-    "_suffixContent": [{ type: ContentChild, args: ['suffixContent',] },],
-    "jdbBlur": [{ type: Output },],
-    "jdbFocus": [{ type: Output },],
-    "inputEl": [{ type: ViewChild, args: ['input',] },],
-    "clearBtnEl": [{ type: ViewChild, args: ['clearBtn',] },],
-    "compositionStart": [{ type: HostListener, args: ['compositionstart', ['$event'],] },],
-    "compositionEnd": [{ type: HostListener, args: ['compositionend', ['$event'],] },],
-    "jdbType": [{ type: Input },],
-    "jdbPlaceHolder": [{ type: Input },],
-    "jdbSize": [{ type: Input },],
-    "jdbDisabled": [{ type: Input },],
-    "jdbReadonly": [{ type: Input },],
-    "jdbValue": [{ type: Input },],
-    "jdbError": [{ type: Input },],
-    "jdbClear": [{ type: Input },],
-    "jdbMaxLength": [{ type: Input },],
-    "jdbPromptData": [{ type: Input },],
+    width: [{ type: Input }],
+    _errorContent: [{ type: ContentChild, args: ['jdbErrorContent',] }],
+    _addOnContentBefore: [{ type: ContentChild, args: ['addContentBefore',] }],
+    _addOnContentAfter: [{ type: ContentChild, args: ['addContentAfter',] }],
+    _prefixContent: [{ type: ContentChild, args: ['prefixContent',] }],
+    _suffixContent: [{ type: ContentChild, args: ['suffixContent',] }],
+    jdbBlur: [{ type: Output }],
+    jdbFocus: [{ type: Output }],
+    inputEl: [{ type: ViewChild, args: ['input',] }],
+    clearBtnEl: [{ type: ViewChild, args: ['clearBtn',] }],
+    compositionStart: [{ type: HostListener, args: ['compositionstart', ['$event'],] }],
+    compositionEnd: [{ type: HostListener, args: ['compositionend', ['$event'],] }],
+    jdbType: [{ type: Input }],
+    jdbPlaceHolder: [{ type: Input }],
+    jdbSize: [{ type: Input }],
+    jdbDisabled: [{ type: Input }],
+    jdbReadonly: [{ type: Input }],
+    jdbValue: [{ type: Input }],
+    jdbError: [{ type: Input }],
+    jdbClear: [{ type: Input }],
+    jdbMaxLength: [{ type: Input }],
+    jdbPromptData: [{ type: Input }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-const /** @type {?} */ keyCode = {
+/** @type {?} */
+const keyCode = {
     UP: 38,
     DOWN: 40,
     ENTER: 13
@@ -2559,7 +2955,7 @@ const /** @type {?} */ keyCode = {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class JdbPlgAutocompleteComponent {
     /**
@@ -2655,7 +3051,8 @@ class JdbPlgAutocompleteComponent {
                 this.setSearchWord();
                 break;
             case keyCode.ENTER:
-                const /** @type {?} */ item = /** @type {?} */ (this.searchResult[this.activeIndex]);
+                /** @type {?} */
+                const item = /** @type {?} */ (this.searchResult[this.activeIndex]);
                 this.selectedItem(item, this.activeIndex);
                 break;
             default:
@@ -2675,7 +3072,7 @@ class JdbPlgAutocompleteComponent {
     inputHandle() {
         if (this._searchWord) {
             if (this.jdbDataAsyn) ;
-            else { // 同步过滤处理
+            else {
                 // 同步过滤处理
                 this.searchResult = this.jdbDataSource.filter((obj) => obj['text'].indexOf(this._searchWord) !== -1);
                 // if (this.searchResult.length > 0) {
@@ -2755,13 +3152,20 @@ class JdbPlgAutocompleteComponent {
      * @return {?}
      */
     debounce(fn, wait, immediate) {
-        let /** @type {?} */ timeout, /** @type {?} */
-        args, /** @type {?} */
-        context, /** @type {?} */
-        timestamp, /** @type {?} */
-        result;
-        const /** @type {?} */ later = function () {
-            const /** @type {?} */ last = new Date().getTime() - timestamp;
+        /** @type {?} */
+        let timeout;
+        /** @type {?} */
+        let args;
+        /** @type {?} */
+        let context;
+        /** @type {?} */
+        let timestamp;
+        /** @type {?} */
+        let result;
+        /** @type {?} */
+        const later = function () {
+            /** @type {?} */
+            const last = new Date().getTime() - timestamp;
             if (last < wait && last >= 0) {
                 timeout = setTimeout(later, wait - last);
             }
@@ -2779,7 +3183,8 @@ class JdbPlgAutocompleteComponent {
             context = this;
             args = arguments;
             timestamp = new Date().getTime();
-            const /** @type {?} */ callNow = immediate && !timeout;
+            /** @type {?} */
+            const callNow = immediate && !timeout;
             if (!timeout) {
                 timeout = setTimeout(later, wait);
             }
@@ -2795,27 +3200,36 @@ class JdbPlgAutocompleteComponent {
      * @return {?}
      */
     resetPopDirection(node) {
-        const /** @type {?} */ getOffsetTop = function (ele) {
-            let /** @type {?} */ top = ele.offsetTop;
+        /** @type {?} */
+        const getOffsetTop = function (ele) {
+            /** @type {?} */
+            let top = ele.offsetTop;
             if (!ele.offsetParent) {
                 top += getOffsetTop(ele.offsetParent);
             }
             return top;
         };
-        const /** @type {?} */ getScrollTop = function (ele) {
-            let /** @type {?} */ top = ele.scrollTop;
+        /** @type {?} */
+        const getScrollTop = function (ele) {
+            /** @type {?} */
+            let top = ele.scrollTop;
             if (!ele.parentElement) {
                 top += getScrollTop(ele.parentElement);
             }
             return top;
         };
-        const /** @type {?} */ nodeTop = getOffsetTop(node), /** @type {?} */
-        clientHeight = document.documentElement.clientHeight || document.body.clientHeight, /** @type {?} */
-        scrollTop = getScrollTop(node.parentElement), /** @type {?} */
-        popHeight = this.resultEle.nativeElement.offsetHeight || 250, /** @type {?} */
-        inputHeight = node.querySelector('input[type="text"]').offsetHeight;
-        // console.log('clientHeight:' + clientHeight + 'nodeTop:' + nodeTop + 'nodeHeight:' + nodeHeight + 'scrollTop:' + scrollTop);
-        const /** @type {?} */ lastDirect = clientHeight - (nodeTop - scrollTop) - popHeight - inputHeight;
+        /** @type {?} */
+        const nodeTop = getOffsetTop(node);
+        /** @type {?} */
+        const clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+        /** @type {?} */
+        const scrollTop = getScrollTop(node.parentElement);
+        /** @type {?} */
+        const popHeight = this.resultEle.nativeElement.offsetHeight || 250;
+        /** @type {?} */
+        const inputHeight = node.querySelector('input[type="text"]').offsetHeight;
+        /** @type {?} */
+        const lastDirect = clientHeight - (nodeTop - scrollTop) - popHeight - inputHeight;
         if (lastDirect <= 0) {
             this.render.addClass(this.resultEle.nativeElement, 'pop_top');
         }
@@ -2926,27 +3340,27 @@ JdbPlgAutocompleteComponent.decorators = [
 ];
 /** @nocollapse */
 JdbPlgAutocompleteComponent.ctorParameters = () => [
-    { type: ElementRef, },
-    { type: Renderer2, },
+    { type: ElementRef },
+    { type: Renderer2 }
 ];
 JdbPlgAutocompleteComponent.propDecorators = {
-    "resultEle": [{ type: ViewChild, args: ['resultele',] },],
-    "jdbPlaceHolder": [{ type: Input },],
-    "width": [{ type: Input },],
-    "dataKey": [{ type: Input },],
-    "dataVal": [{ type: Input },],
-    "jdbDataAsyn": [{ type: Input },],
-    "onSelected": [{ type: Output },],
-    "OnKeyDown": [{ type: HostListener, args: ['keydown', ['$event'],] },],
-    "OnPaste": [{ type: HostListener, args: ['paste', ['$event'],] },],
-    "jdbDataSource": [{ type: Input },],
-    "jdbSearchParam": [{ type: Input },],
-    "jdbServerApi": [{ type: Input },],
+    resultEle: [{ type: ViewChild, args: ['resultele',] }],
+    jdbPlaceHolder: [{ type: Input }],
+    width: [{ type: Input }],
+    dataKey: [{ type: Input }],
+    dataVal: [{ type: Input }],
+    jdbDataAsyn: [{ type: Input }],
+    onSelected: [{ type: Output }],
+    OnKeyDown: [{ type: HostListener, args: ['keydown', ['$event'],] }],
+    OnPaste: [{ type: HostListener, args: ['paste', ['$event'],] }],
+    jdbDataSource: [{ type: Input }],
+    jdbSearchParam: [{ type: Input }],
+    jdbServerApi: [{ type: Input }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class CommonMethodService {
     /**
@@ -2960,7 +3374,8 @@ class CommonMethodService {
      * @return {?}
      */
     testPhoneNumber(number) {
-        const /** @type {?} */ phoneReg = /^[1][0-9]{10}$/;
+        /** @type {?} */
+        const phoneReg = /^[1][0-9]{10}$/;
         return phoneReg.test(number);
     }
     /**
@@ -2968,7 +3383,8 @@ class CommonMethodService {
      * @return {?}
      */
     testName(name) {
-        const /** @type {?} */ nameReg = /^[\u4E00-\u9FA5·]{2,20}$/;
+        /** @type {?} */
+        const nameReg = /^[\u4E00-\u9FA5·]{2,20}$/;
         return nameReg.test(name);
     }
     /**
@@ -2976,7 +3392,8 @@ class CommonMethodService {
      * @return {?}
      */
     testRepayAmount(num) {
-        const /** @type {?} */ nameReg = /^([1-9][0-9]{2,9}|10000000000)$/;
+        /** @type {?} */
+        const nameReg = /^([1-9][0-9]{2,9}|10000000000)$/;
         return nameReg.test(num);
     }
     /**
@@ -2993,9 +3410,11 @@ class CommonMethodService {
      * @return {?}
      */
     toTimestamp(value) {
-        const /** @type {?} */ timeObj = {};
+        /** @type {?} */
+        const timeObj = {};
         if (value) {
-            const /** @type {?} */ arrDate = value.split('~');
+            /** @type {?} */
+            const arrDate = value.split('~');
             timeObj['startTime'] = new Date(arrDate[0]).getTime() / 1000;
             timeObj['endTime'] = new Date(arrDate[1]).getTime() / 1000;
         }
@@ -3011,13 +3430,20 @@ class CommonMethodService {
      * @return {?}
      */
     toDate(time, type = 1) {
-        const /** @type {?} */ myDate = new Date(time * 1000);
-        const /** @type {?} */ year = myDate.getFullYear();
-        const /** @type {?} */ month = this.add0(myDate.getMonth() + 1);
-        const /** @type {?} */ day = this.add0(myDate.getDate());
-        const /** @type {?} */ hour = this.add0(myDate.getHours());
-        const /** @type {?} */ minute = this.add0(myDate.getMinutes());
-        const /** @type {?} */ second = this.add0(myDate.getSeconds());
+        /** @type {?} */
+        const myDate = new Date(time * 1000);
+        /** @type {?} */
+        const year = myDate.getFullYear();
+        /** @type {?} */
+        const month = this.add0(myDate.getMonth() + 1);
+        /** @type {?} */
+        const day = this.add0(myDate.getDate());
+        /** @type {?} */
+        const hour = this.add0(myDate.getHours());
+        /** @type {?} */
+        const minute = this.add0(myDate.getMinutes());
+        /** @type {?} */
+        const second = this.add0(myDate.getSeconds());
         switch (type) {
             case 1:
                 return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
@@ -3045,8 +3471,24 @@ class CommonMethodService {
      * @return {?}
      */
     getTarDate(n = 0, joinStr = '-', isTimeStamp = true) {
-        let /** @type {?} */ date = new Date();
-        let /** @type {?} */ tarYear, /** @type {?} */ tarMonth, /** @type {?} */ tarDay, /** @type {?} */ curYear, /** @type {?} */ curMonth, /** @type {?} */ curDay, /** @type {?} */ curDate, /** @type {?} */ tarDate;
+        /** @type {?} */
+        let date = new Date();
+        /** @type {?} */
+        let tarYear;
+        /** @type {?} */
+        let tarMonth;
+        /** @type {?} */
+        let tarDay;
+        /** @type {?} */
+        let curYear;
+        /** @type {?} */
+        let curMonth;
+        /** @type {?} */
+        let curDay;
+        /** @type {?} */
+        let curDate;
+        /** @type {?} */
+        let tarDate;
         //获取当前年月日
         curYear = date.getFullYear();
         curMonth = date.getMonth() + 1;
@@ -3062,7 +3504,8 @@ class CommonMethodService {
             return n === 0 ? [curDate] : [curDate, tarDate];
         }
         if (joinStr !== '-') {
-            let /** @type {?} */ reg = new RegExp(joinStr, "g");
+            /** @type {?} */
+            let reg = new RegExp(joinStr, "g");
             curDate = curDate.replace(reg, '-');
             tarDate = tarDate.replace(reg, '-');
         }
@@ -3081,9 +3524,10 @@ class CommonMethodService {
      * @return {?}
      */
     toast(msg, delayTime = 3000) {
-        // 通过ComponentFactoryResolver 创建出动态组件的实例
-        const /** @type {?} */ childComponent = this.componentFactoryResolver.resolveComponentFactory(JdbPlgToastComponent);
-        const /** @type {?} */ comInstance = this.vRef.createComponent(childComponent);
+        /** @type {?} */
+        const childComponent = this.componentFactoryResolver.resolveComponentFactory(JdbPlgToastComponent);
+        /** @type {?} */
+        const comInstance = this.vRef.createComponent(childComponent);
         comInstance.instance.msg = msg;
         comInstance.changeDetectorRef.detectChanges();
         setTimeout(() => {
@@ -3096,15 +3540,20 @@ class CommonMethodService {
      * @return {?}
      */
     accMul(arg1, arg2) {
-        let /** @type {?} */ m = 0, /** @type {?} */ s1 = arg1.toString(), /** @type {?} */ s2 = arg2.toString();
+        /** @type {?} */
+        let m = 0;
+        /** @type {?} */
+        let s1 = arg1.toString();
+        /** @type {?} */
+        let s2 = arg2.toString();
         try {
             m += s1.split(".")[1].length;
         }
-        catch (/** @type {?} */ e) { }
+        catch (e) { }
         try {
             m += s2.split(".")[1].length;
         }
-        catch (/** @type {?} */ e) { }
+        catch (e) { }
         return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
     }
     /**
@@ -3113,15 +3562,22 @@ class CommonMethodService {
      * @return {?}
      */
     accDiv(arg1, arg2) {
-        let /** @type {?} */ t1 = 0, /** @type {?} */ t2 = 0, /** @type {?} */ r1, /** @type {?} */ r2;
+        /** @type {?} */
+        let t1 = 0;
+        /** @type {?} */
+        let t2 = 0;
+        /** @type {?} */
+        let r1;
+        /** @type {?} */
+        let r2;
         try {
             t1 = arg1.toString().split(".")[1].length;
         }
-        catch (/** @type {?} */ e) { }
+        catch (e) { }
         try {
             t2 = arg2.toString().split(".")[1].length;
         }
-        catch (/** @type {?} */ e) { }
+        catch (e) { }
         r1 = Number(arg1.toString().replace(".", ""));
         r2 = Number(arg2.toString().replace(".", ""));
         return this.accMul((r1 / r2), Math.pow(10, t2 - t1));
@@ -3132,17 +3588,22 @@ class CommonMethodService {
      * @return {?}
      */
     accAdd(arg1, arg2) {
-        let /** @type {?} */ r1, /** @type {?} */ r2, /** @type {?} */ m;
+        /** @type {?} */
+        let r1;
+        /** @type {?} */
+        let r2;
+        /** @type {?} */
+        let m;
         try {
             r1 = arg1.toString().split(".")[1].length;
         }
-        catch (/** @type {?} */ e) {
+        catch (e) {
             r1 = 0;
         }
         try {
             r2 = arg2.toString().split(".")[1].length;
         }
-        catch (/** @type {?} */ e) {
+        catch (e) {
             r2 = 0;
         }
         m = Math.pow(10, Math.max(r1, r2));
@@ -3154,17 +3615,24 @@ class CommonMethodService {
      * @return {?}
      */
     accSubtr(arg1, arg2) {
-        let /** @type {?} */ r1, /** @type {?} */ r2, /** @type {?} */ m, /** @type {?} */ n;
+        /** @type {?} */
+        let r1;
+        /** @type {?} */
+        let r2;
+        /** @type {?} */
+        let m;
+        /** @type {?} */
+        let n;
         try {
             r1 = arg1.toString().split(".")[1].length;
         }
-        catch (/** @type {?} */ e) {
+        catch (e) {
             r1 = 0;
         }
         try {
             r2 = arg2.toString().split(".")[1].length;
         }
-        catch (/** @type {?} */ e) {
+        catch (e) {
             r2 = 0;
         }
         m = Math.pow(10, Math.max(r1, r2));
@@ -3177,12 +3645,15 @@ CommonMethodService.decorators = [
 ];
 /** @nocollapse */
 CommonMethodService.ctorParameters = () => [
-    { type: ComponentFactoryResolver, },
+    { type: ComponentFactoryResolver }
 ];
+
+Object.defineProperty(exports, "__esModule", { value: true });
+require("rxjs-compat/add/observable/throw");
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * @param {?} obj
@@ -3210,11 +3681,12 @@ function isDate(obj) {
  * @return {?}
  */
 function toJson(value) {
-    var /** @type {?} */ jsonObj = {};
+    /** @type {?} */
+    var jsonObj = {};
     try {
         jsonObj = JSON.parse(value);
     }
-    catch (/** @type {?} */ e) {
+    catch (e) {
         console.log('to json parse error');
     }
     return jsonObj;
@@ -3249,7 +3721,8 @@ function encodeUriQuery(val, pctEncodeSpaces) {
 function jQueryLikeParamSerializer(params) {
     if (!params)
         return '';
-    var /** @type {?} */ parts = [];
+    /** @type {?} */
+    var parts = [];
     serialize(params, '', true);
     return parts.join('&');
     /**
@@ -3265,7 +3738,7 @@ function jQueryLikeParamSerializer(params) {
             });
         }
         else if (isObject(toSerialize) && !isDate(toSerialize)) {
-            for (let /** @type {?} */ key in toSerialize) {
+            for (let key in toSerialize) {
                 serialize(toSerialize[key], prefix +
                     (topLevel ? '' : '.') +
                     key +
@@ -3285,10 +3758,12 @@ function jQueryLikeParamSerializer(params) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-const /** @type {?} */ hasOwnProperty = Object.prototype.hasOwnProperty;
-const /** @type {?} */ propIsEnumerable = Object.prototype.propertyIsEnumerable;
+/** @type {?} */
+const hasOwnProperty = Object.prototype.hasOwnProperty;
+/** @type {?} */
+const propIsEnumerable = Object.prototype.propertyIsEnumerable;
 /**
  * @param {?} val
  * @return {?}
@@ -3305,19 +3780,22 @@ function toObject(val) {
  * @return {?}
  */
 function objectAssign(target, ...source) {
-    let /** @type {?} */ from;
-    const /** @type {?} */ to = toObject(target);
-    let /** @type {?} */ symbols;
-    for (let /** @type {?} */ s = 1; s < arguments.length; s++) {
+    /** @type {?} */
+    let from;
+    /** @type {?} */
+    const to = toObject(target);
+    /** @type {?} */
+    let symbols;
+    for (let s = 1; s < arguments.length; s++) {
         from = Object(arguments[s]);
-        for (const /** @type {?} */ key in from) {
+        for (const key in from) {
             if (hasOwnProperty.call(from, key)) {
                 to[key] = from[key];
             }
         }
         if ((/** @type {?} */ (Object)).getOwnPropertySymbols) {
             symbols = (/** @type {?} */ (Object)).getOwnPropertySymbols(from);
-            for (let /** @type {?} */ i = 0; i < symbols.length; i++) {
+            for (let i = 0; i < symbols.length; i++) {
                 if (propIsEnumerable.call(from, symbols[i])) {
                     to[symbols[i]] = from[symbols[i]];
                 }
@@ -3329,7 +3807,7 @@ function objectAssign(target, ...source) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class SendStatisticService {
     constructor() {
@@ -3354,9 +3832,10 @@ SendStatisticService.ctorParameters = () => [];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-let /** @type {?} */ statisticList = [];
+/** @type {?} */
+let statisticList = [];
 class JdbPlgBaseService {
     /**
      * @param {?} http
@@ -3405,7 +3884,7 @@ class JdbPlgBaseService {
      */
     setRootViewContainerRef(vRef) {
         this.vRef = vRef;
-        this.commonService.setRootViewContainerRef(this.vRef);
+        this.commonService.setRootViewContainerRef(vRef);
     }
     /**
      *
@@ -3415,12 +3894,16 @@ class JdbPlgBaseService {
      * @return {?}
      */
     post(apiName, dataObj, options) {
-        let /** @type {?} */ time = new Date().getTime();
-        let /** @type {?} */ loginToken;
-        let /** @type {?} */ loginWay;
-        let /** @type {?} */ orgUid;
-        // 系统来源
-        let /** @type {?} */ from;
+        /** @type {?} */
+        let time = new Date().getTime();
+        /** @type {?} */
+        let loginToken;
+        /** @type {?} */
+        let loginWay;
+        /** @type {?} */
+        let orgUid;
+        /** @type {?} */
+        let from;
         // 获取接口的apiException
         this.newStatisticData.service.apiException = {
             requestTime: null,
@@ -3430,7 +3913,8 @@ class JdbPlgBaseService {
             resMessage: '',
             errorMessage: ''
         };
-        let /** @type {?} */ apiException = JSON.parse(JSON.stringify(this.newStatisticData.service.apiException));
+        /** @type {?} */
+        let apiException = JSON.parse(JSON.stringify(this.newStatisticData.service.apiException));
         this.newStatisticData.service.apiException = apiException;
         if (options && options.tokenObj) {
             loginToken = localStorage.getItem(options.tokenObj.loginToken);
@@ -3438,9 +3922,12 @@ class JdbPlgBaseService {
             orgUid = localStorage.getItem(options.tokenObj.orgUid);
             from = localStorage.getItem(options.tokenObj.from);
         }
-        let /** @type {?} */ loginObj = {};
-        let /** @type {?} */ data = {};
-        let /** @type {?} */ currentRoute = location.hash.split('/')[1];
+        /** @type {?} */
+        let loginObj = {};
+        /** @type {?} */
+        let data = {};
+        /** @type {?} */
+        let currentRoute = location.hash.split('/')[1];
         if (loginToken) {
             if (orgUid) {
                 loginObj = {
@@ -3465,11 +3952,14 @@ class JdbPlgBaseService {
         // 請求參數
         apiException.params = data;
         data = jQueryLikeParamSerializer(data);
-        const /** @type {?} */ headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' });
-        const /** @type {?} */ requestoptions = {
+        /** @type {?} */
+        const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' });
+        /** @type {?} */
+        const requestoptions = {
             headers: headers
         };
-        let /** @type {?} */ reqUrl = apiName;
+        /** @type {?} */
+        let reqUrl = apiName;
         //统计数据添加from和operator字段
         this.baseObj.from = from;
         this.baseObj.operator = localStorage.getItem('nickName');
@@ -3482,7 +3972,8 @@ class JdbPlgBaseService {
             if (currentRoute != 'login' && options && options.joinTraceId) {
                 res.error.returnUserMessage = res.error.returnUserMessage + '<br/>(日志号:' + loginObj.jdbDhTraceId + ')';
             }
-            const /** @type {?} */ endTime = new Date().getTime();
+            /** @type {?} */
+            const endTime = new Date().getTime();
             //统计接口请求时长
             apiException.requestTime = endTime - time;
             //校验接口返回的数据结构格式
@@ -3492,9 +3983,11 @@ class JdbPlgBaseService {
                 return false;
             }
             if (options.fns && options.fns.length != 0) {
-                let /** @type {?} */ len = options.fns.length;
-                for (let /** @type {?} */ i = 0; i < len; i++) {
-                    let /** @type {?} */ fn = options.fns[i];
+                /** @type {?} */
+                let len = options.fns.length;
+                for (let i = 0; i < len; i++) {
+                    /** @type {?} */
+                    let fn = options.fns[i];
                     if (res.error && res.error.returnCode * 1 === fn.returnCode && currentRoute != 'login') {
                         fn.callback();
                     }
@@ -3554,7 +4047,8 @@ class JdbPlgBaseService {
      */
     stamp2string(stamp) {
         if (stamp) {
-            let /** @type {?} */ date = new Date(stamp).toJSON();
+            /** @type {?} */
+            let date = new Date(stamp).toJSON();
             return date.split('T')[0];
         }
         return null;
@@ -3565,22 +4059,13 @@ class JdbPlgBaseService {
      * @return {?}
      */
     download(apiName, params) {
-        let /** @type {?} */ cookieData = {};
-        // if (cookieStr) {
-        //   try {
-        //     cookieObj = JSON.parse(cookieStr);
-        //     cookieData = {
-        //       loginToken: cookieObj.loginToken,
-        //       employeeId: cookieObj.empId
-        //     };
-        //   }
-        //   catch (e) {
-        //     console.log('parse cookie error...');
-        //   }
-        // }
-        let /** @type {?} */ paramsObj = objectAssign({}, cookieData, params);
-        let /** @type {?} */ url = apiName + '?';
-        for (let /** @type {?} */ key in paramsObj) {
+        /** @type {?} */
+        let cookieData = {};
+        /** @type {?} */
+        let paramsObj = objectAssign({}, cookieData, params);
+        /** @type {?} */
+        let url = apiName + '?';
+        for (let key in paramsObj) {
             if (paramsObj[key]) {
                 url += key + '=' + encodeURIComponent(paramsObj[key]) + '&';
             }
@@ -3592,15 +4077,20 @@ class JdbPlgBaseService {
      * @return {?}
      */
     getPicSize(file) {
-        let /** @type {?} */ arr = {};
-        let /** @type {?} */ reader = new FileReader();
+        /** @type {?} */
+        let arr = {};
+        /** @type {?} */
+        let reader = new FileReader();
         reader.onload = function (e) {
-            let /** @type {?} */ data = e.target.result;
-            //加载图片获取图片真实宽度和高度
-            let /** @type {?} */ image = new Image();
+            /** @type {?} */
+            let data = e.target.result;
+            /** @type {?} */
+            let image = new Image();
             image.onload = function () {
-                let /** @type {?} */ width = image.width;
-                let /** @type {?} */ height = image.height;
+                /** @type {?} */
+                let width = image.width;
+                /** @type {?} */
+                let height = image.height;
                 arr = {
                     height: height,
                     width: width
@@ -3617,14 +4107,14 @@ JdbPlgBaseService.decorators = [
 ];
 /** @nocollapse */
 JdbPlgBaseService.ctorParameters = () => [
-    { type: HttpClient, },
-    { type: CommonMethodService, },
-    { type: SendStatisticService, },
+    { type: HttpClient },
+    { type: CommonMethodService },
+    { type: SendStatisticService }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class FillTableService {
     constructor() {
@@ -3639,10 +4129,14 @@ class FillTableService {
         lines = lines || 10;
         lists = lists || [];
         flag = flag || true;
-        let /** @type {?} */ aLength = lists.length;
-        let /** @type {?} */ mLength = lines - aLength;
-        let /** @type {?} */ fillObj = { unShowOpt: flag };
-        let /** @type {?} */ keys;
+        /** @type {?} */
+        let aLength = lists.length;
+        /** @type {?} */
+        let mLength = lines - aLength;
+        /** @type {?} */
+        let fillObj = { unShowOpt: flag };
+        /** @type {?} */
+        let keys;
         if (aLength !== 0) {
             lists.forEach(element => {
                 element.unShowOpt = !flag;
@@ -3657,7 +4151,7 @@ class FillTableService {
             }
         }
         if (aLength !== 0 && mLength > 0) {
-            for (let /** @type {?} */ i = 0; i < mLength; i++) {
+            for (let i = 0; i < mLength; i++) {
                 lists.push(fillObj);
             }
         }
@@ -3672,7 +4166,7 @@ FillTableService.ctorParameters = () => [];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class JdbModalService {
     /**
@@ -3715,8 +4209,38 @@ class JdbModalService {
      * @return {?}
      */
     create(options) {
-        let /** @type {?} */ componentFactory = this.componentFactoryResolver.resolveComponentFactory(JdbPlgDialogComponent);
-        let /** @type {?} */ componentRef = options.container.createComponent(componentFactory);
+        this._options = {
+            customClass: '',
+            maskClass: '',
+            bodyStyle: null,
+            visible: false,
+            title: '',
+            closeable: true,
+            component: null,
+            text: '',
+            componentParams: {},
+            width: null,
+            footer: true,
+            container: null,
+            isConfirm: false,
+            okText: '',
+            cancelText: '',
+            class: '',
+            style: null,
+            onClose: () => {
+                this.destroy();
+            },
+            onOk: () => {
+                this.destroy();
+            },
+            onCancel: () => {
+                this.destroy();
+            }
+        };
+        /** @type {?} */
+        let componentFactory = this.componentFactoryResolver.resolveComponentFactory(JdbPlgNewDialogComponent);
+        /** @type {?} */
+        let componentRef = options.container.createComponent(componentFactory);
         this._componentRefList.push(componentRef);
         //assign配置
         if (options) {
@@ -3732,8 +4256,10 @@ class JdbModalService {
      * @return {?}
      */
     assignProps(componentRef) {
-        let /** @type {?} */ _options = this._options;
-        let /** @type {?} */ ins = componentRef.instance;
+        /** @type {?} */
+        let _options = this._options;
+        /** @type {?} */
+        let ins = componentRef.instance;
         ins.visible = _options.visible || true;
         ins._title = _options.title || '提示';
         ins._width = _options.width ? `${_options.width}px` : '400px';
@@ -3765,11 +4291,12 @@ class JdbModalService {
      * @return {?}
      */
     destroy() {
-        console.log(this._componentRefList);
-        let /** @type {?} */ len = this._componentRefList.length - 1;
-        this._componentRefList[len].destroy();
+        /** @type {?} */
+        let len = this._componentRefList.length - 1;
+        if (this._componentRefList[len]) {
+            this._componentRefList[len].destroy();
+        }
         this._componentRefList.pop();
-        //this.componentRef.destroy();
     }
     /**
      * @return {?}
@@ -3795,12 +4322,12 @@ JdbModalService.decorators = [
 ];
 /** @nocollapse */
 JdbModalService.ctorParameters = () => [
-    { type: ComponentFactoryResolver, },
+    { type: ComponentFactoryResolver }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class JdbPlgTableErrorComponent {
     constructor() {
@@ -3824,12 +4351,12 @@ JdbPlgTableErrorComponent.decorators = [
 /** @nocollapse */
 JdbPlgTableErrorComponent.ctorParameters = () => [];
 JdbPlgTableErrorComponent.propDecorators = {
-    "tableErrorText": [{ type: Input },],
+    tableErrorText: [{ type: Input }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ProvinceReformPipe {
     /**
@@ -3849,7 +4376,7 @@ ProvinceReformPipe.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class AmountReformPipe {
     /**
@@ -3872,7 +4399,7 @@ AmountReformPipe.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class JdbPlgTimelineItemComponent {
     constructor() {
@@ -3922,15 +4449,15 @@ JdbPlgTimelineItemComponent.decorators = [
 /** @nocollapse */
 JdbPlgTimelineItemComponent.ctorParameters = () => [];
 JdbPlgTimelineItemComponent.propDecorators = {
-    "cardBoxWidth": [{ type: Input },],
-    "cardBgc": [{ type: Input },],
-    "timeNum": [{ type: Input },],
-    "lastItem": [{ type: Input },],
+    cardBoxWidth: [{ type: Input }],
+    cardBgc: [{ type: Input }],
+    timeNum: [{ type: Input }],
+    lastItem: [{ type: Input }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class JdbPlgSwitchComponent {
     constructor() {
@@ -4110,22 +4637,22 @@ JdbPlgSwitchComponent.decorators = [
                 ]
             },] },
 ];
-/** @nocollapse */
 JdbPlgSwitchComponent.propDecorators = {
-    "jdbCheckedText": [{ type: Input },],
-    "jdbUncheckedText": [{ type: Input },],
-    "jdbLoading": [{ type: Input },],
-    "jdbDisabled": [{ type: Input },],
-    "jdbSize": [{ type: Input },],
-    "jdbControl": [{ type: Input },],
-    "onClick": [{ type: HostListener, args: ['click', ['$event'],] },],
+    jdbCheckedText: [{ type: Input }],
+    jdbUncheckedText: [{ type: Input }],
+    jdbLoading: [{ type: Input }],
+    jdbDisabled: [{ type: Input }],
+    jdbSize: [{ type: Input }],
+    jdbControl: [{ type: Input }],
+    onClick: [{ type: HostListener, args: ['click', ['$event'],] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-const /** @type {?} */ MDL_MODULES = [
+/** @type {?} */
+const MDL_MODULES = [
     ShowPictureComponent,
     PictureViewerComponent,
     DragDirective,
@@ -4133,6 +4660,7 @@ const /** @type {?} */ MDL_MODULES = [
     JdbPlgPaginationComponent,
     JdbPlgButtonComponent,
     JdbPlgDialogComponent,
+    JdbPlgNewDialogComponent,
     JdbPlgSelectComponent,
     JdbPlgInputComponent,
     JdbPlgTimelineItemComponent,
@@ -4165,6 +4693,7 @@ JdbPlgUiModule.decorators = [
                     JdbPlgSelectComponent,
                     JdbPlgButtonComponent,
                     JdbPlgDialogComponent,
+                    JdbPlgNewDialogComponent,
                     JdbPlgInputComponent,
                     JdbPlgTimelineItemComponent,
                     JdbPlgAutocompleteComponent,
@@ -4174,7 +4703,7 @@ JdbPlgUiModule.decorators = [
                     JdbPlgSwitchComponent,
                 ],
                 providers: [JdbPlgBaseService, CommonMethodService, FillTableService, SendStatisticService, JdbModalService],
-                entryComponents: [JdbPlgToastComponent, JdbPlgDialogComponent],
+                entryComponents: [JdbPlgToastComponent, JdbPlgNewDialogComponent, JdbPlgDialogComponent],
                 schemas: [
                     CUSTOM_ELEMENTS_SCHEMA
                 ]
@@ -4183,8 +4712,8 @@ JdbPlgUiModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
-export { JdbPlgUiModule, JdbPlgBaseService, FillTableService, CommonMethodService, SendStatisticService, JdbModalService, JdbPlgAutocompleteComponent as ɵk, JdbPlgButtonComponent as ɵf, JdbPlgDialogComponent as ɵg, JdbPlgInputComponent as ɵi, JdbPlgPaginationComponent as ɵe, JdbPlgSelectComponent as ɵh, JdbPlgSwitchComponent as ɵp, JdbTabComponent as ɵl, JdbPlgTableErrorComponent as ɵm, JdbPlgTimelineItemComponent as ɵj, JdbPlgToastComponent as ɵq, PictureViewerComponent as ɵb, ShowPictureComponent as ɵa, DragDirective as ɵc, OnlyNumberDirective as ɵr, WatermarkDirective as ɵd, AmountReformPipe as ɵo, ProvinceReformPipe as ɵn };
+export { JdbPlgUiModule, JdbPlgBaseService, FillTableService, CommonMethodService, SendStatisticService, JdbModalService, jQueryLikeParamSerializer, JdbPlgAutocompleteComponent as ɵl, JdbPlgButtonComponent as ɵf, JdbPlgDialogComponent as ɵg, JdbPlgInputComponent as ɵj, JdbPlgNewDialogComponent as ɵh, JdbPlgPaginationComponent as ɵe, JdbPlgSelectComponent as ɵi, JdbPlgSwitchComponent as ɵq, JdbTabComponent as ɵm, JdbPlgTableErrorComponent as ɵn, JdbPlgTimelineItemComponent as ɵk, JdbPlgToastComponent as ɵr, PictureViewerComponent as ɵb, ShowPictureComponent as ɵa, DragDirective as ɵc, OnlyNumberDirective as ɵs, WatermarkDirective as ɵd, AmountReformPipe as ɵp, ProvinceReformPipe as ɵo };
 //# sourceMappingURL=jdb-plg-ui.js.map

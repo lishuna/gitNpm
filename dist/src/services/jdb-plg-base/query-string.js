@@ -1,6 +1,6 @@
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 'use strict';
 /**
@@ -29,11 +29,12 @@ function isDate(obj) {
  * @return {?}
  */
 function toJson(value) {
-    var /** @type {?} */ jsonObj = {};
+    /** @type {?} */
+    var jsonObj = {};
     try {
         jsonObj = JSON.parse(value);
     }
-    catch (/** @type {?} */ e) {
+    catch (e) {
         console.log('to json parse error');
     }
     return jsonObj;
@@ -68,7 +69,8 @@ function encodeUriQuery(val, pctEncodeSpaces) {
 export function jQueryLikeParamSerializer(params) {
     if (!params)
         return '';
-    var /** @type {?} */ parts = [];
+    /** @type {?} */
+    var parts = [];
     serialize(params, '', true);
     return parts.join('&');
     /**
@@ -84,7 +86,7 @@ export function jQueryLikeParamSerializer(params) {
             });
         }
         else if (isObject(toSerialize) && !isDate(toSerialize)) {
-            for (var /** @type {?} */ key in toSerialize) {
+            for (var key in toSerialize) {
                 serialize(toSerialize[key], prefix +
                     (topLevel ? '' : '.') +
                     key +

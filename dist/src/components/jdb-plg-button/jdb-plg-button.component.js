@@ -1,8 +1,14 @@
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 import { Component, Input, Renderer2, ElementRef } from '@angular/core';
+/** @typedef {?} */
+var buttonSize;
+export { buttonSize };
+/** @typedef {?} */
+var buttonType;
+export { buttonType };
 var JdbPlgButtonComponent = /** @class */ (function () {
     function JdbPlgButtonComponent(_elementRef, _renderer) {
         this._elementRef = _elementRef;
@@ -110,27 +116,18 @@ var JdbPlgButtonComponent = /** @class */ (function () {
     ];
     /** @nocollapse */
     JdbPlgButtonComponent.ctorParameters = function () { return [
-        { type: ElementRef, },
-        { type: Renderer2, },
+        { type: ElementRef },
+        { type: Renderer2 }
     ]; };
     JdbPlgButtonComponent.propDecorators = {
-        "jdbSize": [{ type: Input },],
-        "jdbType": [{ type: Input },],
-        "jdbLoading": [{ type: Input },],
+        jdbSize: [{ type: Input }],
+        jdbType: [{ type: Input }],
+        jdbLoading: [{ type: Input }]
     };
     return JdbPlgButtonComponent;
 }());
 export { JdbPlgButtonComponent };
-function JdbPlgButtonComponent_tsickle_Closure_declarations() {
-    /** @type {!Array<{type: !Function, args: (undefined|!Array<?>)}>} */
-    JdbPlgButtonComponent.decorators;
-    /**
-     * @nocollapse
-     * @type {function(): !Array<(null|{type: ?, decorators: (undefined|!Array<{type: !Function, args: (undefined|!Array<?>)}>)})>}
-     */
-    JdbPlgButtonComponent.ctorParameters;
-    /** @type {!Object<string,!Array<{type: !Function, args: (undefined|!Array<?>)}>>} */
-    JdbPlgButtonComponent.propDecorators;
+if (false) {
     /** @type {?} */
     JdbPlgButtonComponent.prototype._el;
     /** @type {?} */

@@ -214,9 +214,10 @@ export class JdbPlgSelectComponent implements OnInit, OnChanges {
 			this.renderer.setElementClass(this.inputDom.nativeElement, 'jdb-plg-select-active', this.show);
 		});
 
-		if (this._jdbClear && !this._jdbDisabled) {
-			// 监听输入框元素，若有内容时则滑上显示x
-			this.renderer2.listen(this.inputDom.nativeElement, 'mouseenter', () => {
+		// 监听输入框元素，若有内容时则滑上显示x
+		this.renderer2.listen(this.inputDom.nativeElement, 'mouseenter', () => {
+
+			if (this._jdbClear && !this._jdbDisabled) {
 				// 若输入框不存在内容，则不做任何操作
 				if (this._jdbMode === 'chooseOne' && (this.inputText === '' || this.show)) {
 					return;
@@ -228,8 +229,11 @@ export class JdbPlgSelectComponent implements OnInit, OnChanges {
 
 				this.isShowClear = true;
 				this.renderer.setElementClass(this.inputDom.nativeElement, 'jdb-plg-select-active', this.show);
-			});
-			this.renderer2.listen(this.inputDom.nativeElement, 'mouseleave', () => {
+			}
+		});
+
+		this.renderer2.listen(this.inputDom.nativeElement, 'mouseleave', () => {
+			if (this._jdbClear && !this._jdbDisabled) {
 				// 若输入框不存在内容，则不做任何操作
 				if (this._jdbMode === 'chooseOne' && (this.inputText === '' || this.show)) {
 					return;
@@ -241,8 +245,38 @@ export class JdbPlgSelectComponent implements OnInit, OnChanges {
 
 				this.isShowClear = false;
 				this.renderer.setElementClass(this.inputDom.nativeElement, 'jdb-plg-select-active', this.show);
-			});
-		}
+			}
+		});
+
+		// if (this._jdbClear && !this._jdbDisabled) {
+		// 	// 监听输入框元素，若有内容时则滑上显示x
+		// 	this.renderer2.listen(this.inputDom.nativeElement, 'mouseenter', () => {
+		// 		// 若输入框不存在内容，则不做任何操作
+		// 		if (this._jdbMode === 'chooseOne' && (this.inputText === '' || this.show)) {
+		// 			return;
+		// 		} else if (this._jdbMode === 'chooseNum' && (this.inputText === 0 || this.show)) {
+		// 			return;
+		// 		} else if (this._jdbMode === 'chooseMore' && (this.inputText.length === 0 || this.show)) {
+		// 			return;
+		// 		}
+
+		// 		this.isShowClear = true;
+		// 		this.renderer.setElementClass(this.inputDom.nativeElement, 'jdb-plg-select-active', this.show);
+		// 	});
+		// 	this.renderer2.listen(this.inputDom.nativeElement, 'mouseleave', () => {
+		// 		// 若输入框不存在内容，则不做任何操作
+		// 		if (this._jdbMode === 'chooseOne' && (this.inputText === '' || this.show)) {
+		// 			return;
+		// 		} else if (this._jdbMode === 'chooseNum' && (this.inputText === 0 || this.show)) {
+		// 			return;
+		// 		} else if (this._jdbMode === 'chooseMore' && (this.inputText.length === 0 || this.show)) {
+		// 			return;
+		// 		}
+
+		// 		this.isShowClear = false;
+		// 		this.renderer.setElementClass(this.inputDom.nativeElement, 'jdb-plg-select-active', this.show);
+		// 	});
+		// }
 	}
 
 	ngOnChanges() {
@@ -343,6 +377,14 @@ export class JdbPlgSelectComponent implements OnInit, OnChanges {
 			paddingHeight = 5;
 		}
 		const flexHeight = clientHeight - offetTop - elemHeight - paddingHeight + scrollTop; // 剩余高度
+		// console.log(
+		// 	'元素offsetTop', offetTop,
+		// 	'父元素scrollTop', scrollTop,
+		// 	'元素高度', elemHeight,
+		// 	'屏幕高度', clientHeight,
+		// 	'计算后剩余高度', flexHeight,
+		// 	'浮层元素高度', listHeight,
+		// );
 		if (flexHeight < listHeight) {
 			// 空间不足
 			this.spaceFlex = false;

@@ -35,9 +35,9 @@ export declare class JdbPlgAutocompleteComponent implements OnInit, AfterViewIni
     debounce(fn: any, wait: any, immediate: any): () => any;
     resetPopDirection(node: any): void;
     changeInput(): void;
-    jdbDataSource: any;
-    jdbSearchParam: any;
-    jdbServerApi: any;
+    jdbDataSource: any[];
+    jdbSearchParam: string;
+    jdbServerApi: string;
     writeValue(value: string): void;
     registerOnChange(fn: (_: string) => void): void;
     registerOnTouched(fn: () => void): void;

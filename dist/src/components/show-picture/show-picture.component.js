@@ -1,6 +1,6 @@
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 var ShowPictureComponent = /** @class */ (function () {
@@ -33,22 +33,13 @@ var ShowPictureComponent = /** @class */ (function () {
     /** @nocollapse */
     ShowPictureComponent.ctorParameters = function () { return []; };
     ShowPictureComponent.propDecorators = {
-        "pictureUrl": [{ type: Input },],
-        "update": [{ type: Output },],
+        pictureUrl: [{ type: Input }],
+        update: [{ type: Output }]
     };
     return ShowPictureComponent;
 }());
 export { ShowPictureComponent };
-function ShowPictureComponent_tsickle_Closure_declarations() {
-    /** @type {!Array<{type: !Function, args: (undefined|!Array<?>)}>} */
-    ShowPictureComponent.decorators;
-    /**
-     * @nocollapse
-     * @type {function(): !Array<(null|{type: ?, decorators: (undefined|!Array<{type: !Function, args: (undefined|!Array<?>)}>)})>}
-     */
-    ShowPictureComponent.ctorParameters;
-    /** @type {!Object<string,!Array<{type: !Function, args: (undefined|!Array<?>)}>>} */
-    ShowPictureComponent.propDecorators;
+if (false) {
     /** @type {?} */
     ShowPictureComponent.prototype.pictureUrl;
     /** @type {?} */

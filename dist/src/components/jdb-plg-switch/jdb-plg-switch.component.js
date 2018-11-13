@@ -1,9 +1,12 @@
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 import { Component, forwardRef, HostListener, Input } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
+/** @typedef {?} */
+var JdbSwitchSizeType;
+export { JdbSwitchSizeType };
 var JdbPlgSwitchComponent = /** @class */ (function () {
     function JdbPlgSwitchComponent() {
         this.checked = false;
@@ -167,7 +170,6 @@ var JdbPlgSwitchComponent = /** @class */ (function () {
      * @return {?}
      */
     function () {
-        var _a;
         this.outBoxClass = (_a = {},
             _a[this.prefixCls] = true,
             _a[this.prefixCls + "-checked"] = this.checked,
@@ -175,6 +177,7 @@ var JdbPlgSwitchComponent = /** @class */ (function () {
             _a[this.prefixCls + "-disabled"] = this.jdbDisabled,
             _a[this.prefixCls + "-small"] = this.jdbSize === 'small',
             _a);
+        var _a;
     };
     // 实现ControlValueAccessor接口方法
     /**
@@ -244,29 +247,19 @@ var JdbPlgSwitchComponent = /** @class */ (function () {
                     ]
                 },] },
     ];
-    /** @nocollapse */
     JdbPlgSwitchComponent.propDecorators = {
-        "jdbCheckedText": [{ type: Input },],
-        "jdbUncheckedText": [{ type: Input },],
-        "jdbLoading": [{ type: Input },],
-        "jdbDisabled": [{ type: Input },],
-        "jdbSize": [{ type: Input },],
-        "jdbControl": [{ type: Input },],
-        "onClick": [{ type: HostListener, args: ['click', ['$event'],] },],
+        jdbCheckedText: [{ type: Input }],
+        jdbUncheckedText: [{ type: Input }],
+        jdbLoading: [{ type: Input }],
+        jdbDisabled: [{ type: Input }],
+        jdbSize: [{ type: Input }],
+        jdbControl: [{ type: Input }],
+        onClick: [{ type: HostListener, args: ['click', ['$event'],] }]
     };
     return JdbPlgSwitchComponent;
 }());
 export { JdbPlgSwitchComponent };
-function JdbPlgSwitchComponent_tsickle_Closure_declarations() {
-    /** @type {!Array<{type: !Function, args: (undefined|!Array<?>)}>} */
-    JdbPlgSwitchComponent.decorators;
-    /**
-     * @nocollapse
-     * @type {function(): !Array<(null|{type: ?, decorators: (undefined|!Array<{type: !Function, args: (undefined|!Array<?>)}>)})>}
-     */
-    JdbPlgSwitchComponent.ctorParameters;
-    /** @type {!Object<string,!Array<{type: !Function, args: (undefined|!Array<?>)}>>} */
-    JdbPlgSwitchComponent.propDecorators;
+if (false) {
     /** @type {?} */
     JdbPlgSwitchComponent.prototype.outBoxClass;
     /** @type {?} */

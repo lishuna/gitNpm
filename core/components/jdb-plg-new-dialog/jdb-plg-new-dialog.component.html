@@ -1,0 +1,26 @@
+<div [ngClass]="_customClass">
+    <div class="_newMaskClass" [ngClass]="{'hid':!_visible}" [style.zIndex]="900"></div>
+    <div class="jdb-modal" tabindex="-1" role="dialog" [ngClass]="{'hid':!_visible}" [ngStyle]="{'dispaly':!_visible}" (click)="cusCloseModal($event)" class="_newWrapClass" [ngClass]="_newWrapClass" [style.zIndex]="900">
+        <div #modal_content class="new-modal" [@optionsState]="_state" [ngStyle]="_bodyStyleMap">
+            <div class="modal-content">
+                <ng-template [ngIf]="_closeable">
+                    <button class="new-modal-close" style="outline: none" (click)="closeModel($event)">
+                      <span class="icon-close"></span>
+                    </button>
+                </ng-template>
+                <div class="new-modal-header" *ngIf="_title">
+                    <div class="new-modal-title" [attr.id]="modalId">{{_title}}</div>
+                </div>
+                <div class="new-modal-body _modalTextBody">
+                    <ng-template #modal_component></ng-template>
+                    <ng-template #modal_text></ng-template>
+                </div>
+                <div class="new-modal-footer" *ngIf="_footer">
+                    <button *ngIf="!_isConfirm" app-jdb-plg-button [jdbSize]="'default'" [jdbType]="'gray'" (click)="cancelModel($event)"><span>{{_cancelText}}</span></button>
+                    <button *ngIf="!_isConfirm" class="right-btn" app-jdb-plg-button [jdbSize]="'default'" [jdbType]="'primary'" (click)="confirmModel($event)"><span>{{_okText}}</span></button>
+                    <button *ngIf="_isConfirm" class="right-btn confirm-btn" app-jdb-plg-button [jdbSize]="'default'" [jdbType]="'primary'" (click)="confirmModel($event)"><span>{{_okText}}</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

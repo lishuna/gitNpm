@@ -5,6 +5,7 @@ import { CommonMethodService } from './common-method.service';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import 'rxjs/add/observable/throw';
 import { filter, catchError } from 'rxjs/operators';
 // import 'rxjs/add/operator/filter';
 // import 'rxjs/add/operator/catch';
@@ -59,7 +60,7 @@ export class JdbPlgBaseService {
 
   setRootViewContainerRef(vRef) {
     this.vRef = vRef;
-    this.commonService.setRootViewContainerRef(this.vRef);
+    this.commonService.setRootViewContainerRef(vRef);
   }
 
   /**

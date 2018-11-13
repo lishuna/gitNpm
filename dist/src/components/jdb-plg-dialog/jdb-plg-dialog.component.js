@@ -1,65 +1,200 @@
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-import { Component, ViewChild, Output, Input, ElementRef, EventEmitter, ViewContainerRef, Type, ComponentFactoryResolver, Renderer2 } from '@angular/core';
+import * as tslib_1 from "tslib";
+import { Component, ViewChild, Output, Input, ElementRef, HostListener, TemplateRef, EventEmitter, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 var JdbPlgDialogComponent = /** @class */ (function () {
-    function JdbPlgDialogComponent(resolver, renderer) {
+    function JdbPlgDialogComponent(resolver) {
         this.resolver = resolver;
-        this.renderer = renderer;
-        this._visible = false;
-        this._title = '提示';
         this._customClass = '';
         this._maskClass = '';
+        this._visible = false;
+        this._title = '';
         this._closeable = true;
-        this._footer = true;
+        this._animationStatus = '11';
+        this._width = '400px';
+        this._footerHide = false;
         this._isConfirm = false;
         this._okText = '';
         this._cancelText = '';
-        this._state = '';
-        this._closeType = 'mask';
-        this._componentParams = {};
-        this._text = '';
-        this._class = '';
-        this._style = null;
-        this.onClose = new EventEmitter();
-        this.onOk = new EventEmitter();
-        this.onCancel = new EventEmitter();
+        this._RogerText = '';
+        this._state = 'hideM';
+        this.MvisibileChange = new EventEmitter();
+        this.MOnOk = new EventEmitter();
+        this.MOnCancel = new EventEmitter();
     }
-    Object.defineProperty(JdbPlgDialogComponent.prototype, "visible", {
+    Object.defineProperty(JdbPlgDialogComponent.prototype, "Mvisible", {
         get: /**
          * @return {?}
          */
         function () {
             return this._visible;
         },
+        // 弹框显隐
         set: /**
          * @param {?} value
          * @return {?}
          */
         function (value) {
-            this._visible = value;
-            //控制切入和切出动画
-            if (this._visible) {
-                this._state = 'showM';
+            /** @type {?} */
+            var visible = this.toBoolean(value);
+            if (this._visible === visible) {
+                return;
+            }
+            this._visible = visible;
+            this.MvisibileChange.emit(this._visible);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgDialogComponent.prototype, "MfooterHiden", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._footerHide;
+        },
+        // 隐藏footer
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            /** @type {?} */
+            var visible = this.toBoolean(value);
+            if (this._visible === visible) {
+                return;
+            }
+            this._footerHide = visible;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgDialogComponent.prototype, "Mtitle", {
+        // 标题
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            if (value instanceof TemplateRef) {
+                this._titleTpl = value;
             }
             else {
-                this._state = 'hideM';
+                this._title = value;
             }
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(JdbPlgDialogComponent.prototype, "_width", {
+    Object.defineProperty(JdbPlgDialogComponent.prototype, "Mcontent", {
         set: /**
          * @param {?} value
          * @return {?}
          */
         function (value) {
-            this._bodyStyleMap = {
-                width: value
-            };
+            if (value instanceof TemplateRef) {
+                this._contentTpl = value;
+            }
+            else {
+                this._content = value;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgDialogComponent.prototype, "Mfooter", {
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            if (value instanceof TemplateRef) {
+                this._footerTpl = value;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgDialogComponent.prototype, "Mwidth", {
+        // 自定义宽度
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._width = typeof value === 'number' ? value + 'px' : value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    // 定位modal位置和样式
+    /**
+     * @return {?}
+     */
+    JdbPlgDialogComponent.prototype.setStyle = /**
+     * @return {?}
+     */
+    function () {
+        /** @type {?} */
+        var el = this.contentEl.nativeElement;
+        this._bodyStyleMap = tslib_1.__assign({ width: this._width });
+    };
+    /**
+     * @param {?} e
+     * @return {?}
+     */
+    JdbPlgDialogComponent.prototype.onEsc = /**
+     * @param {?} e
+     * @return {?}
+     */
+    function (e) {
+        this.clickCancel(e);
+    };
+    Object.defineProperty(JdbPlgDialogComponent.prototype, "Mclass", {
+        // 自定义样式
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._customClass = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgDialogComponent.prototype, "MOkText", {
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._okText = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgDialogComponent.prototype, "McancelText", {
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._cancelText = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JdbPlgDialogComponent.prototype, "MRogerText", {
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._isConfirm = true;
+            this._RogerText = value;
         },
         enumerable: true,
         configurable: true
@@ -71,32 +206,7 @@ var JdbPlgDialogComponent = /** @class */ (function () {
      * @return {?}
      */
     function () {
-        //判断_contentTpl是不是组件实例
-        if (this._contentTpl instanceof Type) {
-            this.createDynamicComponent(/** @type {?} */ (this._contentTpl));
-        }
-        else {
-            this.createDynamicDom();
-        }
-    };
-    //创建文本模板内容
-    /**
-     * @return {?}
-     */
-    JdbPlgDialogComponent.prototype.createDynamicDom = /**
-     * @return {?}
-     */
-    function () {
-        var /** @type {?} */ insertDiv = this.renderer.createElement('div');
-        var /** @type {?} */ text = this.renderer.createText(this._text);
-        this.renderer.addClass(insertDiv, this._class);
-        this.renderer.appendChild(insertDiv, text);
-        if (this._style) {
-            for (var /** @type {?} */ key in this._style) {
-                this.renderer.setStyle(insertDiv, key, this._style[key]);
-            }
-        }
-        this.renderer.appendChild(document.querySelector('._modalTextBody'), insertDiv);
+        this.setStyle();
     };
     /**
      * @param {?} component
@@ -107,16 +217,9 @@ var JdbPlgDialogComponent = /** @class */ (function () {
      * @return {?}
      */
     function (component) {
-        //生成组件工厂函数
-        var /** @type {?} */ factory = this.resolver.resolveComponentFactory(component);
-        //生成组件实例
-        this.contentComponentRef = this.bodyEl.createComponent(factory);
-        //模板的输入属性
-        for (var /** @type {?} */ key in this._componentParams) {
-            this.contentComponentRef.instance[key] = this._componentParams[key];
-        }
-        //立刻执行一次变更检测
-        this.contentComponentRef.changeDetectorRef.detectChanges();
+        /** @type {?} */
+        var factory = this.resolver.resolveComponentFactory(/** @type {?} */ (this._content));
+        this.bodyEl.createComponent(factory);
     };
     /**
      * @return {?}
@@ -125,98 +228,87 @@ var JdbPlgDialogComponent = /** @class */ (function () {
      * @return {?}
      */
     function () {
-        //动态组件实例存在 插入到视图容器中
-        if (this.contentComponentRef) {
-            this.bodyEl.insert(this.contentComponentRef.hostView);
+    };
+    /**
+     * @param {?} changes
+     * @return {?}
+     */
+    JdbPlgDialogComponent.prototype.ngOnChanges = /**
+     * @param {?} changes
+     * @return {?}
+     */
+    function (changes) {
+        var _this = this;
+        if (this._visible) {
+            this._state = 'showM';
+            setTimeout(function () {
+                _this.contentEl.nativeElement.parentNode.focus();
+            }, 200);
         }
-    };
-    //关闭弹框
-    /**
-     * @param {?} e
-     * @return {?}
-     */
-    JdbPlgDialogComponent.prototype.closeModel = /**
-     * @param {?} e
-     * @return {?}
-     */
-    function (e) {
-        this.onClose.emit(e);
-        this._state = 'hideM';
-    };
-    //确认弹框
-    /**
-     * @param {?} e
-     * @return {?}
-     */
-    JdbPlgDialogComponent.prototype.confirmModel = /**
-     * @param {?} e
-     * @return {?}
-     */
-    function (e) {
-        this.onOk.emit(e);
-        this._state = 'hideM';
-    };
-    //取消弹框
-    /**
-     * @param {?} e
-     * @return {?}
-     */
-    JdbPlgDialogComponent.prototype.cancelModel = /**
-     * @param {?} e
-     * @return {?}
-     */
-    function (e) {
-        this.onCancel.emit(e);
-        this._state = 'hideM';
-    };
-    //点击遮罩关闭
-    /**
-     * @param {?} e
-     * @return {?}
-     */
-    JdbPlgDialogComponent.prototype.cusCloseModal = /**
-     * @param {?} e
-     * @return {?}
-     */
-    function (e) {
-        var /** @type {?} */ flag = this.isChildOf(e.target, this.contentEl.nativeElement);
-        if (this._closeType === 'mask' && !flag) {
-            this.onClose.emit(e);
+        else {
             this._state = 'hideM';
         }
     };
-    //阻止冒泡
-    // selfCloseModal(e: MouseEvent): void {
-    //   e.stopPropagation();
-    //   e.cancelBubble = true;
-    // }
     /**
-     * @param {?} child
-     * @param {?} parent
+     * @param {?} e
      * @return {?}
      */
-    JdbPlgDialogComponent.prototype.isChildOf = /**
-     * @param {?} child
-     * @param {?} parent
+    JdbPlgDialogComponent.prototype.clickCancel = /**
+     * @param {?} e
      * @return {?}
      */
-    function (child, parent) {
-        var /** @type {?} */ parentNode;
-        if (child && parent) {
-            parentNode = child.parentNode;
-            while (parentNode) {
-                if (parent === parentNode) {
-                    return true;
-                }
-                parentNode = parentNode.parentNode;
-            }
+    function (e) {
+        this._visible = false;
+        this._state = 'hideM';
+        this.MOnCancel.emit(e);
+    };
+    /**
+     * @param {?} e
+     * @return {?}
+     */
+    JdbPlgDialogComponent.prototype.clickOk = /**
+     * @param {?} e
+     * @return {?}
+     */
+    function (e) {
+        if (this.MOnOk) {
+            this.MOnOk.emit(e);
         }
-        return false;
+        else {
+            this._visible = false;
+            this._state = 'hideM';
+        }
+    };
+    /**
+     * @param {?} e
+     * @return {?}
+     */
+    JdbPlgDialogComponent.prototype.closeModal = /**
+     * @param {?} e
+     * @return {?}
+     */
+    function (e) {
+        if ((/** @type {?} */ (e.target)).getAttribute('role') === 'dialog') {
+            this.clickCancel(e);
+            this._state = 'hideM';
+        }
+    };
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    JdbPlgDialogComponent.prototype.toBoolean = /**
+     * @param {?} value
+     * @return {?}
+     */
+    function (value) {
+        return value === '' || (value && value !== false);
     };
     JdbPlgDialogComponent.decorators = [
         { type: Component, args: [{
                     selector: 'app-jdb-plg-dialog',
-                    template: "<div [ngClass]=\"_customClass\"> <div class=\"_maskClass\" [ngClass]=\"{'hid':!_visible}\" [style.zIndex]=\"1000\"></div> <div class=\"jdb-modal\" tabindex=\"-1\" role=\"dialog\" [ngClass]=\"{'hid':!_visible}\" [ngStyle]=\"{'dispaly':!_visible}\" (click)=\"cusCloseModal($event)\" class=\"_wrapClass\" [ngClass]=\"_wrapClass\" [style.zIndex]=\"1000\"> <div #modal_content class=\"modal\" [@optionsState]=\"_state\" [ngStyle]=\"_bodyStyleMap\"> <div class=\"modal-content\"> <ng-template [ngIf]=\"_closeable\"> <button class=\"modal-close\" style=\"outline: none\" (click)=\"closeModel($event)\"> <span class=\"icon-close\"></span> </button> </ng-template> <div class=\"modal-header\" *ngIf=\"_title\"> <div class=\"modal-title\" [attr.id]=\"modalId\">{{_title}}</div> </div> <div class=\"modal-body _modalTextBody\"> <ng-template #modal_component></ng-template> <ng-template #modal_text></ng-template> </div> <div class=\"modal-footer\" *ngIf=\"_footer\"> <button *ngIf=\"!_isConfirm\" app-jdb-plg-button [jdbSize]=\"'default'\" [jdbType]=\"'gray'\" (click)=\"cancelModel($event)\"><span>{{_cancelText}}</span></button> <button *ngIf=\"!_isConfirm\" class=\"right-btn\" app-jdb-plg-button [jdbSize]=\"'default'\" [jdbType]=\"'primary'\" (click)=\"confirmModel($event)\"><span>{{_okText}}</span></button> <button *ngIf=\"_isConfirm\" class=\"right-btn confirm-btn\" app-jdb-plg-button [jdbSize]=\"'default'\" [jdbType]=\"'primary'\" (click)=\"confirmModel($event)\"><span>{{_okText}}</span></button> </div> </div> </div> </div> </div>",
+                    template: "<div [ngClass]=\"_customClass\"> <div class=\"_maskClass\" [ngClass]=\"{'hid':!_visible}\" [style.zIndex]=\"1000\"></div> <div class=\"jdb-modal\" tabindex=\"-1\" role=\"dialog\" [ngClass]=\"{'hid':!_visible}\" [ngStyle]=\"{'dispaly':!_visible}\" (click)=\"closeModal($event)\" class=\"_wrapClass\" [ngClass]=\"_wrapClass\" [style.zIndex]=\"1000\" [attr.aria-modalId]=\"modalId\"> <div #modal_content class=\"modal\" [@optionsState]=\"_state\" [ngStyle]=\"_bodyStyleMap\"> <div class=\"modal-content\"> <ng-template [ngIf]=\"_closeable\"> <button class=\"modal-close\" (click)=\"clickCancel($event)\"> <!-- <span class=\"modal-close-x\"></span> --> <span class=\"icon-close\"></span> </button> </ng-template> <div class=\"modal-header\" *ngIf=\"_title||_titleTpl\"> <div class=\"modal-title\" [attr.id]=\"modalId\"> <ng-template #defaultTitle> {{_title}} </ng-template> <ng-template [ngTemplateOutlet]=\"_titleTpl||defaultTitle\"> </ng-template> </div> </div> <div class=\"modal-body\"> <ng-template #defaultContent>{{_content}}</ng-template> <ng-template [ngTemplateOutlet]=\"_contentTpl||defaultContent\"></ng-template> <ng-template #modal_component></ng-template> </div> <div class=\"modal-footer\" *ngIf=\"!_footerHide\"> <ng-template #defalutFooter> <button *ngIf=\"!_isConfirm\" app-jdb-plg-button [jdbSize]=\"'default'\" [jdbType]=\"'white'\" (click)=\"clickCancel($event)\"><span>{{_cancelText||'\u53D6\u6D88'}}</span></button> <button *ngIf=\"!_isConfirm\" class=\"right-btn\" app-jdb-plg-button [jdbSize]=\"'default'\" [jdbType]=\"'primary'\" (click)=\"clickOk($event)\"><span>{{_okText||'\u786E\u8BA4'}}</span></button> <button *ngIf=\"_isConfirm\" class=\"right-btn\" app-jdb-plg-button [jdbSize]=\"'default'\" [jdbType]=\"'primary'\" (click)=\"clickOk($event)\" (click)=\"clickOk($event)\"><span>{{_RogerText}}</span></button> </ng-template> <ng-template [ngTemplateOutlet]=\"_footerTpl||defalutFooter\"></ng-template> </div> <div tabindex=\"0\" style=\"width:0px;height:0px;overflow:hidden;\">aaa</div> </div> </div> </div> </div>",
+                    // styleUrls: ['./jdb-plg-dialog.component.scss'],
                     animations: [
                         trigger('optionsState', [
                             state('showM', style({
@@ -234,49 +326,58 @@ var JdbPlgDialogComponent = /** @class */ (function () {
     ];
     /** @nocollapse */
     JdbPlgDialogComponent.ctorParameters = function () { return [
-        { type: ComponentFactoryResolver, },
-        { type: Renderer2, },
+        { type: ComponentFactoryResolver }
     ]; };
     JdbPlgDialogComponent.propDecorators = {
-        "contentEl": [{ type: ViewChild, args: ['modal_content',] },],
-        "textEl": [{ type: ViewChild, args: ['modal_text',] },],
-        "bodyEl": [{ type: ViewChild, args: ['modal_component', { read: ViewContainerRef },] },],
-        "onClose": [{ type: Output },],
-        "onOk": [{ type: Output },],
-        "onCancel": [{ type: Output },],
-        "_contentTpl": [{ type: Input },],
-        "visible": [{ type: Input },],
-        "_width": [{ type: Input },],
+        contentEl: [{ type: ViewChild, args: ['modal_content',] }],
+        bodyEl: [{ type: ViewChild, args: ['modal_component', { read: ViewContainerRef },] }],
+        MvisibileChange: [{ type: Output }],
+        MOnOk: [{ type: Output }],
+        MOnCancel: [{ type: Output }],
+        Mvisible: [{ type: Input }],
+        MfooterHiden: [{ type: Input }],
+        Mtitle: [{ type: Input }],
+        Mcontent: [{ type: Input }],
+        Mfooter: [{ type: Input }],
+        Mwidth: [{ type: Input }],
+        onEsc: [{ type: HostListener, args: ['keydown.esc', ['$event'],] }],
+        Mclass: [{ type: Input }],
+        MOkText: [{ type: Input }],
+        McancelText: [{ type: Input }],
+        MRogerText: [{ type: Input }]
     };
     return JdbPlgDialogComponent;
 }());
 export { JdbPlgDialogComponent };
-function JdbPlgDialogComponent_tsickle_Closure_declarations() {
-    /** @type {!Array<{type: !Function, args: (undefined|!Array<?>)}>} */
-    JdbPlgDialogComponent.decorators;
-    /**
-     * @nocollapse
-     * @type {function(): !Array<(null|{type: ?, decorators: (undefined|!Array<{type: !Function, args: (undefined|!Array<?>)}>)})>}
-     */
-    JdbPlgDialogComponent.ctorParameters;
-    /** @type {!Object<string,!Array<{type: !Function, args: (undefined|!Array<?>)}>>} */
-    JdbPlgDialogComponent.propDecorators;
-    /** @type {?} */
-    JdbPlgDialogComponent.prototype._visible;
-    /** @type {?} */
-    JdbPlgDialogComponent.prototype._title;
-    /** @type {?} */
-    JdbPlgDialogComponent.prototype._bodyStyleMap;
+if (false) {
     /** @type {?} */
     JdbPlgDialogComponent.prototype._customClass;
     /** @type {?} */
     JdbPlgDialogComponent.prototype._maskClass;
     /** @type {?} */
+    JdbPlgDialogComponent.prototype._bodyStyleMap;
+    /** @type {?} */
+    JdbPlgDialogComponent.prototype.modalId;
+    /** @type {?} */
+    JdbPlgDialogComponent.prototype._visible;
+    /** @type {?} */
+    JdbPlgDialogComponent.prototype._title;
+    /** @type {?} */
     JdbPlgDialogComponent.prototype._closeable;
+    /** @type {?} */
+    JdbPlgDialogComponent.prototype._titleTpl;
     /** @type {?} */
     JdbPlgDialogComponent.prototype._content;
     /** @type {?} */
-    JdbPlgDialogComponent.prototype._footer;
+    JdbPlgDialogComponent.prototype._contentTpl;
+    /** @type {?} */
+    JdbPlgDialogComponent.prototype._animationStatus;
+    /** @type {?} */
+    JdbPlgDialogComponent.prototype._bodyClass;
+    /** @type {?} */
+    JdbPlgDialogComponent.prototype._width;
+    /** @type {?} */
+    JdbPlgDialogComponent.prototype._footerHide;
     /** @type {?} */
     JdbPlgDialogComponent.prototype._isConfirm;
     /** @type {?} */
@@ -284,36 +385,22 @@ function JdbPlgDialogComponent_tsickle_Closure_declarations() {
     /** @type {?} */
     JdbPlgDialogComponent.prototype._cancelText;
     /** @type {?} */
+    JdbPlgDialogComponent.prototype._RogerText;
+    /** @type {?} */
     JdbPlgDialogComponent.prototype._state;
     /** @type {?} */
-    JdbPlgDialogComponent.prototype._closeType;
-    /** @type {?} */
-    JdbPlgDialogComponent.prototype._componentParams;
-    /** @type {?} */
-    JdbPlgDialogComponent.prototype._text;
-    /** @type {?} */
-    JdbPlgDialogComponent.prototype._class;
-    /** @type {?} */
-    JdbPlgDialogComponent.prototype._style;
-    /** @type {?} */
-    JdbPlgDialogComponent.prototype.contentComponentRef;
+    JdbPlgDialogComponent.prototype._footerTpl;
     /** @type {?} */
     JdbPlgDialogComponent.prototype.contentEl;
     /** @type {?} */
-    JdbPlgDialogComponent.prototype.textEl;
-    /** @type {?} */
     JdbPlgDialogComponent.prototype.bodyEl;
     /** @type {?} */
-    JdbPlgDialogComponent.prototype.onClose;
+    JdbPlgDialogComponent.prototype.MvisibileChange;
     /** @type {?} */
-    JdbPlgDialogComponent.prototype.onOk;
+    JdbPlgDialogComponent.prototype.MOnOk;
     /** @type {?} */
-    JdbPlgDialogComponent.prototype.onCancel;
-    /** @type {?} */
-    JdbPlgDialogComponent.prototype._contentTpl;
+    JdbPlgDialogComponent.prototype.MOnCancel;
     /** @type {?} */
     JdbPlgDialogComponent.prototype.resolver;
-    /** @type {?} */
-    JdbPlgDialogComponent.prototype.renderer;
 }
 //# sourceMappingURL=jdb-plg-dialog.component.js.map

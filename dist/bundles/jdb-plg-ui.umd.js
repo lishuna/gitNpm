@@ -4,9 +4,35 @@
     (factory((global['jdb-plg-ui'] = {}),global.ng.core,global.ng.animations,global.Rx,global.ng.forms,global.ng.common.http,global.Rx.Observable.prototype,global.ng.common));
 }(this, (function (exports,core,animations,rxjs,forms,http,operators,common) { 'use strict';
 
+    /*! *****************************************************************************
+    Copyright (c) Microsoft Corporation. All rights reserved.
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+    this file except in compliance with the License. You may obtain a copy of the
+    License at http://www.apache.org/licenses/LICENSE-2.0
+
+    THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+    WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+    MERCHANTABLITY OR NON-INFRINGEMENT.
+
+    See the Apache Version 2.0 License for specific language governing permissions
+    and limitations under the License.
+    ***************************************************************************** */
+
+    var __assign = function() {
+        __assign = Object.assign || function __assign(t) {
+            for (var s, i = 1, n = arguments.length; i < n; i++) {
+                s = arguments[i];
+                for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+            }
+            return t;
+        };
+        return __assign.apply(this, arguments);
+    };
+
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
     var JdbPlgToastComponent = /** @class */ (function () {
         function JdbPlgToastComponent() {
@@ -29,14 +55,14 @@
         /** @nocollapse */
         JdbPlgToastComponent.ctorParameters = function () { return []; };
         JdbPlgToastComponent.propDecorators = {
-            "msg": [{ type: core.Input },],
+            msg: [{ type: core.Input }]
         };
         return JdbPlgToastComponent;
     }());
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
     var JdbTabComponent = /** @class */ (function () {
         function JdbTabComponent(componentFactoryResolver, _injector) {
@@ -45,10 +71,14 @@
             this.onTabChange = new core.EventEmitter();
             this.onTabRemove = new core.EventEmitter();
             this.onTopComMsg = new core.EventEmitter();
+            this.totalTipChange = new core.EventEmitter();
             this.items = [];
             this.tabComs = [];
             this.curTabIndex = 0;
             this.tabIdComMap = {};
+            this.totalTip = {
+                isShow: false
+            };
         }
         /**
          * @return {?}
@@ -56,7 +86,15 @@
         JdbTabComponent.prototype.ngOnInit = /**
          * @return {?}
          */
+        function () { };
+        /**
+         * @return {?}
+         */
+        JdbTabComponent.prototype.ngOnChanges = /**
+         * @return {?}
+         */
         function () {
+            // console.log('changes:totalTip:' + this.totalTip);
         };
         /**
          *
@@ -177,23 +215,39 @@
          */
         function (ChildComponent, attrs, title, comId, isCloseFlag) {
             var _this = this;
-            if (comId === void 0) { comId = ""; }
+            if (comId === void 0) { comId = ''; }
             if (isCloseFlag === void 0) { isCloseFlag = false; }
             if (comId && this.tabIdComMap[comId]) {
-                var /** @type {?} */ com = this.tabIdComMap[comId];
+                /** @type {?} */
+                var com = this.tabIdComMap[comId];
                 this.tabChange(com.index);
                 return;
             }
-            var /** @type {?} */ childComponent = this.componentFactoryResolver.resolveComponentFactory(ChildComponent);
-            var /** @type {?} */ comInstance = this.target.createComponent(childComponent);
-            var /** @type {?} */ keys = Object.keys(attrs);
+            /** @type {?} */
+            var childComponent = this.componentFactoryResolver.resolveComponentFactory(ChildComponent);
+            /** @type {?} */
+            var comInstance = this.target.createComponent(childComponent);
+            /** @type {?} */
+            var keys = Object.keys(attrs);
             this.items.push({
                 title: title,
                 isCloseFlag: isCloseFlag,
-                theme: (attrs.theme ? (attrs.theme.name ? attrs.theme.name : null) : null),
-                style: (attrs.theme ? (attrs.theme.style ? attrs.theme.style : null) : null),
-                height: (attrs.theme ? (attrs.theme.height ? attrs.theme.height : null) : null),
-                borderLength: (attrs.theme ? (attrs.theme.borderLength ? attrs.theme.borderLength : null) : null)
+                theme: attrs.theme ? (attrs.theme.name ? attrs.theme.name : null) : null,
+                style: attrs.theme
+                    ? attrs.theme.style
+                        ? attrs.theme.style
+                        : null
+                    : null,
+                height: attrs.theme
+                    ? attrs.theme.height
+                        ? attrs.theme.height
+                        : null
+                    : null,
+                borderLength: attrs.theme
+                    ? attrs.theme.borderLength
+                        ? attrs.theme.borderLength
+                        : null
+                    : null
             });
             keys.forEach(function (value) {
                 comInstance.instance[value] = attrs[value];
@@ -224,7 +278,7 @@
          * @return {?}
          */
         function (tabIndex) {
-            this.tabComs[tabIndex].location.nativeElement.style.display = "none";
+            this.tabComs[tabIndex].location.nativeElement.style.display = 'none';
         };
         /**
          * @param {?} tabIndex
@@ -235,7 +289,7 @@
          * @return {?}
          */
         function (tabIndex) {
-            this.tabComs[tabIndex].location.nativeElement.style.display = "block";
+            this.tabComs[tabIndex].location.nativeElement.style.display = 'block';
         };
         /**
          * @param {?} index
@@ -253,7 +307,8 @@
             this.setOneComShow(index);
             this.curTabIndex = index;
             this.onTabChange.emit(index);
-            this.tabComs[index].instance.tabRefresh && this.tabComs[index].instance.tabRefresh({});
+            this.tabComs[index].instance.tabRefresh &&
+                this.tabComs[index].instance.tabRefresh({});
             // this.tabComs[index].destroy();
         };
         /**
@@ -287,8 +342,9 @@
             }
             this.setOneComShow(this.curTabIndex);
             this.onTabRemove.emit(index);
-            var /** @type {?} */ tabIdComMap = this.tabIdComMap;
-            for (var /** @type {?} */ key in tabIdComMap) {
+            /** @type {?} */
+            var tabIdComMap = this.tabIdComMap;
+            for (var key in tabIdComMap) {
                 if (tabIdComMap[key].index == index) {
                     delete tabIdComMap[key];
                     break;
@@ -304,8 +360,9 @@
          * @return {?}
          */
         function (id) {
-            var /** @type {?} */ tabIdComMap = this.tabIdComMap;
-            for (var /** @type {?} */ key in tabIdComMap) {
+            /** @type {?} */
+            var tabIdComMap = this.tabIdComMap;
+            for (var key in tabIdComMap) {
                 if (key == id) {
                     this.removeTab(tabIdComMap[key]['index']);
                     break;
@@ -327,26 +384,28 @@
         JdbTabComponent.decorators = [
             { type: core.Component, args: [{
                         selector: 'jdb-tab',
-                        template: "<div class=\"tab-wraper\"> <div class=\"tab-nav-wraper\"> <div *ngFor=\"let item of items;let i = index;\" class=\"tab-item {{item.theme}} {{item.style}} tab-item-hei{{item.height}}\" [ngClass]=\"{'tab-selected':i == curTabIndex, 'trapezoid1':item.theme === 'trapezoid'&&(i == 0)}\" title='{{item.title}}'> <div (click)=\"tabChange(i)\" class=\"tab-text\" [ngClass]=\"{'trapezoid-div':item.theme === 'trapezoid'}\"> {{item.title}}</div> <span class=\"close-btn\" (click)=\"removeTab(i)\" *ngIf=\"i !== 0 && item.isCloseFlag != true\">&times;</span> <div *ngIf=\"item.borderLength === 'short'\" class=\"self-border\"></div> </div> </div> <div class=\"tab-content-wraper\"> <div #tabContent class=\"place-holder\"></div> </div> </div> ",
+                        template: "<div class=\"tab-wraper\"> <div class=\"tab-nav-wraper\"> <div *ngFor=\"let item of items;let i = index;\" class=\"tab-item {{item.theme}} {{item.style}} tab-item-hei{{item.height}}\" [ngClass]=\"{'tab-selected':i == curTabIndex, 'trapezoid1':item.theme === 'trapezoid'&&(i == 0)}\" title='{{item.title}}'> <div (click)=\"tabChange(i)\" class=\"tab-text\" [ngClass]=\"{'trapezoid-div':item.theme === 'trapezoid'}\"> {{item.title}}<span *ngIf=\"totalTip.isShow ? totalTip.isShow : false\" class=\"tab-total\">{{totalTip[i]}}</span> </div> <span class=\"close-btn\" (click)=\"removeTab(i)\" *ngIf=\"i !== 0 && item.isCloseFlag != true\">&times;</span> <div *ngIf=\"item.borderLength === 'short'\" class=\"self-border\"></div> </div> </div> <div class=\"tab-content-wraper\"> <div #tabContent class=\"place-holder\"></div> </div> </div> "
                     },] },
         ];
         /** @nocollapse */
         JdbTabComponent.ctorParameters = function () { return [
-            { type: core.ComponentFactoryResolver, },
-            { type: core.Injector, },
+            { type: core.ComponentFactoryResolver },
+            { type: core.Injector }
         ]; };
         JdbTabComponent.propDecorators = {
-            "target": [{ type: core.ViewChild, args: ['tabContent', { read: core.ViewContainerRef },] },],
-            "onTabChange": [{ type: core.Output },],
-            "onTabRemove": [{ type: core.Output },],
-            "onTopComMsg": [{ type: core.Output },],
+            target: [{ type: core.ViewChild, args: ['tabContent', { read: core.ViewContainerRef },] }],
+            onTabChange: [{ type: core.Output }],
+            onTabRemove: [{ type: core.Output }],
+            onTopComMsg: [{ type: core.Output }],
+            totalTip: [{ type: core.Input }],
+            totalTipChange: [{ type: core.Output }]
         };
         return JdbTabComponent;
     }());
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
     var ShowPictureComponent = /** @class */ (function () {
         function ShowPictureComponent() {
@@ -378,15 +437,15 @@
         /** @nocollapse */
         ShowPictureComponent.ctorParameters = function () { return []; };
         ShowPictureComponent.propDecorators = {
-            "pictureUrl": [{ type: core.Input },],
-            "update": [{ type: core.Output },],
+            pictureUrl: [{ type: core.Input }],
+            update: [{ type: core.Output }]
         };
         return ShowPictureComponent;
     }());
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
     var PictureViewerComponent = /** @class */ (function () {
         function PictureViewerComponent(renderer) {
@@ -492,7 +551,8 @@
          * @return {?}
          */
         function () {
-            var /** @type {?} */ imgContent = this.imgContent.nativeElement;
+            /** @type {?} */
+            var imgContent = this.imgContent.nativeElement;
             this.renderer.setElementStyle(imgContent, 'height', this.maxHeight + 'px');
             this.renderer.setElementStyle(imgContent, 'width', this.maxWidth + 'px');
             if (this.jdbShowType == 1) {
@@ -511,15 +571,19 @@
          */
         function (index) {
             var _this = this;
-            var /** @type {?} */ image = new Image();
+            /** @type {?} */
+            var image = new Image();
             image.onload = function () {
-                // 获取当前加载图片宽高
-                var /** @type {?} */ w = image.width;
-                var /** @type {?} */ h = image.height;
-                var /** @type {?} */ hRatio;
-                var /** @type {?} */ wRatio;
-                // 设置默认比例以及容器宽高
-                var /** @type {?} */ imgRate = w / h; // 图片宽高比
+                /** @type {?} */
+                var w = image.width;
+                /** @type {?} */
+                var h = image.height;
+                /** @type {?} */
+                var hRatio;
+                /** @type {?} */
+                var wRatio;
+                /** @type {?} */
+                var imgRate = w / h; // 图片宽高比
                 // const maxWidth = 800;
                 // const maxHeight = 600;
                 wRatio = _this.maxWidth / w;
@@ -660,7 +724,8 @@
             if (this.imgOperate.num > 4) {
                 this.imgOperate.num = 4;
             }
-            var /** @type {?} */ rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
+            /** @type {?} */
+            var rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
             this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
         };
         // 缩小
@@ -675,7 +740,8 @@
             if (this.imgOperate.num < 1) {
                 this.imgOperate.num = 0.5;
             }
-            var /** @type {?} */ rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
+            /** @type {?} */
+            var rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
             this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
         };
         // 逆时针旋转
@@ -687,7 +753,8 @@
          */
         function () {
             this.imgOperate.degnum++;
-            var /** @type {?} */ rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
+            /** @type {?} */
+            var rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
             this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
         };
         // 顺时针旋转
@@ -699,7 +766,8 @@
          */
         function () {
             this.imgOperate.degnum--;
-            var /** @type {?} */ rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
+            /** @type {?} */
+            var rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
             this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
         };
         // 重置图片数据
@@ -714,7 +782,8 @@
                 num: 1,
                 degnum: 0
             };
-            var /** @type {?} */ rate = 'scale(1,1) rotate(0deg)';
+            /** @type {?} */
+            var rate = 'scale(1,1) rotate(0deg)';
             this.renderer.setElementStyle(this.elem[this.current].children[0], 'transition', 'transform 0.2s linear 0.4s');
             this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
         };
@@ -778,26 +847,26 @@
         ];
         /** @nocollapse */
         PictureViewerComponent.ctorParameters = function () { return [
-            { type: core.Renderer, },
+            { type: core.Renderer }
         ]; };
         PictureViewerComponent.propDecorators = {
-            "pictureList": [{ type: core.Input },],
-            "update": [{ type: core.Output },],
-            "imgBox": [{ type: core.ViewChild, args: ['img',] },],
-            "imgContent": [{ type: core.ViewChild, args: ['imgContent',] },],
-            "maxWidth": [{ type: core.Input },],
-            "maxHeight": [{ type: core.Input },],
-            "jdbShowType": [{ type: core.Input },],
-            "jdbMaster": [{ type: core.Input },],
-            "jdbClear": [{ type: core.Input },],
-            "jdbCurrent": [{ type: core.Input },],
+            pictureList: [{ type: core.Input }],
+            update: [{ type: core.Output }],
+            imgBox: [{ type: core.ViewChild, args: ['img',] }],
+            imgContent: [{ type: core.ViewChild, args: ['imgContent',] }],
+            maxWidth: [{ type: core.Input }],
+            maxHeight: [{ type: core.Input }],
+            jdbShowType: [{ type: core.Input }],
+            jdbMaster: [{ type: core.Input }],
+            jdbClear: [{ type: core.Input }],
+            jdbCurrent: [{ type: core.Input }]
         };
         return PictureViewerComponent;
     }());
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
     var DragDirective = /** @class */ (function () {
         function DragDirective(elem, render) {
@@ -806,6 +875,7 @@
             this.render = render;
             this.isDown = false;
         }
+        // 点击事件
         /**
          * @param {?} event
          * @return {?}
@@ -815,8 +885,10 @@
          * @return {?}
          */
         function (event) {
-            var /** @type {?} */ wRate = localStorage.getItem('dragWidth');
-            var /** @type {?} */ hRate = localStorage.getItem('dragHeight');
+            /** @type {?} */
+            var wRate = localStorage.getItem('dragWidth');
+            /** @type {?} */
+            var hRate = localStorage.getItem('dragHeight');
             this.isDown = true;
             this.disLeft = this.elem.nativeElement.offsetLeft;
             this.disTop = this.elem.nativeElement.offsetTop;
@@ -825,6 +897,7 @@
             event.target.style.cursor = 'move';
             // event.preventDefault();
         };
+        // 监听移动事件事件
         /**
          * @param {?} event
          * @return {?}
@@ -837,13 +910,16 @@
             event.preventDefault();
             // 判断该元素是否被点击了。
             if (this.isDown) {
-                var /** @type {?} */ newdisX = event.clientX - this.disX;
-                var /** @type {?} */ newdisY = event.clientY - this.disY;
+                /** @type {?} */
+                var newdisX = event.clientX - this.disX;
+                /** @type {?} */
+                var newdisY = event.clientY - this.disY;
                 this.elem.nativeElement.style.left = newdisX + this.disLeft + 'px';
                 this.elem.nativeElement.style.top = newdisY + this.disTop + 'px';
             }
             return false;
         };
+        // 监听document离开事件
         /**
          * @return {?}
          */
@@ -858,6 +934,7 @@
                 this.disTop = this.elem.nativeElement.offsetTop;
             }
         };
+        // 监听元素离开事件
         /**
          * @return {?}
          */
@@ -884,21 +961,21 @@
         ];
         /** @nocollapse */
         DragDirective.ctorParameters = function () { return [
-            { type: core.ElementRef, },
-            { type: core.Renderer, },
+            { type: core.ElementRef },
+            { type: core.Renderer }
         ]; };
         DragDirective.propDecorators = {
-            "onMousedown": [{ type: core.HostListener, args: ['mousedown', ['$event'],] },],
-            "onMousemove": [{ type: core.HostListener, args: ['mousemove', ['$event'],] },],
-            "onMouseup": [{ type: core.HostListener, args: ['mouseup', ['$event'],] },],
-            "onMouseleave": [{ type: core.HostListener, args: ['mouseleave', ['$event'],] },],
+            onMousedown: [{ type: core.HostListener, args: ['mousedown', ['$event'],] }],
+            onMousemove: [{ type: core.HostListener, args: ['mousemove', ['$event'],] }],
+            onMouseup: [{ type: core.HostListener, args: ['mouseup', ['$event'],] }],
+            onMouseleave: [{ type: core.HostListener, args: ['mouseleave', ['$event'],] }]
         };
         return DragDirective;
     }());
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
     var JdbPlgPaginationComponent = /** @class */ (function () {
         function JdbPlgPaginationComponent(el, renderer2) {
@@ -922,6 +999,7 @@
                 { value: 50, text: '50条/页' }
             ];
             this._jdbSimple = false;
+            this._jdbSelectWidth = '90px';
             this.jdbPageSizeChange = new core.EventEmitter();
             this.jdbPageIndexChange = new core.EventEmitter();
         }
@@ -932,6 +1010,7 @@
             function () {
                 return this._showTotal;
             },
+            // 是否展示总数标签
             set: /**
              * @param {?} value
              * @return {?}
@@ -949,6 +1028,7 @@
             function () {
                 return this._total;
             },
+            // 数据总数
             set: /**
              * @param {?} value
              * @return {?}
@@ -971,6 +1051,7 @@
             function () {
                 return this._current;
             },
+            // jdbPageIndex与_current关联，表示页码
             set: /**
              * @param {?} value
              * @return {?}
@@ -995,6 +1076,7 @@
             function () {
                 return this._showPageSize;
             },
+            // 是否展示切换条数select
             set: /**
              * @param {?} value
              * @return {?}
@@ -1012,6 +1094,7 @@
             function () {
                 return this._pageSize;
             },
+            // 默认条数
             set: /**
              * @param {?} value
              * @return {?}
@@ -1033,6 +1116,7 @@
             function () {
                 return this._options;
             },
+            // 默认下拉选择条数数组
             set: /**
              * @param {?} value
              * @return {?}
@@ -1044,9 +1128,11 @@
                 }
                 // 判断是否为数组
                 if (Object.prototype.toString.call(value) === '[object Array]') {
-                    var /** @type {?} */ optionsArr_1 = [];
+                    /** @type {?} */
+                    var optionsArr_1 = [];
                     value.forEach(function (elem) {
-                        var /** @type {?} */ obj = {
+                        /** @type {?} */
+                        var obj = {
                             value: elem,
                             text: elem + '条/页'
                         };
@@ -1065,6 +1151,7 @@
             function () {
                 return this._showQuickJump;
             },
+            // 是否展示快速跳转页面
             set: /**
              * @param {?} value
              * @return {?}
@@ -1082,12 +1169,31 @@
             function () {
                 return this.jdbSimple;
             },
+            // 分页样式
             set: /**
              * @param {?} value
              * @return {?}
              */
             function (value) {
                 this._jdbSimple = this.toBoolean(value);
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(JdbPlgPaginationComponent.prototype, "jdbSelectWidth", {
+            get: /**
+             * @return {?}
+             */
+            function () {
+                return this._jdbSelectWidth;
+            },
+            // 下拉框宽度设置，防止window系统出现滚动条位置不够
+            set: /**
+             * @param {?} value
+             * @return {?}
+             */
+            function (value) {
+                this._jdbSelectWidth = value;
             },
             enumerable: true,
             configurable: true
@@ -1102,24 +1208,23 @@
         function () {
             // 向上取整
             this._lastIndex = Math.ceil(this._total / this._pageSize);
-            // 如果当前页码大于尾页，则等于尾页
-            // if (this._current > this._lastIndex) {
-            //   this.jdbPageIndex = this._lastIndex;
-            //   this.jdbPageIndexChange.emit(this.jdbPageIndex);
-            // }
-            var /** @type {?} */ tmpPages = [];
+            /** @type {?} */
+            var tmpPages = [];
             if (this._lastIndex <= 9) {
                 // 若总页数不超过9，则全部展示在页面上
-                for (var /** @type {?} */ i = 2; i <= this._lastIndex - 1; i++) {
+                for (var i = 2; i <= this._lastIndex - 1; i++) {
                     tmpPages.push({
                         index: i
                     });
                 }
             }
             else {
-                var /** @type {?} */ current = +this._current;
-                var /** @type {?} */ left = Math.max(2, current - 2);
-                var /** @type {?} */ right = Math.min(current + 2, this._lastIndex - 1);
+                /** @type {?} */
+                var current = +this._current;
+                /** @type {?} */
+                var left = Math.max(2, current - 2);
+                /** @type {?} */
+                var right = Math.min(current + 2, this._lastIndex - 1);
                 // 特殊处理正数第五个数和倒数第五个数
                 if (current === 5) {
                     left = 2;
@@ -1133,24 +1238,29 @@
                 if (this._lastIndex - current <= 3) {
                     left = this._lastIndex - 6;
                 }
-                for (var /** @type {?} */ i = left; i <= right; i++) {
+                for (var i = left; i <= right; i++) {
                     tmpPages.push({ index: i });
                 }
             }
             this.pages = tmpPages;
         };
-        // status为true表示页码切换，num表示页码，false表示条数切换，num表示条数
+        // status为true表示页码切换，num表示页码，false表示条数切换，num表示条数  e为$event
         /**
          * @param {?} status
          * @param {?} num
+         * @param {?=} e
          * @return {?}
          */
         JdbPlgPaginationComponent.prototype.dataChange = /**
          * @param {?} status
          * @param {?} num
+         * @param {?=} e
          * @return {?}
          */
-        function (status, num) {
+        function (status, num, e) {
+            if (e) {
+                e.stopPropagation();
+            }
             if (status) {
                 if (num === this._firstIndex - 1 || num === this._lastIndex + 1) {
                     return;
@@ -1195,27 +1305,31 @@
         };
         // 点击左箭头(为什么使用条数除以2呢)
         /**
+         * @param {?} e
          * @param {?} pageSize
          * @return {?}
          */
         JdbPlgPaginationComponent.prototype.jumpBefore = /**
+         * @param {?} e
          * @param {?} pageSize
          * @return {?}
          */
-        function (pageSize) {
-            this.dataChange(true, this._current - Math.round(pageSize / 2));
+        function (e, pageSize) {
+            this.dataChange(true, this._current - Math.round(pageSize / 2), e);
         };
         // 点击右箭头
         /**
+         * @param {?} e
          * @param {?} pageSize
          * @return {?}
          */
         JdbPlgPaginationComponent.prototype.jumpAfter = /**
+         * @param {?} e
          * @param {?} pageSize
          * @return {?}
          */
-        function (pageSize) {
-            this.dataChange(true, this._current + Math.round(pageSize / 2));
+        function (e, pageSize) {
+            this.dataChange(true, this._current + Math.round(pageSize / 2), e);
         };
         // 转换为boolean,即实现有这个字段就认为为true,没有即为false
         /**
@@ -1239,39 +1353,41 @@
          * @return {?}
          */
         function (obj) {
-            var /** @type {?} */ reg = /^[0-9]*$/;
+            /** @type {?} */
+            var reg = /^[0-9]*$/;
             return reg.test(obj);
         };
         JdbPlgPaginationComponent.decorators = [
             { type: core.Component, args: [{
                         selector: 'app-jdb-plg-pagination',
-                        template: "<div class=\"jdb-plg-pagination\">\n    <!-- \u603B\u6761\u6570 -->\n    <span *ngIf=\"_showTotal\" class=\"total-box\">\n      \u5171{{_total}}\u6761\n    </span>\n\n    <div class=\"operate-box\">\n        <!-- \u6761\u6570\u5207\u6362 -->\n        <div class=\"jdb-plg-pagination-options\" *ngIf=\"_showPageSize\">\n            <app-jdb-plg-select (ngModelChange)=\"dataChange(false,$event)\" [jdbSize]=\"'small'\" [jdbWidth]=\"'90px'\" [(ngModel)]=\"_pageSize\" [jdbSelectList]=\"_options\"></app-jdb-plg-select>\n        </div>\n        <!-- \u57FA\u672C\u5206\u9875\u6837\u5F0F -->\n        <ul *ngIf=\"!_jdbSimple\" class=\"base-pagination\">\n            <!-- \u4E0A\u4E00\u9875\u6309\u94AE -->\n            <li class=\"jdb-plg-pagination-prev\" title=\"\u4E0A\u4E00\u9875\" [ngClass]=\"{'disabled':_current===_firstIndex}\" (click)=\"dataChange(true,_current-1)\">\n                <span class=\"jdbIcon icon-pagination-prev\"></span>\n            </li>\n            <!-- \u9996\u9875\u6309\u94AE -->\n            <li class=\"jdb-plg-pagination-first\" title=\"\u9996\u9875\" [ngClass]=\"{'active':_current===_firstIndex}\" (click)=\"dataChange(true,_firstIndex)\">\n                {{_firstIndex}}\n            </li>\n            <!-- \u7701\u7565\u53F7 -->\n            <li class=\"jdb-plg-pagination-forward\" *ngIf=\"(_lastIndex >9)&&(_current-4>_firstIndex)\" (click)=\"jumpBefore(_pageSize)\">\n                <span class=\"icon-pagination-more\"></span>\n                <span class=\"icon-pagination-jump-prev\"></span>\n            </li>\n            <!-- \u6309\u94AE -->\n            <li class=\"jdb-plg-pagination-pager\" *ngFor=\"let page of pages\" [ngClass]=\"{'active':_current===page.index}\" (click)=\"dataChange(true,page.index)\">\n                {{page.index}}\n            </li>\n            <!-- \u7701\u7565\u53F7 -->\n            <li class=\"jdb-plg-pagination-backward\" *ngIf=\"(_lastIndex >9)&&(_current+4<_lastIndex)\" (click)=\"jumpAfter(_pageSize)\">\n                <span class=\"icon-pagination-more\"></span>\n                <span class=\"icon-pagination-jump-next\"></span>\n            </li>\n            <!-- \u5C3E\u9875\u6309\u94AE -->\n            <li class=\"jdb-plg-pagination-last\" *ngIf=\"(_lastIndex>0)&&(_lastIndex!==_firstIndex)\" title=\"\u5C3E\u9875\" [ngClass]=\"{'active':_current===_lastIndex}\" (click)=\"dataChange(true,_lastIndex)\">\n                {{_lastIndex}}\n            </li>\n            <!-- \u4E0B\u4E00\u9875\u6309\u94AE -->\n            <li class=\"jdb-plg-pagination-next\" title=\"\u4E0B\u4E00\u9875\" [ngClass]=\"{'disabled':_current===_lastIndex}\" (click)=\"dataChange(true,_current+1)\">\n                <span class=\"jdbIcon icon-pagination-next\"></span>\n            </li>\n        </ul>\n        <!-- \u7B80\u5355\u5206\u9875\u6837\u5F0F -->\n        <div class=\"simple-pagination\" *ngIf=\"_jdbSimple\">\n            <div class=\"left-box\">\n                <span class=\"icon-pagination-first\" [ngClass]=\"{'disabled':_current===_firstIndex}\" (click)=\"dataChange(true,_firstIndex)\"></span>\n                <span class=\"icon-pagination-prev\" [ngClass]=\"{'disabled':_current===_firstIndex}\" (click)=\"dataChange(true,_current-1)\"></span>\n            </div>\n            <div class=\"center-box\">\n                {{_current}} / {{_lastIndex}}\n            </div>\n            <div class=\"right-box\">\n                <span class=\"icon-pagination-next\" [ngClass]=\"{'disabled':_current===_lastIndex}\" (click)=\"dataChange(true,_current+1)\"></span>\n                <span class=\"icon-pagination-last\" [ngClass]=\"{'disabled':_current===_lastIndex}\" (click)=\"dataChange(true,_lastIndex)\"></span>\n            </div>\n        </div>\n        <!-- \u5FEB\u901F\u8DF3\u8F6C -->\n        <div *ngIf=\"_showQuickJump\" class=\"quick-jumper\">\n            \u7B2C\n            <input #inputJump type=\"text\" [(ngModel)]=\"quickJumpPage\" (keyup.enter)=\"quickJump()\" appOnlyNumber=\"true\"> \u9875\n            <button (click)=\"quickJump()\">\u8DF3\u8F6C</button>\n        </div>\n    </div>\n</div>",
+                        template: "<div class=\"jdb-plg-pagination\">\n    <!-- \u603B\u6761\u6570 -->\n    <span *ngIf=\"_showTotal\" class=\"total-box\">\n      \u5171{{_total}}\u6761\n    </span>\n\n    <div class=\"operate-box\">\n        <!-- \u6761\u6570\u5207\u6362 -->\n        <div class=\"jdb-plg-pagination-options\" *ngIf=\"_showPageSize\">\n            <app-jdb-plg-select (ngModelChange)=\"dataChange(false,$event)\" [jdbSize]=\"'small'\" [jdbWidth]=\"_jdbSelectWidth\" [(ngModel)]=\"_pageSize\" [jdbSelectList]=\"_options\"></app-jdb-plg-select>\n        </div>\n        <!-- \u57FA\u672C\u5206\u9875\u6837\u5F0F -->\n        <ul *ngIf=\"!_jdbSimple\" class=\"base-pagination\">\n            <!-- \u4E0A\u4E00\u9875\u6309\u94AE -->\n            <li class=\"jdb-plg-pagination-prev\" title=\"\u4E0A\u4E00\u9875\" [ngClass]=\"{'disabled':_current===_firstIndex}\" (click)=\"dataChange(true,_current-1,$event)\">\n                <span class=\"jdbIcon icon-pagination-prev\"></span>\n            </li>\n            <!-- \u9996\u9875\u6309\u94AE -->\n            <li class=\"jdb-plg-pagination-first\" title=\"\u9996\u9875\" [ngClass]=\"{'active':_current===_firstIndex}\" (click)=\"dataChange(true,_firstIndex,$event)\">\n                {{_firstIndex}}\n            </li>\n            <!-- \u7701\u7565\u53F7 -->\n            <li class=\"jdb-plg-pagination-forward\" *ngIf=\"(_lastIndex >9)&&(_current-4>_firstIndex)\" (click)=\"jumpBefore($event,_pageSize)\">\n                <span class=\"icon-pagination-more\"></span>\n                <span class=\"icon-pagination-jump-prev\"></span>\n            </li>\n            <!-- \u6309\u94AE -->\n            <li class=\"jdb-plg-pagination-pager\" *ngFor=\"let page of pages\" [ngClass]=\"{'active':_current===page.index}\" (click)=\"dataChange(true,page.index,$event)\">\n                {{page.index}}\n            </li>\n            <!-- \u7701\u7565\u53F7 -->\n            <li class=\"jdb-plg-pagination-backward\" *ngIf=\"(_lastIndex >9)&&(_current+4<_lastIndex)\" (click)=\"jumpAfter($event,_pageSize)\">\n                <span class=\"icon-pagination-more\"></span>\n                <span class=\"icon-pagination-jump-next\"></span>\n            </li>\n            <!-- \u5C3E\u9875\u6309\u94AE -->\n            <li class=\"jdb-plg-pagination-last\" *ngIf=\"(_lastIndex>0)&&(_lastIndex!==_firstIndex)\" title=\"\u5C3E\u9875\" [ngClass]=\"{'active':_current===_lastIndex}\" (click)=\"dataChange(true,_lastIndex,$event)\">\n                {{_lastIndex}}\n            </li>\n            <!-- \u4E0B\u4E00\u9875\u6309\u94AE -->\n            <li class=\"jdb-plg-pagination-next\" title=\"\u4E0B\u4E00\u9875\" [ngClass]=\"{'disabled':_current===_lastIndex}\" (click)=\"dataChange(true,_current+1,$event)\">\n                <span class=\"jdbIcon icon-pagination-next\"></span>\n            </li>\n        </ul>\n        <!-- \u7B80\u5355\u5206\u9875\u6837\u5F0F -->\n        <div class=\"simple-pagination\" *ngIf=\"_jdbSimple\">\n            <div class=\"left-box\">\n                <span class=\"icon-pagination-first\" [ngClass]=\"{'disabled':_current===_firstIndex}\" (click)=\"dataChange(true,_firstIndex,$event)\"></span>\n                <span class=\"icon-pagination-prev\" [ngClass]=\"{'disabled':_current===_firstIndex}\" (click)=\"dataChange(true,_current-1,$event)\"></span>\n            </div>\n            <div class=\"center-box\">\n                {{_current}} / {{_lastIndex}}\n            </div>\n            <div class=\"right-box\">\n                <span class=\"icon-pagination-next\" [ngClass]=\"{'disabled':_current===_lastIndex}\" (click)=\"dataChange(true,_current+1,$event)\"></span>\n                <span class=\"icon-pagination-last\" [ngClass]=\"{'disabled':_current===_lastIndex}\" (click)=\"dataChange(true,_lastIndex,$event)\"></span>\n            </div>\n        </div>\n        <!-- \u5FEB\u901F\u8DF3\u8F6C -->\n        <div *ngIf=\"_showQuickJump\" class=\"quick-jumper\">\n            \u7B2C\n            <input #inputJump type=\"text\" [(ngModel)]=\"quickJumpPage\" (keyup.enter)=\"quickJump()\" appOnlyNumber=\"true\"> \u9875\n            <button (click)=\"quickJump()\">\u8DF3\u8F6C</button>\n        </div>\n    </div>\n</div>",
                     },] },
         ];
         /** @nocollapse */
         JdbPlgPaginationComponent.ctorParameters = function () { return [
-            { type: core.ElementRef, },
-            { type: core.Renderer2, },
+            { type: core.ElementRef },
+            { type: core.Renderer2 }
         ]; };
         JdbPlgPaginationComponent.propDecorators = {
-            "jdbPageSizeChange": [{ type: core.Output },],
-            "jdbPageIndexChange": [{ type: core.Output },],
-            "inputJump": [{ type: core.ViewChild, args: ['inputJump',] },],
-            "jdbShowTotal": [{ type: core.Input },],
-            "jdbTotal": [{ type: core.Input },],
-            "jdbPageIndex": [{ type: core.Input },],
-            "jdbShowPageSize": [{ type: core.Input },],
-            "jdbPageSize": [{ type: core.Input },],
-            "jdbSizeOptions": [{ type: core.Input },],
-            "jdbShowQuickJump": [{ type: core.Input },],
-            "jdbSimple": [{ type: core.Input },],
+            jdbPageSizeChange: [{ type: core.Output }],
+            jdbPageIndexChange: [{ type: core.Output }],
+            inputJump: [{ type: core.ViewChild, args: ['inputJump',] }],
+            jdbShowTotal: [{ type: core.Input }],
+            jdbTotal: [{ type: core.Input }],
+            jdbPageIndex: [{ type: core.Input }],
+            jdbShowPageSize: [{ type: core.Input }],
+            jdbPageSize: [{ type: core.Input }],
+            jdbSizeOptions: [{ type: core.Input }],
+            jdbShowQuickJump: [{ type: core.Input }],
+            jdbSimple: [{ type: core.Input }],
+            jdbSelectWidth: [{ type: core.Input }]
         };
         return JdbPlgPaginationComponent;
     }());
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
     var JdbPlgButtonComponent = /** @class */ (function () {
         function JdbPlgButtonComponent(_elementRef, _renderer) {
@@ -1380,23 +1496,371 @@
         ];
         /** @nocollapse */
         JdbPlgButtonComponent.ctorParameters = function () { return [
-            { type: core.ElementRef, },
-            { type: core.Renderer2, },
+            { type: core.ElementRef },
+            { type: core.Renderer2 }
         ]; };
         JdbPlgButtonComponent.propDecorators = {
-            "jdbSize": [{ type: core.Input },],
-            "jdbType": [{ type: core.Input },],
-            "jdbLoading": [{ type: core.Input },],
+            jdbSize: [{ type: core.Input }],
+            jdbType: [{ type: core.Input }],
+            jdbLoading: [{ type: core.Input }]
         };
         return JdbPlgButtonComponent;
     }());
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
     var JdbPlgDialogComponent = /** @class */ (function () {
-        function JdbPlgDialogComponent(resolver, renderer) {
+        function JdbPlgDialogComponent(resolver) {
+            this.resolver = resolver;
+            this._customClass = '';
+            this._maskClass = '';
+            this._visible = false;
+            this._title = '';
+            this._closeable = true;
+            this._animationStatus = '11';
+            this._width = '400px';
+            this._footerHide = false;
+            this._isConfirm = false;
+            this._okText = '';
+            this._cancelText = '';
+            this._RogerText = '';
+            this._state = 'hideM';
+            this.MvisibileChange = new core.EventEmitter();
+            this.MOnOk = new core.EventEmitter();
+            this.MOnCancel = new core.EventEmitter();
+        }
+        Object.defineProperty(JdbPlgDialogComponent.prototype, "Mvisible", {
+            get: /**
+             * @return {?}
+             */
+            function () {
+                return this._visible;
+            },
+            // 弹框显隐
+            set: /**
+             * @param {?} value
+             * @return {?}
+             */
+            function (value) {
+                /** @type {?} */
+                var visible = this.toBoolean(value);
+                if (this._visible === visible) {
+                    return;
+                }
+                this._visible = visible;
+                this.MvisibileChange.emit(this._visible);
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(JdbPlgDialogComponent.prototype, "MfooterHiden", {
+            get: /**
+             * @return {?}
+             */
+            function () {
+                return this._footerHide;
+            },
+            // 隐藏footer
+            set: /**
+             * @param {?} value
+             * @return {?}
+             */
+            function (value) {
+                /** @type {?} */
+                var visible = this.toBoolean(value);
+                if (this._visible === visible) {
+                    return;
+                }
+                this._footerHide = visible;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(JdbPlgDialogComponent.prototype, "Mtitle", {
+            // 标题
+            set: /**
+             * @param {?} value
+             * @return {?}
+             */
+            function (value) {
+                if (value instanceof core.TemplateRef) {
+                    this._titleTpl = value;
+                }
+                else {
+                    this._title = value;
+                }
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(JdbPlgDialogComponent.prototype, "Mcontent", {
+            set: /**
+             * @param {?} value
+             * @return {?}
+             */
+            function (value) {
+                if (value instanceof core.TemplateRef) {
+                    this._contentTpl = value;
+                }
+                else {
+                    this._content = value;
+                }
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(JdbPlgDialogComponent.prototype, "Mfooter", {
+            set: /**
+             * @param {?} value
+             * @return {?}
+             */
+            function (value) {
+                if (value instanceof core.TemplateRef) {
+                    this._footerTpl = value;
+                }
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(JdbPlgDialogComponent.prototype, "Mwidth", {
+            // 自定义宽度
+            set: /**
+             * @param {?} value
+             * @return {?}
+             */
+            function (value) {
+                this._width = typeof value === 'number' ? value + 'px' : value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        // 定位modal位置和样式
+        /**
+         * @return {?}
+         */
+        JdbPlgDialogComponent.prototype.setStyle = /**
+         * @return {?}
+         */
+        function () {
+            /** @type {?} */
+            var el = this.contentEl.nativeElement;
+            this._bodyStyleMap = __assign({ width: this._width });
+        };
+        /**
+         * @param {?} e
+         * @return {?}
+         */
+        JdbPlgDialogComponent.prototype.onEsc = /**
+         * @param {?} e
+         * @return {?}
+         */
+        function (e) {
+            this.clickCancel(e);
+        };
+        Object.defineProperty(JdbPlgDialogComponent.prototype, "Mclass", {
+            // 自定义样式
+            set: /**
+             * @param {?} value
+             * @return {?}
+             */
+            function (value) {
+                this._customClass = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(JdbPlgDialogComponent.prototype, "MOkText", {
+            set: /**
+             * @param {?} value
+             * @return {?}
+             */
+            function (value) {
+                this._okText = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(JdbPlgDialogComponent.prototype, "McancelText", {
+            set: /**
+             * @param {?} value
+             * @return {?}
+             */
+            function (value) {
+                this._cancelText = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(JdbPlgDialogComponent.prototype, "MRogerText", {
+            set: /**
+             * @param {?} value
+             * @return {?}
+             */
+            function (value) {
+                this._isConfirm = true;
+                this._RogerText = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        /**
+         * @return {?}
+         */
+        JdbPlgDialogComponent.prototype.ngOnInit = /**
+         * @return {?}
+         */
+        function () {
+            this.setStyle();
+        };
+        /**
+         * @param {?} component
+         * @return {?}
+         */
+        JdbPlgDialogComponent.prototype.createDynamicComponent = /**
+         * @param {?} component
+         * @return {?}
+         */
+        function (component) {
+            /** @type {?} */
+            var factory = this.resolver.resolveComponentFactory(/** @type {?} */ (this._content));
+            this.bodyEl.createComponent(factory);
+        };
+        /**
+         * @return {?}
+         */
+        JdbPlgDialogComponent.prototype.ngAfterViewInit = /**
+         * @return {?}
+         */
+        function () {
+        };
+        /**
+         * @param {?} changes
+         * @return {?}
+         */
+        JdbPlgDialogComponent.prototype.ngOnChanges = /**
+         * @param {?} changes
+         * @return {?}
+         */
+        function (changes) {
+            var _this = this;
+            if (this._visible) {
+                this._state = 'showM';
+                setTimeout(function () {
+                    _this.contentEl.nativeElement.parentNode.focus();
+                }, 200);
+            }
+            else {
+                this._state = 'hideM';
+            }
+        };
+        /**
+         * @param {?} e
+         * @return {?}
+         */
+        JdbPlgDialogComponent.prototype.clickCancel = /**
+         * @param {?} e
+         * @return {?}
+         */
+        function (e) {
+            this._visible = false;
+            this._state = 'hideM';
+            this.MOnCancel.emit(e);
+        };
+        /**
+         * @param {?} e
+         * @return {?}
+         */
+        JdbPlgDialogComponent.prototype.clickOk = /**
+         * @param {?} e
+         * @return {?}
+         */
+        function (e) {
+            if (this.MOnOk) {
+                this.MOnOk.emit(e);
+            }
+            else {
+                this._visible = false;
+                this._state = 'hideM';
+            }
+        };
+        /**
+         * @param {?} e
+         * @return {?}
+         */
+        JdbPlgDialogComponent.prototype.closeModal = /**
+         * @param {?} e
+         * @return {?}
+         */
+        function (e) {
+            if ((/** @type {?} */ (e.target)).getAttribute('role') === 'dialog') {
+                this.clickCancel(e);
+                this._state = 'hideM';
+            }
+        };
+        /**
+         * @param {?} value
+         * @return {?}
+         */
+        JdbPlgDialogComponent.prototype.toBoolean = /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            return value === '' || (value && value !== false);
+        };
+        JdbPlgDialogComponent.decorators = [
+            { type: core.Component, args: [{
+                        selector: 'app-jdb-plg-dialog',
+                        template: "<div [ngClass]=\"_customClass\"> <div class=\"_maskClass\" [ngClass]=\"{'hid':!_visible}\" [style.zIndex]=\"1000\"></div> <div class=\"jdb-modal\" tabindex=\"-1\" role=\"dialog\" [ngClass]=\"{'hid':!_visible}\" [ngStyle]=\"{'dispaly':!_visible}\" (click)=\"closeModal($event)\" class=\"_wrapClass\" [ngClass]=\"_wrapClass\" [style.zIndex]=\"1000\" [attr.aria-modalId]=\"modalId\"> <div #modal_content class=\"modal\" [@optionsState]=\"_state\" [ngStyle]=\"_bodyStyleMap\"> <div class=\"modal-content\"> <ng-template [ngIf]=\"_closeable\"> <button class=\"modal-close\" (click)=\"clickCancel($event)\"> <!-- <span class=\"modal-close-x\"></span> --> <span class=\"icon-close\"></span> </button> </ng-template> <div class=\"modal-header\" *ngIf=\"_title||_titleTpl\"> <div class=\"modal-title\" [attr.id]=\"modalId\"> <ng-template #defaultTitle> {{_title}} </ng-template> <ng-template [ngTemplateOutlet]=\"_titleTpl||defaultTitle\"> </ng-template> </div> </div> <div class=\"modal-body\"> <ng-template #defaultContent>{{_content}}</ng-template> <ng-template [ngTemplateOutlet]=\"_contentTpl||defaultContent\"></ng-template> <ng-template #modal_component></ng-template> </div> <div class=\"modal-footer\" *ngIf=\"!_footerHide\"> <ng-template #defalutFooter> <button *ngIf=\"!_isConfirm\" app-jdb-plg-button [jdbSize]=\"'default'\" [jdbType]=\"'white'\" (click)=\"clickCancel($event)\"><span>{{_cancelText||'\u53D6\u6D88'}}</span></button> <button *ngIf=\"!_isConfirm\" class=\"right-btn\" app-jdb-plg-button [jdbSize]=\"'default'\" [jdbType]=\"'primary'\" (click)=\"clickOk($event)\"><span>{{_okText||'\u786E\u8BA4'}}</span></button> <button *ngIf=\"_isConfirm\" class=\"right-btn\" app-jdb-plg-button [jdbSize]=\"'default'\" [jdbType]=\"'primary'\" (click)=\"clickOk($event)\" (click)=\"clickOk($event)\"><span>{{_RogerText}}</span></button> </ng-template> <ng-template [ngTemplateOutlet]=\"_footerTpl||defalutFooter\"></ng-template> </div> <div tabindex=\"0\" style=\"width:0px;height:0px;overflow:hidden;\">aaa</div> </div> </div> </div> </div>",
+                        // styleUrls: ['./jdb-plg-dialog.component.scss'],
+                        animations: [
+                            animations.trigger('optionsState', [
+                                animations.state('showM', animations.style({
+                                    transform: 'translate(-50%, -50%)',
+                                    opacity: '1',
+                                })),
+                                animations.state('hideM', animations.style({
+                                    transform: 'translate(-50%, -80%)',
+                                    opacity: '0',
+                                })),
+                                animations.transition('showM <=> hideM', animations.animate('200ms ease-out'))
+                            ])
+                        ]
+                    },] },
+        ];
+        /** @nocollapse */
+        JdbPlgDialogComponent.ctorParameters = function () { return [
+            { type: core.ComponentFactoryResolver }
+        ]; };
+        JdbPlgDialogComponent.propDecorators = {
+            contentEl: [{ type: core.ViewChild, args: ['modal_content',] }],
+            bodyEl: [{ type: core.ViewChild, args: ['modal_component', { read: core.ViewContainerRef },] }],
+            MvisibileChange: [{ type: core.Output }],
+            MOnOk: [{ type: core.Output }],
+            MOnCancel: [{ type: core.Output }],
+            Mvisible: [{ type: core.Input }],
+            MfooterHiden: [{ type: core.Input }],
+            Mtitle: [{ type: core.Input }],
+            Mcontent: [{ type: core.Input }],
+            Mfooter: [{ type: core.Input }],
+            Mwidth: [{ type: core.Input }],
+            onEsc: [{ type: core.HostListener, args: ['keydown.esc', ['$event'],] }],
+            Mclass: [{ type: core.Input }],
+            MOkText: [{ type: core.Input }],
+            McancelText: [{ type: core.Input }],
+            MRogerText: [{ type: core.Input }]
+        };
+        return JdbPlgDialogComponent;
+    }());
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+     */
+    var JdbPlgNewDialogComponent = /** @class */ (function () {
+        function JdbPlgNewDialogComponent(resolver, renderer) {
             this.resolver = resolver;
             this.renderer = renderer;
             this._visible = false;
@@ -1418,13 +1882,14 @@
             this.onOk = new core.EventEmitter();
             this.onCancel = new core.EventEmitter();
         }
-        Object.defineProperty(JdbPlgDialogComponent.prototype, "visible", {
+        Object.defineProperty(JdbPlgNewDialogComponent.prototype, "visible", {
             get: /**
              * @return {?}
              */
             function () {
                 return this._visible;
             },
+            //弹框显示隐藏
             set: /**
              * @param {?} value
              * @return {?}
@@ -1442,7 +1907,8 @@
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(JdbPlgDialogComponent.prototype, "_width", {
+        Object.defineProperty(JdbPlgNewDialogComponent.prototype, "_width", {
+            //弹框宽度
             set: /**
              * @param {?} value
              * @return {?}
@@ -1458,7 +1924,7 @@
         /**
          * @return {?}
          */
-        JdbPlgDialogComponent.prototype.ngOnInit = /**
+        JdbPlgNewDialogComponent.prototype.ngOnInit = /**
          * @return {?}
          */
         function () {
@@ -1474,16 +1940,18 @@
         /**
          * @return {?}
          */
-        JdbPlgDialogComponent.prototype.createDynamicDom = /**
+        JdbPlgNewDialogComponent.prototype.createDynamicDom = /**
          * @return {?}
          */
         function () {
-            var /** @type {?} */ insertDiv = this.renderer.createElement('div');
-            var /** @type {?} */ text = this.renderer.createText(this._text);
+            /** @type {?} */
+            var insertDiv = this.renderer.createElement('div');
+            /** @type {?} */
+            var text = this.renderer.createText(this._text);
             this.renderer.addClass(insertDiv, this._class);
             this.renderer.appendChild(insertDiv, text);
             if (this._style) {
-                for (var /** @type {?} */ key in this._style) {
+                for (var key in this._style) {
                     this.renderer.setStyle(insertDiv, key, this._style[key]);
                 }
             }
@@ -1493,17 +1961,17 @@
          * @param {?} component
          * @return {?}
          */
-        JdbPlgDialogComponent.prototype.createDynamicComponent = /**
+        JdbPlgNewDialogComponent.prototype.createDynamicComponent = /**
          * @param {?} component
          * @return {?}
          */
         function (component) {
-            //生成组件工厂函数
-            var /** @type {?} */ factory = this.resolver.resolveComponentFactory(component);
+            /** @type {?} */
+            var factory = this.resolver.resolveComponentFactory(component);
             //生成组件实例
             this.contentComponentRef = this.bodyEl.createComponent(factory);
             //模板的输入属性
-            for (var /** @type {?} */ key in this._componentParams) {
+            for (var key in this._componentParams) {
                 this.contentComponentRef.instance[key] = this._componentParams[key];
             }
             //立刻执行一次变更检测
@@ -1512,7 +1980,7 @@
         /**
          * @return {?}
          */
-        JdbPlgDialogComponent.prototype.ngAfterViewInit = /**
+        JdbPlgNewDialogComponent.prototype.ngAfterViewInit = /**
          * @return {?}
          */
         function () {
@@ -1526,7 +1994,7 @@
          * @param {?} e
          * @return {?}
          */
-        JdbPlgDialogComponent.prototype.closeModel = /**
+        JdbPlgNewDialogComponent.prototype.closeModel = /**
          * @param {?} e
          * @return {?}
          */
@@ -1539,7 +2007,7 @@
          * @param {?} e
          * @return {?}
          */
-        JdbPlgDialogComponent.prototype.confirmModel = /**
+        JdbPlgNewDialogComponent.prototype.confirmModel = /**
          * @param {?} e
          * @return {?}
          */
@@ -1552,7 +2020,7 @@
          * @param {?} e
          * @return {?}
          */
-        JdbPlgDialogComponent.prototype.cancelModel = /**
+        JdbPlgNewDialogComponent.prototype.cancelModel = /**
          * @param {?} e
          * @return {?}
          */
@@ -1565,12 +2033,13 @@
          * @param {?} e
          * @return {?}
          */
-        JdbPlgDialogComponent.prototype.cusCloseModal = /**
+        JdbPlgNewDialogComponent.prototype.cusCloseModal = /**
          * @param {?} e
          * @return {?}
          */
         function (e) {
-            var /** @type {?} */ flag = this.isChildOf(e.target, this.contentEl.nativeElement);
+            /** @type {?} */
+            var flag = this.isChildOf(e.target, this.contentEl.nativeElement);
             if (this._closeType === 'mask' && !flag) {
                 this.onClose.emit(e);
                 this._state = 'hideM';
@@ -1586,13 +2055,14 @@
          * @param {?} parent
          * @return {?}
          */
-        JdbPlgDialogComponent.prototype.isChildOf = /**
+        JdbPlgNewDialogComponent.prototype.isChildOf = /**
          * @param {?} child
          * @param {?} parent
          * @return {?}
          */
         function (child, parent) {
-            var /** @type {?} */ parentNode;
+            /** @type {?} */
+            var parentNode;
             if (child && parent) {
                 parentNode = child.parentNode;
                 while (parentNode) {
@@ -1604,18 +2074,16 @@
             }
             return false;
         };
-        JdbPlgDialogComponent.decorators = [
+        JdbPlgNewDialogComponent.decorators = [
             { type: core.Component, args: [{
-                        selector: 'app-jdb-plg-dialog',
-                        template: "<div [ngClass]=\"_customClass\"> <div class=\"_maskClass\" [ngClass]=\"{'hid':!_visible}\" [style.zIndex]=\"1000\"></div> <div class=\"jdb-modal\" tabindex=\"-1\" role=\"dialog\" [ngClass]=\"{'hid':!_visible}\" [ngStyle]=\"{'dispaly':!_visible}\" (click)=\"cusCloseModal($event)\" class=\"_wrapClass\" [ngClass]=\"_wrapClass\" [style.zIndex]=\"1000\"> <div #modal_content class=\"modal\" [@optionsState]=\"_state\" [ngStyle]=\"_bodyStyleMap\"> <div class=\"modal-content\"> <ng-template [ngIf]=\"_closeable\"> <button class=\"modal-close\" style=\"outline: none\" (click)=\"closeModel($event)\"> <span class=\"icon-close\"></span> </button> </ng-template> <div class=\"modal-header\" *ngIf=\"_title\"> <div class=\"modal-title\" [attr.id]=\"modalId\">{{_title}}</div> </div> <div class=\"modal-body _modalTextBody\"> <ng-template #modal_component></ng-template> <ng-template #modal_text></ng-template> </div> <div class=\"modal-footer\" *ngIf=\"_footer\"> <button *ngIf=\"!_isConfirm\" app-jdb-plg-button [jdbSize]=\"'default'\" [jdbType]=\"'gray'\" (click)=\"cancelModel($event)\"><span>{{_cancelText}}</span></button> <button *ngIf=\"!_isConfirm\" class=\"right-btn\" app-jdb-plg-button [jdbSize]=\"'default'\" [jdbType]=\"'primary'\" (click)=\"confirmModel($event)\"><span>{{_okText}}</span></button> <button *ngIf=\"_isConfirm\" class=\"right-btn confirm-btn\" app-jdb-plg-button [jdbSize]=\"'default'\" [jdbType]=\"'primary'\" (click)=\"confirmModel($event)\"><span>{{_okText}}</span></button> </div> </div> </div> </div> </div>",
+                        selector: 'app-jdb-plg-new-dialog',
+                        template: "<div [ngClass]=\"_customClass\"> <div class=\"_newMaskClass\" [ngClass]=\"{'hid':!_visible}\" [style.zIndex]=\"900\"></div> <div class=\"jdb-modal\" tabindex=\"-1\" role=\"dialog\" [ngClass]=\"{'hid':!_visible}\" [ngStyle]=\"{'dispaly':!_visible}\" (click)=\"cusCloseModal($event)\" class=\"_newWrapClass\" [ngClass]=\"_newWrapClass\" [style.zIndex]=\"900\"> <div #modal_content class=\"new-modal\" [@optionsState]=\"_state\" [ngStyle]=\"_bodyStyleMap\"> <div class=\"modal-content\"> <ng-template [ngIf]=\"_closeable\"> <button class=\"new-modal-close\" style=\"outline: none\" (click)=\"closeModel($event)\"> <span class=\"icon-close\"></span> </button> </ng-template> <div class=\"new-modal-header\" *ngIf=\"_title\"> <div class=\"new-modal-title\" [attr.id]=\"modalId\">{{_title}}</div> </div> <div class=\"new-modal-body _modalTextBody\"> <ng-template #modal_component></ng-template> <ng-template #modal_text></ng-template> </div> <div class=\"new-modal-footer\" *ngIf=\"_footer\"> <button *ngIf=\"!_isConfirm\" app-jdb-plg-button [jdbSize]=\"'default'\" [jdbType]=\"'gray'\" (click)=\"cancelModel($event)\"><span>{{_cancelText}}</span></button> <button *ngIf=\"!_isConfirm\" class=\"right-btn\" app-jdb-plg-button [jdbSize]=\"'default'\" [jdbType]=\"'primary'\" (click)=\"confirmModel($event)\"><span>{{_okText}}</span></button> <button *ngIf=\"_isConfirm\" class=\"right-btn confirm-btn\" app-jdb-plg-button [jdbSize]=\"'default'\" [jdbType]=\"'primary'\" (click)=\"confirmModel($event)\"><span>{{_okText}}</span></button> </div> </div> </div> </div> </div>",
                         animations: [
                             animations.trigger('optionsState', [
                                 animations.state('showM', animations.style({
-                                    transform: 'translate(-50%, -50%)',
                                     opacity: '1',
                                 })),
                                 animations.state('hideM', animations.style({
-                                    transform: 'translate(-50%, -80%)',
                                     opacity: '0',
                                 })),
                                 animations.transition('showM <=> hideM', animations.animate('200ms ease-out'))
@@ -1624,27 +2092,27 @@
                     },] },
         ];
         /** @nocollapse */
-        JdbPlgDialogComponent.ctorParameters = function () { return [
-            { type: core.ComponentFactoryResolver, },
-            { type: core.Renderer2, },
+        JdbPlgNewDialogComponent.ctorParameters = function () { return [
+            { type: core.ComponentFactoryResolver },
+            { type: core.Renderer2 }
         ]; };
-        JdbPlgDialogComponent.propDecorators = {
-            "contentEl": [{ type: core.ViewChild, args: ['modal_content',] },],
-            "textEl": [{ type: core.ViewChild, args: ['modal_text',] },],
-            "bodyEl": [{ type: core.ViewChild, args: ['modal_component', { read: core.ViewContainerRef },] },],
-            "onClose": [{ type: core.Output },],
-            "onOk": [{ type: core.Output },],
-            "onCancel": [{ type: core.Output },],
-            "_contentTpl": [{ type: core.Input },],
-            "visible": [{ type: core.Input },],
-            "_width": [{ type: core.Input },],
+        JdbPlgNewDialogComponent.propDecorators = {
+            contentEl: [{ type: core.ViewChild, args: ['modal_content',] }],
+            textEl: [{ type: core.ViewChild, args: ['modal_text',] }],
+            bodyEl: [{ type: core.ViewChild, args: ['modal_component', { read: core.ViewContainerRef },] }],
+            onClose: [{ type: core.Output }],
+            onOk: [{ type: core.Output }],
+            onCancel: [{ type: core.Output }],
+            _contentTpl: [{ type: core.Input }],
+            visible: [{ type: core.Input }],
+            _width: [{ type: core.Input }]
         };
-        return JdbPlgDialogComponent;
+        return JdbPlgNewDialogComponent;
     }());
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
     var OnlyNumberDirective = /** @class */ (function () {
         function OnlyNumberDirective(el) {
@@ -1660,7 +2128,8 @@
          * @return {?}
          */
         function (event) {
-            var /** @type {?} */ e = /** @type {?} */ (event);
+            /** @type {?} */
+            var e = /** @type {?} */ (event);
             if (this.appOnlyNumber) {
                 if ([46, 8, 9, 27, 13, 110, 190].indexOf(e.keyCode) !== -1 ||
                     // Allow: Ctrl+A
@@ -1676,8 +2145,10 @@
                     // let it happen, don't do anything
                     return;
                 }
-                var /** @type {?} */ ch = String.fromCharCode(e.keyCode);
-                var /** @type {?} */ regEx = new RegExp(this.regexStr);
+                /** @type {?} */
+                var ch = String.fromCharCode(e.keyCode);
+                /** @type {?} */
+                var regEx = new RegExp(this.regexStr);
                 if (regEx.test(ch)) {
                     return;
                 }
@@ -1686,6 +2157,7 @@
                 }
             }
         };
+        // 解决中文输入法输入汉字问题
         /**
          * @param {?} event
          * @return {?}
@@ -1704,19 +2176,19 @@
         ];
         /** @nocollapse */
         OnlyNumberDirective.ctorParameters = function () { return [
-            { type: core.ElementRef, },
+            { type: core.ElementRef }
         ]; };
         OnlyNumberDirective.propDecorators = {
-            "appOnlyNumber": [{ type: core.Input },],
-            "onKeyDown": [{ type: core.HostListener, args: ['keydown', ['$event'],] },],
-            "onKeyUp": [{ type: core.HostListener, args: ['keyup', ['$event'],] },],
+            appOnlyNumber: [{ type: core.Input }],
+            onKeyDown: [{ type: core.HostListener, args: ['keydown', ['$event'],] }],
+            onKeyUp: [{ type: core.HostListener, args: ['keyup', ['$event'],] }]
         };
         return OnlyNumberDirective;
     }());
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
     var WatermarkDirective = /** @class */ (function () {
         function WatermarkDirective(el, render) {
@@ -1767,11 +2239,13 @@
             // const phone = localStorage.getItem('cxPhone') || '';
             // const str = `CXWEB-${name}${phone.slice(-4)}`;
             if (WatermarkDirective._text) {
-                var /** @type {?} */ node = document.createElement('canvas');
+                /** @type {?} */
+                var node = document.createElement('canvas');
                 node.width = 500;
                 node.height = 200;
                 node.style.display = 'none';
-                var /** @type {?} */ ctx = node.getContext('2d');
+                /** @type {?} */
+                var ctx = node.getContext('2d');
                 ctx.rotate(-10 * Math.PI / 180);
                 ctx.font = '16px microsoft yahei';
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
@@ -1819,15 +2293,15 @@
         ];
         /** @nocollapse */
         WatermarkDirective.ctorParameters = function () { return [
-            { type: core.ElementRef, },
-            { type: core.Renderer2, },
+            { type: core.ElementRef },
+            { type: core.Renderer2 }
         ]; };
         return WatermarkDirective;
     }());
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
     var JdbPlgSelectComponent = /** @class */ (function () {
         function JdbPlgSelectComponent(renderer2, renderer) {
@@ -1863,6 +2337,7 @@
             function () {
                 return this._jdbItemDisabled;
             },
+            // 选项中某项禁用字段
             set: /**
              * @param {?} value
              * @return {?}
@@ -1880,6 +2355,7 @@
             function () {
                 return this._jdbError;
             },
+            // 输入框是否处于报错状态
             set: /**
              * @param {?} value
              * @return {?}
@@ -1897,6 +2373,7 @@
             function () {
                 return this._jdbSureDisabled;
             },
+            // 选项中某项确认禁用
             set: /**
              * @param {?} value
              * @return {?}
@@ -1914,6 +2391,15 @@
             function () {
                 return this._placeHolder;
             },
+            // // 选项中某项不禁用
+            // @Input()
+            // set jdbNoDisabled(value) {
+            //   this._jdbNoDisabled = value;
+            // }
+            // get jdbNoDisabled(): any {
+            //   return this._jdbNoDisabled;
+            // }
+            // 选项中某项确认禁用
             set: /**
              * @param {?} value
              * @return {?}
@@ -1931,6 +2417,7 @@
             function () {
                 return this._jdbClear;
             },
+            // 是否需要显示清空
             set: /**
              * @param {?} value
              * @return {?}
@@ -1948,6 +2435,7 @@
             function () {
                 return this._selectList;
             },
+            // 下拉框数组，必写
             set: /**
              * @param {?} value
              * @return {?}
@@ -1956,9 +2444,11 @@
                 var _this = this;
                 // 循环数组，判断是否需要展示带有图片下拉框
                 if (value) {
-                    var /** @type {?} */ arr_1 = [];
+                    /** @type {?} */
+                    var arr_1 = [];
                     value.forEach(function (element) {
-                        var /** @type {?} */ type = typeof element;
+                        /** @type {?} */
+                        var type = typeof element;
                         if (type === 'string' || type === 'number') {
                             arr_1.push({
                                 text: element,
@@ -1985,6 +2475,7 @@
             function () {
                 return this._size;
             },
+            // 下拉框尺寸，默认为高度30px；small为24px,large为40px;
             set: /**
              * @param {?} value
              * @return {?}
@@ -2002,6 +2493,7 @@
             function () {
                 return this._width;
             },
+            // 自定义宽度
             set: /**
              * @param {?} value
              * @return {?}
@@ -2019,6 +2511,7 @@
             function () {
                 return this._optionText;
             },
+            // 展示在页面内容字段名称
             set: /**
              * @param {?} value
              * @return {?}
@@ -2036,6 +2529,7 @@
             function () {
                 return this._optionValue;
             },
+            // 返回给serve对应字段名称
             set: /**
              * @param {?} value
              * @return {?}
@@ -2053,6 +2547,7 @@
             function () {
                 return this._jdbDisabled;
             },
+            // 下拉框禁用
             set: /**
              * @param {?} value
              * @return {?}
@@ -2070,6 +2565,7 @@
             function () {
                 return this._jdbMode;
             },
+            // select模式，默认为单选，chooseMore多选
             set: /**
              * @param {?} value
              * @return {?}
@@ -2101,9 +2597,9 @@
                 _this.show = false;
                 _this.renderer.setElementClass(_this.inputDom.nativeElement, 'jdb-plg-select-active', _this.show);
             });
-            if (this._jdbClear && !this._jdbDisabled) {
-                // 监听输入框元素，若有内容时则滑上显示x
-                this.renderer2.listen(this.inputDom.nativeElement, 'mouseenter', function () {
+            // 监听输入框元素，若有内容时则滑上显示x
+            this.renderer2.listen(this.inputDom.nativeElement, 'mouseenter', function () {
+                if (_this._jdbClear && !_this._jdbDisabled) {
                     // 若输入框不存在内容，则不做任何操作
                     if (_this._jdbMode === 'chooseOne' && (_this.inputText === '' || _this.show)) {
                         return;
@@ -2116,8 +2612,10 @@
                     }
                     _this.isShowClear = true;
                     _this.renderer.setElementClass(_this.inputDom.nativeElement, 'jdb-plg-select-active', _this.show);
-                });
-                this.renderer2.listen(this.inputDom.nativeElement, 'mouseleave', function () {
+                }
+            });
+            this.renderer2.listen(this.inputDom.nativeElement, 'mouseleave', function () {
+                if (_this._jdbClear && !_this._jdbDisabled) {
                     // 若输入框不存在内容，则不做任何操作
                     if (_this._jdbMode === 'chooseOne' && (_this.inputText === '' || _this.show)) {
                         return;
@@ -2130,8 +2628,35 @@
                     }
                     _this.isShowClear = false;
                     _this.renderer.setElementClass(_this.inputDom.nativeElement, 'jdb-plg-select-active', _this.show);
-                });
-            }
+                }
+            });
+            // if (this._jdbClear && !this._jdbDisabled) {
+            // 	// 监听输入框元素，若有内容时则滑上显示x
+            // 	this.renderer2.listen(this.inputDom.nativeElement, 'mouseenter', () => {
+            // 		// 若输入框不存在内容，则不做任何操作
+            // 		if (this._jdbMode === 'chooseOne' && (this.inputText === '' || this.show)) {
+            // 			return;
+            // 		} else if (this._jdbMode === 'chooseNum' && (this.inputText === 0 || this.show)) {
+            // 			return;
+            // 		} else if (this._jdbMode === 'chooseMore' && (this.inputText.length === 0 || this.show)) {
+            // 			return;
+            // 		}
+            // 		this.isShowClear = true;
+            // 		this.renderer.setElementClass(this.inputDom.nativeElement, 'jdb-plg-select-active', this.show);
+            // 	});
+            // 	this.renderer2.listen(this.inputDom.nativeElement, 'mouseleave', () => {
+            // 		// 若输入框不存在内容，则不做任何操作
+            // 		if (this._jdbMode === 'chooseOne' && (this.inputText === '' || this.show)) {
+            // 			return;
+            // 		} else if (this._jdbMode === 'chooseNum' && (this.inputText === 0 || this.show)) {
+            // 			return;
+            // 		} else if (this._jdbMode === 'chooseMore' && (this.inputText.length === 0 || this.show)) {
+            // 			return;
+            // 		}
+            // 		this.isShowClear = false;
+            // 		this.renderer.setElementClass(this.inputDom.nativeElement, 'jdb-plg-select-active', this.show);
+            // 	});
+            // }
         };
         /**
          * @return {?}
@@ -2178,7 +2703,6 @@
          * @return {?}
          */
         function () {
-            var _a, _b;
             if (this._jdbMode === 'chooseMore') {
                 this._classMap = (_a = {},
                     _a["" + this._size] = true,
@@ -2198,6 +2722,7 @@
                 ,
                     _b);
             }
+            var _a, _b;
         };
         // 点击x，清空内容
         /**
@@ -2257,11 +2782,16 @@
          * @return {?}
          */
         function (listHeight) {
-            var /** @type {?} */ offetTop = this.getTop(this.inputDom.nativeElement); // 元素offetTop
-            var /** @type {?} */ scrollTop = this.getScrollTop(this.inputDom.nativeElement.parentElement);
-            var /** @type {?} */ clientHeight = document.documentElement.clientHeight || document.body.clientHeight; // 屏幕高度
-            var /** @type {?} */ elemHeight = this.inputDom.nativeElement.clientHeight; // 元素高度
-            var /** @type {?} */ paddingHeight;
+            /** @type {?} */
+            var offetTop = this.getTop(this.inputDom.nativeElement);
+            /** @type {?} */
+            var scrollTop = this.getScrollTop(this.inputDom.nativeElement.parentElement);
+            /** @type {?} */
+            var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+            /** @type {?} */
+            var elemHeight = this.inputDom.nativeElement.clientHeight;
+            /** @type {?} */
+            var paddingHeight;
             if (this.jdbSize === 'small') {
                 paddingHeight = 2;
             }
@@ -2271,7 +2801,16 @@
             else if (this.jdbSize === 'middle') {
                 paddingHeight = 5;
             }
-            var /** @type {?} */ flexHeight = clientHeight - offetTop - elemHeight - paddingHeight + scrollTop; // 剩余高度
+            /** @type {?} */
+            var flexHeight = clientHeight - offetTop - elemHeight - paddingHeight + scrollTop; // 剩余高度
+            // console.log(
+            // 	'元素offsetTop', offetTop,
+            // 	'父元素scrollTop', scrollTop,
+            // 	'元素高度', elemHeight,
+            // 	'屏幕高度', clientHeight,
+            // 	'计算后剩余高度', flexHeight,
+            // 	'浮层元素高度', listHeight,
+            // );
             if (flexHeight < listHeight) {
                 // 空间不足
                 this.spaceFlex = false;
@@ -2391,17 +2930,18 @@
             value.forEach(function (item) {
                 _this._selectList.forEach(function (elem) {
                     if (elem[_this._optionValue] === item) {
-                        // inputText为输入框中展示的内容 判断是否有重新赋值text和value字段
-                        var /** @type {?} */ textName = _this._optionText;
-                        var /** @type {?} */ valueName = _this._optionValue;
+                        /** @type {?} */
+                        var textName = _this._optionText;
+                        /** @type {?} */
+                        var valueName = _this._optionValue;
                         if (_this.jdbOptionText) {
                             textName = _this.jdbOptionText;
                         }
                         if (_this.jdbOptionValue) {
                             valueName = _this.jdbOptionValue;
                         }
-                        // key为变量的赋值方法
-                        var /** @type {?} */ obj = {};
+                        /** @type {?} */
+                        var obj = {};
                         obj[textName] = elem[_this._optionText];
                         obj[valueName] = elem[_this._optionValue];
                         _this.inputText.push(obj);
@@ -2479,7 +3019,8 @@
          */
         function (e, item) {
             var _this = this;
-            var /** @type {?} */ flag = false;
+            /** @type {?} */
+            var flag = false;
             // 阻止事件冒泡
             e.stopPropagation();
             // 判断show是否为true
@@ -2501,16 +3042,18 @@
                 this.deleteMoreItem(e, item);
                 return;
             }
-            // inputText为输入框中展示的内容
-            var /** @type {?} */ textName = this._optionText;
-            var /** @type {?} */ valueName = this._optionValue;
+            /** @type {?} */
+            var textName = this._optionText;
+            /** @type {?} */
+            var valueName = this._optionValue;
             if (this.jdbOptionText) {
                 textName = this.jdbOptionText;
             }
             if (this.jdbOptionValue) {
                 valueName = this.jdbOptionValue;
             }
-            var /** @type {?} */ obj = {};
+            /** @type {?} */
+            var obj = {};
             obj[textName] = item[this._optionText];
             obj[valueName] = item[this._optionValue];
             this.inputText.push(obj);
@@ -2534,7 +3077,8 @@
          */
         function (e, item) {
             var _this = this;
-            var /** @type {?} */ flag = false;
+            /** @type {?} */
+            var flag = false;
             // 阻止事件冒泡
             e.stopPropagation();
             // 判断show是否为true
@@ -2574,7 +3118,8 @@
          */
         function (item) {
             var _this = this;
-            var /** @type {?} */ flag = false;
+            /** @type {?} */
+            var flag = false;
             this._chooseMoreArray.forEach(function (element, index) {
                 if (element === item[_this._optionValue]) {
                     flag = true;
@@ -2638,7 +3183,8 @@
          * @return {?}
          */
         function (e) {
-            var /** @type {?} */ offset = e.offsetTop;
+            /** @type {?} */
+            var offset = e.offsetTop;
             if (e.offsetParent != null) {
                 offset += this.getTop(e.offsetParent);
             }
@@ -2654,7 +3200,8 @@
          * @return {?}
          */
         function (e) {
-            var /** @type {?} */ offset = e.scrollTop;
+            /** @type {?} */
+            var offset = e.scrollTop;
             if (e.parentElement != null) {
                 offset += this.getScrollTop(e.parentElement);
             }
@@ -2677,32 +3224,32 @@
         ];
         /** @nocollapse */
         JdbPlgSelectComponent.ctorParameters = function () { return [
-            { type: core.Renderer2, },
-            { type: core.Renderer, },
+            { type: core.Renderer2 },
+            { type: core.Renderer }
         ]; };
         JdbPlgSelectComponent.propDecorators = {
-            "jdbClassName": [{ type: core.Input },],
-            "jdbItemDisabled": [{ type: core.Input },],
-            "jdbError": [{ type: core.Input },],
-            "jdbSureDisabled": [{ type: core.Input },],
-            "jdbPlaceHolder": [{ type: core.Input },],
-            "jdbClear": [{ type: core.Input },],
-            "jdbSelectList": [{ type: core.Input },],
-            "jdbSize": [{ type: core.Input },],
-            "jdbWidth": [{ type: core.Input },],
-            "jdbOptionText": [{ type: core.Input },],
-            "jdbOptionValue": [{ type: core.Input },],
-            "jdbDisabled": [{ type: core.Input },],
-            "jdbMode": [{ type: core.Input },],
-            "inputDom": [{ type: core.ViewChild, args: ['inputDom',] },],
-            "optionList": [{ type: core.ViewChild, args: ['optionList',] },],
+            jdbClassName: [{ type: core.Input }],
+            jdbItemDisabled: [{ type: core.Input }],
+            jdbError: [{ type: core.Input }],
+            jdbSureDisabled: [{ type: core.Input }],
+            jdbPlaceHolder: [{ type: core.Input }],
+            jdbClear: [{ type: core.Input }],
+            jdbSelectList: [{ type: core.Input }],
+            jdbSize: [{ type: core.Input }],
+            jdbWidth: [{ type: core.Input }],
+            jdbOptionText: [{ type: core.Input }],
+            jdbOptionValue: [{ type: core.Input }],
+            jdbDisabled: [{ type: core.Input }],
+            jdbMode: [{ type: core.Input }],
+            inputDom: [{ type: core.ViewChild, args: ['inputDom',] }],
+            optionList: [{ type: core.ViewChild, args: ['optionList',] }]
         };
         return JdbPlgSelectComponent;
     }());
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
     var JdbPlgInputComponent = /** @class */ (function () {
         function JdbPlgInputComponent(render) {
@@ -3020,20 +3567,23 @@
          * @return {?}
          */
         function () {
-            var _a;
             this._classMap = (_a = {},
                 _a["input-" + this._type + "-" + this._size] = true,
                 _a['input-disabled'] = this._disabled,
                 _a['input-error'] = this._error,
                 _a);
+            var _a;
         };
         /**
+         * @param {?} e
          * @return {?}
          */
         JdbPlgInputComponent.prototype.clearTxt = /**
+         * @param {?} e
          * @return {?}
          */
-        function () {
+        function (e) {
+            e.stopPropagation();
             this._value = '';
             this.onChange('');
         };
@@ -3051,7 +3601,7 @@
         JdbPlgInputComponent.decorators = [
             { type: core.Component, args: [{
                         selector: 'app-jdb-plg-input',
-                        template: "<span class=\"input-group-addon\" *ngIf=\"_addOnContentBefore\"> <ng-template [ngTemplateOutlet]=\"_addOnContentBefore\"> </ng-template> </span> <ng-template [ngIf]=\"_type=='text'\"> <div class=\"input-text-wrap\" [ngClass]=\"_inputWrapClass\"> <span class=\"input-prefix\" *ngIf=\"_prefixContent\"> <ng-template [ngTemplateOutlet]=\"_prefixContent\"> </ng-template> </span> <span class=\"input-content\"> <input (blur)=\"_emitBlur($event)\" (focus)=\"_emitFocus($event)\" [disabled]=\"_disabled\" [readonly]=\"_readonly\" [attr.id]=\"jdbId\" [attr.type]=\"_type\" class=\"input\" [ngClass]=\"_classMap\" [attr.placeholder]=\"_placeHolder\" [(ngModel)]=\"jdbValue\" [style.width]=\"width\" maxlength=\"{{jdbMaxLength}}\" #input /> <span class=\"input-clear\" *ngIf=\"_clear && _value && _type=='text'\" (click)=\"clearTxt()\"> <i class=\"close-icon icon-empty\"></i> </span> </span> <span class=\"ant-input-suffix\" *ngIf=\"_suffixContent\"> <i class=\"iconfont icon-guanbi2fill\"></i> <ng-template [ngTemplateOutlet]=\"_suffixContent\"> </ng-template> </span> <div class=\"input-error-tip\" *ngIf=\"jdbError && _errorContent\" [style.width]=\"width\"> <i class=\"icon-message-error error-tip\"></i> <p class=\"input-error-content\"> <ng-template [ngTemplateOutlet]=\"_errorContent\"> </ng-template> </p> </div> </div> </ng-template> <span class=\"input-group-addon\" *ngIf=\"_addOnContentAfter\"> <ng-template [ngTemplateOutlet]=\"_addOnContentAfter\"> </ng-template> </span> <ng-template [ngIf]=\"_type=='textarea'\"> <div class=\"input-text-wrap\"> <textarea (blur)=\"_emitBlur($event)\" (focus)=\"_emitFocus($event)\" (input)=\"textareaOnChange($event)\" [attr.id]=\"jdbId\" #inputTextarea [disabled]=\"_disabled\" [readonly]=\"_readonly\" type=\"textarea\" class=\"input input-textarea\" [ngClass]=\"_classMap\" [attr.placeholder]=\"jdbPlaceHolder\" [(ngModel)]=\"jdbValue\" maxlength=\"{{jdbMaxLength}}\" [style.width]=\"width\"></textarea> <span class=\"textarea-wc-tip\" [ngClass]=\"{'textarea-wc-tip-red': jdbValue&&jdbValue.length == jdbMaxLength}\" *ngIf=\"jdbMaxLength && !_disabled &&!_readonly\">{{(jdbValue&&jdbValue.length)||0}}/{{jdbMaxLength}}</span> </div> </ng-template>",
+                        template: "<span class=\"input-group-addon\" *ngIf=\"_addOnContentBefore\"> <ng-template [ngTemplateOutlet]=\"_addOnContentBefore\"> </ng-template> </span> <ng-template [ngIf]=\"_type=='text'\"> <div class=\"input-text-wrap\" [ngClass]=\"_inputWrapClass\"> <span class=\"input-prefix\" *ngIf=\"_prefixContent\"> <ng-template [ngTemplateOutlet]=\"_prefixContent\"> </ng-template> </span> <span class=\"input-content\"> <input (blur)=\"_emitBlur($event)\" (focus)=\"_emitFocus($event)\" [disabled]=\"_disabled\" [readonly]=\"_readonly\" [attr.id]=\"jdbId\" [attr.type]=\"_type\" class=\"input\" [ngClass]=\"_classMap\" [attr.placeholder]=\"_placeHolder\" [(ngModel)]=\"jdbValue\" [style.width]=\"width\" maxlength=\"{{jdbMaxLength}}\" #input /> <span class=\"input-clear\" *ngIf=\"_clear && _value && _type=='text'\" (click)=\"clearTxt($event)\"> <i class=\"close-icon icon-empty\"></i> </span> </span> <span class=\"ant-input-suffix\" *ngIf=\"_suffixContent\"> <i class=\"iconfont icon-guanbi2fill\"></i> <ng-template [ngTemplateOutlet]=\"_suffixContent\"> </ng-template> </span> <div class=\"input-error-tip\" *ngIf=\"jdbError && _errorContent\" [style.width]=\"width\"> <i class=\"icon-message-error error-tip\"></i> <p class=\"input-error-content\"> <ng-template [ngTemplateOutlet]=\"_errorContent\"> </ng-template> </p> </div> </div> </ng-template> <span class=\"input-group-addon\" *ngIf=\"_addOnContentAfter\"> <ng-template [ngTemplateOutlet]=\"_addOnContentAfter\"> </ng-template> </span> <ng-template [ngIf]=\"_type=='textarea'\"> <div class=\"input-text-wrap\"> <textarea (blur)=\"_emitBlur($event)\" (focus)=\"_emitFocus($event)\" (input)=\"textareaOnChange($event)\" [attr.id]=\"jdbId\" #inputTextarea [disabled]=\"_disabled\" [readonly]=\"_readonly\" type=\"textarea\" class=\"input input-textarea\" [ngClass]=\"_classMap\" [attr.placeholder]=\"jdbPlaceHolder\" [(ngModel)]=\"jdbValue\" maxlength=\"{{jdbMaxLength}}\" [style.width]=\"width\"></textarea> <span class=\"textarea-wc-tip\" [ngClass]=\"{'textarea-wc-tip-red': jdbValue&&jdbValue.length == jdbMaxLength}\" *ngIf=\"jdbMaxLength && !_disabled &&!_readonly\">{{(jdbValue&&jdbValue.length)||0}}/{{jdbMaxLength}}</span> </div> </ng-template>",
                         // styleUrls: ['./jdb-plg-input.component.scss'],
                         encapsulation: core.ViewEncapsulation.None,
                         providers: [
@@ -3065,40 +3615,41 @@
         ];
         /** @nocollapse */
         JdbPlgInputComponent.ctorParameters = function () { return [
-            { type: core.Renderer2, },
+            { type: core.Renderer2 }
         ]; };
         JdbPlgInputComponent.propDecorators = {
-            "width": [{ type: core.Input },],
-            "_errorContent": [{ type: core.ContentChild, args: ['jdbErrorContent',] },],
-            "_addOnContentBefore": [{ type: core.ContentChild, args: ['addContentBefore',] },],
-            "_addOnContentAfter": [{ type: core.ContentChild, args: ['addContentAfter',] },],
-            "_prefixContent": [{ type: core.ContentChild, args: ['prefixContent',] },],
-            "_suffixContent": [{ type: core.ContentChild, args: ['suffixContent',] },],
-            "jdbBlur": [{ type: core.Output },],
-            "jdbFocus": [{ type: core.Output },],
-            "inputEl": [{ type: core.ViewChild, args: ['input',] },],
-            "clearBtnEl": [{ type: core.ViewChild, args: ['clearBtn',] },],
-            "compositionStart": [{ type: core.HostListener, args: ['compositionstart', ['$event'],] },],
-            "compositionEnd": [{ type: core.HostListener, args: ['compositionend', ['$event'],] },],
-            "jdbType": [{ type: core.Input },],
-            "jdbPlaceHolder": [{ type: core.Input },],
-            "jdbSize": [{ type: core.Input },],
-            "jdbDisabled": [{ type: core.Input },],
-            "jdbReadonly": [{ type: core.Input },],
-            "jdbValue": [{ type: core.Input },],
-            "jdbError": [{ type: core.Input },],
-            "jdbClear": [{ type: core.Input },],
-            "jdbMaxLength": [{ type: core.Input },],
-            "jdbPromptData": [{ type: core.Input },],
+            width: [{ type: core.Input }],
+            _errorContent: [{ type: core.ContentChild, args: ['jdbErrorContent',] }],
+            _addOnContentBefore: [{ type: core.ContentChild, args: ['addContentBefore',] }],
+            _addOnContentAfter: [{ type: core.ContentChild, args: ['addContentAfter',] }],
+            _prefixContent: [{ type: core.ContentChild, args: ['prefixContent',] }],
+            _suffixContent: [{ type: core.ContentChild, args: ['suffixContent',] }],
+            jdbBlur: [{ type: core.Output }],
+            jdbFocus: [{ type: core.Output }],
+            inputEl: [{ type: core.ViewChild, args: ['input',] }],
+            clearBtnEl: [{ type: core.ViewChild, args: ['clearBtn',] }],
+            compositionStart: [{ type: core.HostListener, args: ['compositionstart', ['$event'],] }],
+            compositionEnd: [{ type: core.HostListener, args: ['compositionend', ['$event'],] }],
+            jdbType: [{ type: core.Input }],
+            jdbPlaceHolder: [{ type: core.Input }],
+            jdbSize: [{ type: core.Input }],
+            jdbDisabled: [{ type: core.Input }],
+            jdbReadonly: [{ type: core.Input }],
+            jdbValue: [{ type: core.Input }],
+            jdbError: [{ type: core.Input }],
+            jdbClear: [{ type: core.Input }],
+            jdbMaxLength: [{ type: core.Input }],
+            jdbPromptData: [{ type: core.Input }]
         };
         return JdbPlgInputComponent;
     }());
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
-    var /** @type {?} */ keyCode = {
+    /** @type {?} */
+    var keyCode = {
         UP: 38,
         DOWN: 40,
         ENTER: 13
@@ -3106,7 +3657,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
     var JdbPlgAutocompleteComponent = /** @class */ (function () {
         function JdbPlgAutocompleteComponent(el, render) {
@@ -3188,6 +3739,7 @@
          */
         function (simples) {
         };
+        // 键盘事件
         /**
          * @param {?} event
          * @return {?}
@@ -3213,13 +3765,15 @@
                     this.setSearchWord();
                     break;
                 case keyCode.ENTER:
-                    var /** @type {?} */ item = /** @type {?} */ (this.searchResult[this.activeIndex]);
+                    /** @type {?} */
+                    var item = /** @type {?} */ (this.searchResult[this.activeIndex]);
                     this.selectedItem(item, this.activeIndex);
                     break;
                 default:
                     this.activeIndex = -1;
             }
         };
+        // 粘贴事件
         /**
          * @param {?} event
          * @return {?}
@@ -3242,7 +3796,7 @@
             var _this = this;
             if (this._searchWord) {
                 if (this.jdbDataAsyn) ;
-                else { // 同步过滤处理
+                else {
                     // 同步过滤处理
                     this.searchResult = this.jdbDataSource.filter(function (obj) { return obj['text'].indexOf(_this._searchWord) !== -1; });
                     // if (this.searchResult.length > 0) {
@@ -3367,13 +3921,20 @@
          * @return {?}
          */
         function (fn, wait, immediate) {
-            var /** @type {?} */ timeout, /** @type {?} */
-            args, /** @type {?} */
-            context, /** @type {?} */
-            timestamp, /** @type {?} */
-            result;
-            var /** @type {?} */ later = function () {
-                var /** @type {?} */ last = new Date().getTime() - timestamp;
+            /** @type {?} */
+            var timeout;
+            /** @type {?} */
+            var args;
+            /** @type {?} */
+            var context;
+            /** @type {?} */
+            var timestamp;
+            /** @type {?} */
+            var result;
+            /** @type {?} */
+            var later = function () {
+                /** @type {?} */
+                var last = new Date().getTime() - timestamp;
                 if (last < wait && last >= 0) {
                     timeout = setTimeout(later, wait - last);
                 }
@@ -3391,7 +3952,8 @@
                 context = this;
                 args = arguments;
                 timestamp = new Date().getTime();
-                var /** @type {?} */ callNow = immediate && !timeout;
+                /** @type {?} */
+                var callNow = immediate && !timeout;
                 if (!timeout) {
                     timeout = setTimeout(later, wait);
                 }
@@ -3412,27 +3974,36 @@
          * @return {?}
          */
         function (node) {
-            var /** @type {?} */ getOffsetTop = function (ele) {
-                var /** @type {?} */ top = ele.offsetTop;
+            /** @type {?} */
+            var getOffsetTop = function (ele) {
+                /** @type {?} */
+                var top = ele.offsetTop;
                 if (!ele.offsetParent) {
                     top += getOffsetTop(ele.offsetParent);
                 }
                 return top;
             };
-            var /** @type {?} */ getScrollTop = function (ele) {
-                var /** @type {?} */ top = ele.scrollTop;
+            /** @type {?} */
+            var getScrollTop = function (ele) {
+                /** @type {?} */
+                var top = ele.scrollTop;
                 if (!ele.parentElement) {
                     top += getScrollTop(ele.parentElement);
                 }
                 return top;
             };
-            var /** @type {?} */ nodeTop = getOffsetTop(node), /** @type {?} */
-            clientHeight = document.documentElement.clientHeight || document.body.clientHeight, /** @type {?} */
-            scrollTop = getScrollTop(node.parentElement), /** @type {?} */
-            popHeight = this.resultEle.nativeElement.offsetHeight || 250, /** @type {?} */
-            inputHeight = node.querySelector('input[type="text"]').offsetHeight;
-            // console.log('clientHeight:' + clientHeight + 'nodeTop:' + nodeTop + 'nodeHeight:' + nodeHeight + 'scrollTop:' + scrollTop);
-            var /** @type {?} */ lastDirect = clientHeight - (nodeTop - scrollTop) - popHeight - inputHeight;
+            /** @type {?} */
+            var nodeTop = getOffsetTop(node);
+            /** @type {?} */
+            var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+            /** @type {?} */
+            var scrollTop = getScrollTop(node.parentElement);
+            /** @type {?} */
+            var popHeight = this.resultEle.nativeElement.offsetHeight || 250;
+            /** @type {?} */
+            var inputHeight = node.querySelector('input[type="text"]').offsetHeight;
+            /** @type {?} */
+            var lastDirect = clientHeight - (nodeTop - scrollTop) - popHeight - inputHeight;
             if (lastDirect <= 0) {
                 this.render.addClass(this.resultEle.nativeElement, 'pop_top');
             }
@@ -3469,20 +4040,16 @@
                 this._dataSource = value;
                 if (!this.jdbDataAsyn && this._dataSource.length > 0) {
                     if (typeof this._dataSource[0] === 'string') {
-                        this._dataSource = this._dataSource.map(function (val, index) {
-                            return ({
-                                value: val,
-                                text: val
-                            });
-                        });
+                        this._dataSource = this._dataSource.map(function (val, index) { return ({
+                            value: val,
+                            text: val
+                        }); });
                     }
                     else if (typeof this._dataSource[0] === 'object' && (this.dataKey !== 'value' || this.dataVal !== 'text')) {
-                        this._dataSource = this._dataSource.map(function (obj, index) {
-                            return ({
-                                value: obj[_this.dataKey],
-                                text: obj[_this.dataVal]
-                            });
-                        });
+                        this._dataSource = this._dataSource.map(function (obj, index) { return ({
+                            value: obj[_this.dataKey],
+                            text: obj[_this.dataVal]
+                        }); });
                     }
                     this.searchResult = this._dataSource;
                 }
@@ -3575,29 +4142,29 @@
         ];
         /** @nocollapse */
         JdbPlgAutocompleteComponent.ctorParameters = function () { return [
-            { type: core.ElementRef, },
-            { type: core.Renderer2, },
+            { type: core.ElementRef },
+            { type: core.Renderer2 }
         ]; };
         JdbPlgAutocompleteComponent.propDecorators = {
-            "resultEle": [{ type: core.ViewChild, args: ['resultele',] },],
-            "jdbPlaceHolder": [{ type: core.Input },],
-            "width": [{ type: core.Input },],
-            "dataKey": [{ type: core.Input },],
-            "dataVal": [{ type: core.Input },],
-            "jdbDataAsyn": [{ type: core.Input },],
-            "onSelected": [{ type: core.Output },],
-            "OnKeyDown": [{ type: core.HostListener, args: ['keydown', ['$event'],] },],
-            "OnPaste": [{ type: core.HostListener, args: ['paste', ['$event'],] },],
-            "jdbDataSource": [{ type: core.Input },],
-            "jdbSearchParam": [{ type: core.Input },],
-            "jdbServerApi": [{ type: core.Input },],
+            resultEle: [{ type: core.ViewChild, args: ['resultele',] }],
+            jdbPlaceHolder: [{ type: core.Input }],
+            width: [{ type: core.Input }],
+            dataKey: [{ type: core.Input }],
+            dataVal: [{ type: core.Input }],
+            jdbDataAsyn: [{ type: core.Input }],
+            onSelected: [{ type: core.Output }],
+            OnKeyDown: [{ type: core.HostListener, args: ['keydown', ['$event'],] }],
+            OnPaste: [{ type: core.HostListener, args: ['paste', ['$event'],] }],
+            jdbDataSource: [{ type: core.Input }],
+            jdbSearchParam: [{ type: core.Input }],
+            jdbServerApi: [{ type: core.Input }]
         };
         return JdbPlgAutocompleteComponent;
     }());
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
     var CommonMethodService = /** @class */ (function () {
         function CommonMethodService(componentFactoryResolver) {
@@ -3615,7 +4182,8 @@
          * @return {?}
          */
         function (number) {
-            var /** @type {?} */ phoneReg = /^[1][0-9]{10}$/;
+            /** @type {?} */
+            var phoneReg = /^[1][0-9]{10}$/;
             return phoneReg.test(number);
         };
         /*验证姓名是否合法
@@ -3629,7 +4197,8 @@
          * @return {?}
          */
         function (name) {
-            var /** @type {?} */ nameReg = /^[\u4E00-\u9FA5·]{2,20}$/;
+            /** @type {?} */
+            var nameReg = /^[\u4E00-\u9FA5·]{2,20}$/;
             return nameReg.test(name);
         };
         /*验证代偿金额是否为最大1亿，最小一元，只可以两位小数
@@ -3643,7 +4212,8 @@
          * @return {?}
          */
         function (num) {
-            var /** @type {?} */ nameReg = /^([1-9][0-9]{2,9}|10000000000)$/;
+            /** @type {?} */
+            var nameReg = /^([1-9][0-9]{2,9}|10000000000)$/;
             return nameReg.test(num);
         };
         /*数字格式化为千位分隔
@@ -3675,9 +4245,11 @@
          * @return {?}
          */
         function (value) {
-            var /** @type {?} */ timeObj = {};
+            /** @type {?} */
+            var timeObj = {};
             if (value) {
-                var /** @type {?} */ arrDate = value.split('~');
+                /** @type {?} */
+                var arrDate = value.split('~');
                 timeObj['startTime'] = new Date(arrDate[0]).getTime() / 1000;
                 timeObj['endTime'] = new Date(arrDate[1]).getTime() / 1000;
             }
@@ -3703,13 +4275,20 @@
          */
         function (time, type) {
             if (type === void 0) { type = 1; }
-            var /** @type {?} */ myDate = new Date(time * 1000);
-            var /** @type {?} */ year = myDate.getFullYear();
-            var /** @type {?} */ month = this.add0(myDate.getMonth() + 1);
-            var /** @type {?} */ day = this.add0(myDate.getDate());
-            var /** @type {?} */ hour = this.add0(myDate.getHours());
-            var /** @type {?} */ minute = this.add0(myDate.getMinutes());
-            var /** @type {?} */ second = this.add0(myDate.getSeconds());
+            /** @type {?} */
+            var myDate = new Date(time * 1000);
+            /** @type {?} */
+            var year = myDate.getFullYear();
+            /** @type {?} */
+            var month = this.add0(myDate.getMonth() + 1);
+            /** @type {?} */
+            var day = this.add0(myDate.getDate());
+            /** @type {?} */
+            var hour = this.add0(myDate.getHours());
+            /** @type {?} */
+            var minute = this.add0(myDate.getMinutes());
+            /** @type {?} */
+            var second = this.add0(myDate.getSeconds());
             switch (type) {
                 case 1:
                     return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
@@ -3756,8 +4335,24 @@
             if (n === void 0) { n = 0; }
             if (joinStr === void 0) { joinStr = '-'; }
             if (isTimeStamp === void 0) { isTimeStamp = true; }
-            var /** @type {?} */ date = new Date();
-            var /** @type {?} */ tarYear, /** @type {?} */ tarMonth, /** @type {?} */ tarDay, /** @type {?} */ curYear, /** @type {?} */ curMonth, /** @type {?} */ curDay, /** @type {?} */ curDate, /** @type {?} */ tarDate;
+            /** @type {?} */
+            var date = new Date();
+            /** @type {?} */
+            var tarYear;
+            /** @type {?} */
+            var tarMonth;
+            /** @type {?} */
+            var tarDay;
+            /** @type {?} */
+            var curYear;
+            /** @type {?} */
+            var curMonth;
+            /** @type {?} */
+            var curDay;
+            /** @type {?} */
+            var curDate;
+            /** @type {?} */
+            var tarDate;
             //获取当前年月日
             curYear = date.getFullYear();
             curMonth = date.getMonth() + 1;
@@ -3773,7 +4368,8 @@
                 return n === 0 ? [curDate] : [curDate, tarDate];
             }
             if (joinStr !== '-') {
-                var /** @type {?} */ reg = new RegExp(joinStr, "g");
+                /** @type {?} */
+                var reg = new RegExp(joinStr, "g");
                 curDate = curDate.replace(reg, '-');
                 tarDate = tarDate.replace(reg, '-');
             }
@@ -3802,9 +4398,10 @@
          */
         function (msg, delayTime) {
             if (delayTime === void 0) { delayTime = 3000; }
-            // 通过ComponentFactoryResolver 创建出动态组件的实例
-            var /** @type {?} */ childComponent = this.componentFactoryResolver.resolveComponentFactory(JdbPlgToastComponent);
-            var /** @type {?} */ comInstance = this.vRef.createComponent(childComponent);
+            /** @type {?} */
+            var childComponent = this.componentFactoryResolver.resolveComponentFactory(JdbPlgToastComponent);
+            /** @type {?} */
+            var comInstance = this.vRef.createComponent(childComponent);
             comInstance.instance.msg = msg;
             comInstance.changeDetectorRef.detectChanges();
             setTimeout(function () {
@@ -3824,15 +4421,20 @@
          * @return {?}
          */
         function (arg1, arg2) {
-            var /** @type {?} */ m = 0, /** @type {?} */ s1 = arg1.toString(), /** @type {?} */ s2 = arg2.toString();
+            /** @type {?} */
+            var m = 0;
+            /** @type {?} */
+            var s1 = arg1.toString();
+            /** @type {?} */
+            var s2 = arg2.toString();
             try {
                 m += s1.split(".")[1].length;
             }
-            catch (/** @type {?} */ e) { }
+            catch (e) { }
             try {
                 m += s2.split(".")[1].length;
             }
-            catch (/** @type {?} */ e) { }
+            catch (e) { }
             return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
         };
         //除法
@@ -3847,15 +4449,22 @@
          * @return {?}
          */
         function (arg1, arg2) {
-            var /** @type {?} */ t1 = 0, /** @type {?} */ t2 = 0, /** @type {?} */ r1, /** @type {?} */ r2;
+            /** @type {?} */
+            var t1 = 0;
+            /** @type {?} */
+            var t2 = 0;
+            /** @type {?} */
+            var r1;
+            /** @type {?} */
+            var r2;
             try {
                 t1 = arg1.toString().split(".")[1].length;
             }
-            catch (/** @type {?} */ e) { }
+            catch (e) { }
             try {
                 t2 = arg2.toString().split(".")[1].length;
             }
-            catch (/** @type {?} */ e) { }
+            catch (e) { }
             r1 = Number(arg1.toString().replace(".", ""));
             r2 = Number(arg2.toString().replace(".", ""));
             return this.accMul((r1 / r2), Math.pow(10, t2 - t1));
@@ -3872,17 +4481,22 @@
          * @return {?}
          */
         function (arg1, arg2) {
-            var /** @type {?} */ r1, /** @type {?} */ r2, /** @type {?} */ m;
+            /** @type {?} */
+            var r1;
+            /** @type {?} */
+            var r2;
+            /** @type {?} */
+            var m;
             try {
                 r1 = arg1.toString().split(".")[1].length;
             }
-            catch (/** @type {?} */ e) {
+            catch (e) {
                 r1 = 0;
             }
             try {
                 r2 = arg2.toString().split(".")[1].length;
             }
-            catch (/** @type {?} */ e) {
+            catch (e) {
                 r2 = 0;
             }
             m = Math.pow(10, Math.max(r1, r2));
@@ -3900,17 +4514,24 @@
          * @return {?}
          */
         function (arg1, arg2) {
-            var /** @type {?} */ r1, /** @type {?} */ r2, /** @type {?} */ m, /** @type {?} */ n;
+            /** @type {?} */
+            var r1;
+            /** @type {?} */
+            var r2;
+            /** @type {?} */
+            var m;
+            /** @type {?} */
+            var n;
             try {
                 r1 = arg1.toString().split(".")[1].length;
             }
-            catch (/** @type {?} */ e) {
+            catch (e) {
                 r1 = 0;
             }
             try {
                 r2 = arg2.toString().split(".")[1].length;
             }
-            catch (/** @type {?} */ e) {
+            catch (e) {
                 r2 = 0;
             }
             m = Math.pow(10, Math.max(r1, r2));
@@ -3922,14 +4543,17 @@
         ];
         /** @nocollapse */
         CommonMethodService.ctorParameters = function () { return [
-            { type: core.ComponentFactoryResolver, },
+            { type: core.ComponentFactoryResolver }
         ]; };
         return CommonMethodService;
     }());
 
+    Object.defineProperty(exports, "__esModule", { value: true });
+    require("rxjs-compat/add/observable/throw");
+
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
     /**
      * @param {?} obj
@@ -3957,11 +4581,12 @@
      * @return {?}
      */
     function toJson(value) {
-        var /** @type {?} */ jsonObj = {};
+        /** @type {?} */
+        var jsonObj = {};
         try {
             jsonObj = JSON.parse(value);
         }
-        catch (/** @type {?} */ e) {
+        catch (e) {
             console.log('to json parse error');
         }
         return jsonObj;
@@ -3996,7 +4621,8 @@
     function jQueryLikeParamSerializer(params) {
         if (!params)
             return '';
-        var /** @type {?} */ parts = [];
+        /** @type {?} */
+        var parts = [];
         serialize(params, '', true);
         return parts.join('&');
         /**
@@ -4012,7 +4638,7 @@
                 });
             }
             else if (isObject(toSerialize) && !isDate(toSerialize)) {
-                for (var /** @type {?} */ key in toSerialize) {
+                for (var key in toSerialize) {
                     serialize(toSerialize[key], prefix +
                         (topLevel ? '' : '.') +
                         key +
@@ -4032,10 +4658,12 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
-    var /** @type {?} */ hasOwnProperty = Object.prototype.hasOwnProperty;
-    var /** @type {?} */ propIsEnumerable = Object.prototype.propertyIsEnumerable;
+    /** @type {?} */
+    var hasOwnProperty = Object.prototype.hasOwnProperty;
+    /** @type {?} */
+    var propIsEnumerable = Object.prototype.propertyIsEnumerable;
     /**
      * @param {?} val
      * @return {?}
@@ -4056,19 +4684,22 @@
         for (var _i = 1; _i < arguments.length; _i++) {
             source[_i - 1] = arguments[_i];
         }
-        var /** @type {?} */ from;
-        var /** @type {?} */ to = toObject(target);
-        var /** @type {?} */ symbols;
-        for (var /** @type {?} */ s = 1; s < arguments.length; s++) {
+        /** @type {?} */
+        var from;
+        /** @type {?} */
+        var to = toObject(target);
+        /** @type {?} */
+        var symbols;
+        for (var s = 1; s < arguments.length; s++) {
             from = Object(arguments[s]);
-            for (var /** @type {?} */ key in from) {
+            for (var key in from) {
                 if (hasOwnProperty.call(from, key)) {
                     to[key] = from[key];
                 }
             }
             if ((/** @type {?} */ (Object)).getOwnPropertySymbols) {
                 symbols = (/** @type {?} */ (Object)).getOwnPropertySymbols(from);
-                for (var /** @type {?} */ i = 0; i < symbols.length; i++) {
+                for (var i = 0; i < symbols.length; i++) {
                     if (propIsEnumerable.call(from, symbols[i])) {
                         to[symbols[i]] = from[symbols[i]];
                     }
@@ -4080,7 +4711,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
     var SendStatisticService = /** @class */ (function () {
         function SendStatisticService() {
@@ -4110,9 +4741,10 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
-    var /** @type {?} */ statisticList = [];
+    /** @type {?} */
+    var statisticList = [];
     var JdbPlgBaseService = /** @class */ (function () {
         function JdbPlgBaseService(http$$1, commonService, sendStatisticService) {
             var _this = this;
@@ -4161,7 +4793,7 @@
          */
         function (vRef) {
             this.vRef = vRef;
-            this.commonService.setRootViewContainerRef(this.vRef);
+            this.commonService.setRootViewContainerRef(vRef);
         };
         /**
          *
@@ -4185,12 +4817,16 @@
          */
         function (apiName, dataObj, options) {
             var _this = this;
-            var /** @type {?} */ time = new Date().getTime();
-            var /** @type {?} */ loginToken;
-            var /** @type {?} */ loginWay;
-            var /** @type {?} */ orgUid;
-            // 系统来源
-            var /** @type {?} */ from;
+            /** @type {?} */
+            var time = new Date().getTime();
+            /** @type {?} */
+            var loginToken;
+            /** @type {?} */
+            var loginWay;
+            /** @type {?} */
+            var orgUid;
+            /** @type {?} */
+            var from;
             // 获取接口的apiException
             this.newStatisticData.service.apiException = {
                 requestTime: null,
@@ -4200,7 +4836,8 @@
                 resMessage: '',
                 errorMessage: ''
             };
-            var /** @type {?} */ apiException = JSON.parse(JSON.stringify(this.newStatisticData.service.apiException));
+            /** @type {?} */
+            var apiException = JSON.parse(JSON.stringify(this.newStatisticData.service.apiException));
             this.newStatisticData.service.apiException = apiException;
             if (options && options.tokenObj) {
                 loginToken = localStorage.getItem(options.tokenObj.loginToken);
@@ -4208,9 +4845,12 @@
                 orgUid = localStorage.getItem(options.tokenObj.orgUid);
                 from = localStorage.getItem(options.tokenObj.from);
             }
-            var /** @type {?} */ loginObj = {};
-            var /** @type {?} */ data = {};
-            var /** @type {?} */ currentRoute = location.hash.split('/')[1];
+            /** @type {?} */
+            var loginObj = {};
+            /** @type {?} */
+            var data = {};
+            /** @type {?} */
+            var currentRoute = location.hash.split('/')[1];
             if (loginToken) {
                 if (orgUid) {
                     loginObj = {
@@ -4235,11 +4875,14 @@
             // 請求參數
             apiException.params = data;
             data = jQueryLikeParamSerializer(data);
-            var /** @type {?} */ headers = new http.HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' });
-            var /** @type {?} */ requestoptions = {
+            /** @type {?} */
+            var headers = new http.HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' });
+            /** @type {?} */
+            var requestoptions = {
                 headers: headers
             };
-            var /** @type {?} */ reqUrl = apiName;
+            /** @type {?} */
+            var reqUrl = apiName;
             //统计数据添加from和operator字段
             this.baseObj.from = from;
             this.baseObj.operator = localStorage.getItem('nickName');
@@ -4252,7 +4895,8 @@
                 if (currentRoute != 'login' && options && options.joinTraceId) {
                     res.error.returnUserMessage = res.error.returnUserMessage + '<br/>(日志号:' + loginObj.jdbDhTraceId + ')';
                 }
-                var /** @type {?} */ endTime = new Date().getTime();
+                /** @type {?} */
+                var endTime = new Date().getTime();
                 //统计接口请求时长
                 apiException.requestTime = endTime - time;
                 //校验接口返回的数据结构格式
@@ -4262,9 +4906,11 @@
                     return false;
                 }
                 if (options.fns && options.fns.length != 0) {
-                    var /** @type {?} */ len = options.fns.length;
-                    for (var /** @type {?} */ i = 0; i < len; i++) {
-                        var /** @type {?} */ fn = options.fns[i];
+                    /** @type {?} */
+                    var len = options.fns.length;
+                    for (var i = 0; i < len; i++) {
+                        /** @type {?} */
+                        var fn = options.fns[i];
                         if (res.error && res.error.returnCode * 1 === fn.returnCode && currentRoute != 'login') {
                             fn.callback();
                         }
@@ -4329,7 +4975,8 @@
          */
         function (stamp) {
             if (stamp) {
-                var /** @type {?} */ date = new Date(stamp).toJSON();
+                /** @type {?} */
+                var date = new Date(stamp).toJSON();
                 return date.split('T')[0];
             }
             return null;
@@ -4345,22 +4992,13 @@
          * @return {?}
          */
         function (apiName, params) {
-            var /** @type {?} */ cookieData = {};
-            // if (cookieStr) {
-            //   try {
-            //     cookieObj = JSON.parse(cookieStr);
-            //     cookieData = {
-            //       loginToken: cookieObj.loginToken,
-            //       employeeId: cookieObj.empId
-            //     };
-            //   }
-            //   catch (e) {
-            //     console.log('parse cookie error...');
-            //   }
-            // }
-            var /** @type {?} */ paramsObj = objectAssign({}, cookieData, params);
-            var /** @type {?} */ url = apiName + '?';
-            for (var /** @type {?} */ key in paramsObj) {
+            /** @type {?} */
+            var cookieData = {};
+            /** @type {?} */
+            var paramsObj = objectAssign({}, cookieData, params);
+            /** @type {?} */
+            var url = apiName + '?';
+            for (var key in paramsObj) {
                 if (paramsObj[key]) {
                     url += key + '=' + encodeURIComponent(paramsObj[key]) + '&';
                 }
@@ -4376,15 +5014,20 @@
          * @return {?}
          */
         function (file) {
-            var /** @type {?} */ arr = {};
-            var /** @type {?} */ reader = new FileReader();
+            /** @type {?} */
+            var arr = {};
+            /** @type {?} */
+            var reader = new FileReader();
             reader.onload = function (e) {
-                var /** @type {?} */ data = e.target.result;
-                //加载图片获取图片真实宽度和高度
-                var /** @type {?} */ image = new Image();
+                /** @type {?} */
+                var data = e.target.result;
+                /** @type {?} */
+                var image = new Image();
                 image.onload = function () {
-                    var /** @type {?} */ width = image.width;
-                    var /** @type {?} */ height = image.height;
+                    /** @type {?} */
+                    var width = image.width;
+                    /** @type {?} */
+                    var height = image.height;
                     arr = {
                         height: height,
                         width: width
@@ -4400,16 +5043,16 @@
         ];
         /** @nocollapse */
         JdbPlgBaseService.ctorParameters = function () { return [
-            { type: http.HttpClient, },
-            { type: CommonMethodService, },
-            { type: SendStatisticService, },
+            { type: http.HttpClient },
+            { type: CommonMethodService },
+            { type: SendStatisticService }
         ]; };
         return JdbPlgBaseService;
     }());
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
     var FillTableService = /** @class */ (function () {
         function FillTableService() {
@@ -4435,10 +5078,14 @@
             lines = lines || 10;
             lists = lists || [];
             flag = flag || true;
-            var /** @type {?} */ aLength = lists.length;
-            var /** @type {?} */ mLength = lines - aLength;
-            var /** @type {?} */ fillObj = { unShowOpt: flag };
-            var /** @type {?} */ keys;
+            /** @type {?} */
+            var aLength = lists.length;
+            /** @type {?} */
+            var mLength = lines - aLength;
+            /** @type {?} */
+            var fillObj = { unShowOpt: flag };
+            /** @type {?} */
+            var keys;
             if (aLength !== 0) {
                 lists.forEach(function (element) {
                     element.unShowOpt = !flag;
@@ -4453,7 +5100,7 @@
                 }
             }
             if (aLength !== 0 && mLength > 0) {
-                for (var /** @type {?} */ i = 0; i < mLength; i++) {
+                for (var i = 0; i < mLength; i++) {
                     lists.push(fillObj);
                 }
             }
@@ -4469,7 +5116,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
     var JdbModalService = /** @class */ (function () {
         function JdbModalService(componentFactoryResolver) {
@@ -4515,8 +5162,39 @@
          * @return {?}
          */
         function (options) {
-            var /** @type {?} */ componentFactory = this.componentFactoryResolver.resolveComponentFactory(JdbPlgDialogComponent);
-            var /** @type {?} */ componentRef = options.container.createComponent(componentFactory);
+            var _this = this;
+            this._options = {
+                customClass: '',
+                maskClass: '',
+                bodyStyle: null,
+                visible: false,
+                title: '',
+                closeable: true,
+                component: null,
+                text: '',
+                componentParams: {},
+                width: null,
+                footer: true,
+                container: null,
+                isConfirm: false,
+                okText: '',
+                cancelText: '',
+                class: '',
+                style: null,
+                onClose: function () {
+                    _this.destroy();
+                },
+                onOk: function () {
+                    _this.destroy();
+                },
+                onCancel: function () {
+                    _this.destroy();
+                }
+            };
+            /** @type {?} */
+            var componentFactory = this.componentFactoryResolver.resolveComponentFactory(JdbPlgNewDialogComponent);
+            /** @type {?} */
+            var componentRef = options.container.createComponent(componentFactory);
             this._componentRefList.push(componentRef);
             //assign配置
             if (options) {
@@ -4537,8 +5215,10 @@
          * @return {?}
          */
         function (componentRef) {
-            var /** @type {?} */ _options = this._options;
-            var /** @type {?} */ ins = componentRef.instance;
+            /** @type {?} */
+            var _options = this._options;
+            /** @type {?} */
+            var ins = componentRef.instance;
             ins.visible = _options.visible || true;
             ins._title = _options.title || '提示';
             ins._width = _options.width ? _options.width + "px" : '400px';
@@ -4574,11 +5254,12 @@
          * @return {?}
          */
         function () {
-            console.log(this._componentRefList);
-            var /** @type {?} */ len = this._componentRefList.length - 1;
-            this._componentRefList[len].destroy();
+            /** @type {?} */
+            var len = this._componentRefList.length - 1;
+            if (this._componentRefList[len]) {
+                this._componentRefList[len].destroy();
+            }
             this._componentRefList.pop();
-            //this.componentRef.destroy();
         };
         //triggerOk
         /**
@@ -4615,14 +5296,14 @@
         ];
         /** @nocollapse */
         JdbModalService.ctorParameters = function () { return [
-            { type: core.ComponentFactoryResolver, },
+            { type: core.ComponentFactoryResolver }
         ]; };
         return JdbModalService;
     }());
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
     var JdbPlgTableErrorComponent = /** @class */ (function () {
         function JdbPlgTableErrorComponent() {
@@ -4648,14 +5329,14 @@
         /** @nocollapse */
         JdbPlgTableErrorComponent.ctorParameters = function () { return []; };
         JdbPlgTableErrorComponent.propDecorators = {
-            "tableErrorText": [{ type: core.Input },],
+            tableErrorText: [{ type: core.Input }]
         };
         return JdbPlgTableErrorComponent;
     }());
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
     var ProvinceReformPipe = /** @class */ (function () {
         function ProvinceReformPipe() {
@@ -4682,7 +5363,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
     var AmountReformPipe = /** @class */ (function () {
         function AmountReformPipe() {
@@ -4712,7 +5393,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
     var JdbPlgTimelineItemComponent = /** @class */ (function () {
         function JdbPlgTimelineItemComponent() {
@@ -4772,17 +5453,17 @@
         /** @nocollapse */
         JdbPlgTimelineItemComponent.ctorParameters = function () { return []; };
         JdbPlgTimelineItemComponent.propDecorators = {
-            "cardBoxWidth": [{ type: core.Input },],
-            "cardBgc": [{ type: core.Input },],
-            "timeNum": [{ type: core.Input },],
-            "lastItem": [{ type: core.Input },],
+            cardBoxWidth: [{ type: core.Input }],
+            cardBgc: [{ type: core.Input }],
+            timeNum: [{ type: core.Input }],
+            lastItem: [{ type: core.Input }]
         };
         return JdbPlgTimelineItemComponent;
     }());
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
     var JdbPlgSwitchComponent = /** @class */ (function () {
         function JdbPlgSwitchComponent() {
@@ -4947,7 +5628,6 @@
          * @return {?}
          */
         function () {
-            var _a;
             this.outBoxClass = (_a = {},
                 _a[this.prefixCls] = true,
                 _a[this.prefixCls + "-checked"] = this.checked,
@@ -4955,6 +5635,7 @@
                 _a[this.prefixCls + "-disabled"] = this.jdbDisabled,
                 _a[this.prefixCls + "-small"] = this.jdbSize === 'small',
                 _a);
+            var _a;
         };
         // 实现ControlValueAccessor接口方法
         /**
@@ -5024,24 +5705,24 @@
                         ]
                     },] },
         ];
-        /** @nocollapse */
         JdbPlgSwitchComponent.propDecorators = {
-            "jdbCheckedText": [{ type: core.Input },],
-            "jdbUncheckedText": [{ type: core.Input },],
-            "jdbLoading": [{ type: core.Input },],
-            "jdbDisabled": [{ type: core.Input },],
-            "jdbSize": [{ type: core.Input },],
-            "jdbControl": [{ type: core.Input },],
-            "onClick": [{ type: core.HostListener, args: ['click', ['$event'],] },],
+            jdbCheckedText: [{ type: core.Input }],
+            jdbUncheckedText: [{ type: core.Input }],
+            jdbLoading: [{ type: core.Input }],
+            jdbDisabled: [{ type: core.Input }],
+            jdbSize: [{ type: core.Input }],
+            jdbControl: [{ type: core.Input }],
+            onClick: [{ type: core.HostListener, args: ['click', ['$event'],] }]
         };
         return JdbPlgSwitchComponent;
     }());
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes} checked by tsc
+     * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
      */
-    var /** @type {?} */ MDL_MODULES = [
+    /** @type {?} */
+    var MDL_MODULES = [
         ShowPictureComponent,
         PictureViewerComponent,
         DragDirective,
@@ -5049,6 +5730,7 @@
         JdbPlgPaginationComponent,
         JdbPlgButtonComponent,
         JdbPlgDialogComponent,
+        JdbPlgNewDialogComponent,
         JdbPlgSelectComponent,
         JdbPlgInputComponent,
         JdbPlgTimelineItemComponent,
@@ -5082,6 +5764,7 @@
                             JdbPlgSelectComponent,
                             JdbPlgButtonComponent,
                             JdbPlgDialogComponent,
+                            JdbPlgNewDialogComponent,
                             JdbPlgInputComponent,
                             JdbPlgTimelineItemComponent,
                             JdbPlgAutocompleteComponent,
@@ -5091,7 +5774,7 @@
                             JdbPlgSwitchComponent,
                         ],
                         providers: [JdbPlgBaseService, CommonMethodService, FillTableService, SendStatisticService, JdbModalService],
-                        entryComponents: [JdbPlgToastComponent, JdbPlgDialogComponent],
+                        entryComponents: [JdbPlgToastComponent, JdbPlgNewDialogComponent, JdbPlgDialogComponent],
                         schemas: [
                             core.CUSTOM_ELEMENTS_SCHEMA
                         ]
@@ -5106,24 +5789,26 @@
     exports.CommonMethodService = CommonMethodService;
     exports.SendStatisticService = SendStatisticService;
     exports.JdbModalService = JdbModalService;
-    exports.ɵk = JdbPlgAutocompleteComponent;
+    exports.jQueryLikeParamSerializer = jQueryLikeParamSerializer;
+    exports.ɵl = JdbPlgAutocompleteComponent;
     exports.ɵf = JdbPlgButtonComponent;
     exports.ɵg = JdbPlgDialogComponent;
-    exports.ɵi = JdbPlgInputComponent;
+    exports.ɵj = JdbPlgInputComponent;
+    exports.ɵh = JdbPlgNewDialogComponent;
     exports.ɵe = JdbPlgPaginationComponent;
-    exports.ɵh = JdbPlgSelectComponent;
-    exports.ɵp = JdbPlgSwitchComponent;
-    exports.ɵl = JdbTabComponent;
-    exports.ɵm = JdbPlgTableErrorComponent;
-    exports.ɵj = JdbPlgTimelineItemComponent;
-    exports.ɵq = JdbPlgToastComponent;
+    exports.ɵi = JdbPlgSelectComponent;
+    exports.ɵq = JdbPlgSwitchComponent;
+    exports.ɵm = JdbTabComponent;
+    exports.ɵn = JdbPlgTableErrorComponent;
+    exports.ɵk = JdbPlgTimelineItemComponent;
+    exports.ɵr = JdbPlgToastComponent;
     exports.ɵb = PictureViewerComponent;
     exports.ɵa = ShowPictureComponent;
     exports.ɵc = DragDirective;
-    exports.ɵr = OnlyNumberDirective;
+    exports.ɵs = OnlyNumberDirective;
     exports.ɵd = WatermarkDirective;
-    exports.ɵo = AmountReformPipe;
-    exports.ɵn = ProvinceReformPipe;
+    exports.ɵp = AmountReformPipe;
+    exports.ɵo = ProvinceReformPipe;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

@@ -1,6 +1,6 @@
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -30,14 +30,7 @@ var SendStatisticService = /** @class */ (function () {
     return SendStatisticService;
 }());
 export { SendStatisticService };
-function SendStatisticService_tsickle_Closure_declarations() {
-    /** @type {!Array<{type: !Function, args: (undefined|!Array<?>)}>} */
-    SendStatisticService.decorators;
-    /**
-     * @nocollapse
-     * @type {function(): !Array<(null|{type: ?, decorators: (undefined|!Array<{type: !Function, args: (undefined|!Array<?>)}>)})>}
-     */
-    SendStatisticService.ctorParameters;
+if (false) {
     /** @type {?} */
     SendStatisticService.prototype.emitStatistic;
     /** @type {?} */

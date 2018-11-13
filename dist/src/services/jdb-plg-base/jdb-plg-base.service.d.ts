@@ -1,6 +1,7 @@
 import { CommonMethodService } from './common-method.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import 'rxjs/add/observable/throw';
 import { StatisticData } from '../../config/statistic.config';
 import { SendStatisticService } from './send-statistic.service';
 export declare class JdbPlgBaseService {

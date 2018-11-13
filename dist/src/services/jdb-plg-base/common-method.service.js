@@ -1,6 +1,6 @@
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 import { Injectable, ComponentFactoryResolver } from '@angular/core';
 import { JdbPlgToastComponent } from '../../components/jdb-plg-toast/jdb-plg-toast.component';
@@ -20,7 +20,8 @@ var CommonMethodService = /** @class */ (function () {
      * @return {?}
      */
     function (number) {
-        var /** @type {?} */ phoneReg = /^[1][0-9]{10}$/;
+        /** @type {?} */
+        var phoneReg = /^[1][0-9]{10}$/;
         return phoneReg.test(number);
     };
     /*验证姓名是否合法
@@ -34,7 +35,8 @@ var CommonMethodService = /** @class */ (function () {
      * @return {?}
      */
     function (name) {
-        var /** @type {?} */ nameReg = /^[\u4E00-\u9FA5·]{2,20}$/;
+        /** @type {?} */
+        var nameReg = /^[\u4E00-\u9FA5·]{2,20}$/;
         return nameReg.test(name);
     };
     /*验证代偿金额是否为最大1亿，最小一元，只可以两位小数
@@ -48,7 +50,8 @@ var CommonMethodService = /** @class */ (function () {
      * @return {?}
      */
     function (num) {
-        var /** @type {?} */ nameReg = /^([1-9][0-9]{2,9}|10000000000)$/;
+        /** @type {?} */
+        var nameReg = /^([1-9][0-9]{2,9}|10000000000)$/;
         return nameReg.test(num);
     };
     /*数字格式化为千位分隔
@@ -80,9 +83,11 @@ var CommonMethodService = /** @class */ (function () {
      * @return {?}
      */
     function (value) {
-        var /** @type {?} */ timeObj = {};
+        /** @type {?} */
+        var timeObj = {};
         if (value) {
-            var /** @type {?} */ arrDate = value.split('~');
+            /** @type {?} */
+            var arrDate = value.split('~');
             timeObj['startTime'] = new Date(arrDate[0]).getTime() / 1000;
             timeObj['endTime'] = new Date(arrDate[1]).getTime() / 1000;
         }
@@ -108,13 +113,20 @@ var CommonMethodService = /** @class */ (function () {
      */
     function (time, type) {
         if (type === void 0) { type = 1; }
-        var /** @type {?} */ myDate = new Date(time * 1000);
-        var /** @type {?} */ year = myDate.getFullYear();
-        var /** @type {?} */ month = this.add0(myDate.getMonth() + 1);
-        var /** @type {?} */ day = this.add0(myDate.getDate());
-        var /** @type {?} */ hour = this.add0(myDate.getHours());
-        var /** @type {?} */ minute = this.add0(myDate.getMinutes());
-        var /** @type {?} */ second = this.add0(myDate.getSeconds());
+        /** @type {?} */
+        var myDate = new Date(time * 1000);
+        /** @type {?} */
+        var year = myDate.getFullYear();
+        /** @type {?} */
+        var month = this.add0(myDate.getMonth() + 1);
+        /** @type {?} */
+        var day = this.add0(myDate.getDate());
+        /** @type {?} */
+        var hour = this.add0(myDate.getHours());
+        /** @type {?} */
+        var minute = this.add0(myDate.getMinutes());
+        /** @type {?} */
+        var second = this.add0(myDate.getSeconds());
         switch (type) {
             case 1:
                 return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
@@ -161,8 +173,24 @@ var CommonMethodService = /** @class */ (function () {
         if (n === void 0) { n = 0; }
         if (joinStr === void 0) { joinStr = '-'; }
         if (isTimeStamp === void 0) { isTimeStamp = true; }
-        var /** @type {?} */ date = new Date();
-        var /** @type {?} */ tarYear, /** @type {?} */ tarMonth, /** @type {?} */ tarDay, /** @type {?} */ curYear, /** @type {?} */ curMonth, /** @type {?} */ curDay, /** @type {?} */ curDate, /** @type {?} */ tarDate;
+        /** @type {?} */
+        var date = new Date();
+        /** @type {?} */
+        var tarYear;
+        /** @type {?} */
+        var tarMonth;
+        /** @type {?} */
+        var tarDay;
+        /** @type {?} */
+        var curYear;
+        /** @type {?} */
+        var curMonth;
+        /** @type {?} */
+        var curDay;
+        /** @type {?} */
+        var curDate;
+        /** @type {?} */
+        var tarDate;
         //获取当前年月日
         curYear = date.getFullYear();
         curMonth = date.getMonth() + 1;
@@ -178,7 +206,8 @@ var CommonMethodService = /** @class */ (function () {
             return n === 0 ? [curDate] : [curDate, tarDate];
         }
         if (joinStr !== '-') {
-            var /** @type {?} */ reg = new RegExp(joinStr, "g");
+            /** @type {?} */
+            var reg = new RegExp(joinStr, "g");
             curDate = curDate.replace(reg, '-');
             tarDate = tarDate.replace(reg, '-');
         }
@@ -207,9 +236,10 @@ var CommonMethodService = /** @class */ (function () {
      */
     function (msg, delayTime) {
         if (delayTime === void 0) { delayTime = 3000; }
-        // 通过ComponentFactoryResolver 创建出动态组件的实例
-        var /** @type {?} */ childComponent = this.componentFactoryResolver.resolveComponentFactory(JdbPlgToastComponent);
-        var /** @type {?} */ comInstance = this.vRef.createComponent(childComponent);
+        /** @type {?} */
+        var childComponent = this.componentFactoryResolver.resolveComponentFactory(JdbPlgToastComponent);
+        /** @type {?} */
+        var comInstance = this.vRef.createComponent(childComponent);
         comInstance.instance.msg = msg;
         comInstance.changeDetectorRef.detectChanges();
         setTimeout(function () {
@@ -229,15 +259,20 @@ var CommonMethodService = /** @class */ (function () {
      * @return {?}
      */
     function (arg1, arg2) {
-        var /** @type {?} */ m = 0, /** @type {?} */ s1 = arg1.toString(), /** @type {?} */ s2 = arg2.toString();
+        /** @type {?} */
+        var m = 0;
+        /** @type {?} */
+        var s1 = arg1.toString();
+        /** @type {?} */
+        var s2 = arg2.toString();
         try {
             m += s1.split(".")[1].length;
         }
-        catch (/** @type {?} */ e) { }
+        catch (e) { }
         try {
             m += s2.split(".")[1].length;
         }
-        catch (/** @type {?} */ e) { }
+        catch (e) { }
         return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
     };
     //除法
@@ -252,15 +287,22 @@ var CommonMethodService = /** @class */ (function () {
      * @return {?}
      */
     function (arg1, arg2) {
-        var /** @type {?} */ t1 = 0, /** @type {?} */ t2 = 0, /** @type {?} */ r1, /** @type {?} */ r2;
+        /** @type {?} */
+        var t1 = 0;
+        /** @type {?} */
+        var t2 = 0;
+        /** @type {?} */
+        var r1;
+        /** @type {?} */
+        var r2;
         try {
             t1 = arg1.toString().split(".")[1].length;
         }
-        catch (/** @type {?} */ e) { }
+        catch (e) { }
         try {
             t2 = arg2.toString().split(".")[1].length;
         }
-        catch (/** @type {?} */ e) { }
+        catch (e) { }
         r1 = Number(arg1.toString().replace(".", ""));
         r2 = Number(arg2.toString().replace(".", ""));
         return this.accMul((r1 / r2), Math.pow(10, t2 - t1));
@@ -277,17 +319,22 @@ var CommonMethodService = /** @class */ (function () {
      * @return {?}
      */
     function (arg1, arg2) {
-        var /** @type {?} */ r1, /** @type {?} */ r2, /** @type {?} */ m;
+        /** @type {?} */
+        var r1;
+        /** @type {?} */
+        var r2;
+        /** @type {?} */
+        var m;
         try {
             r1 = arg1.toString().split(".")[1].length;
         }
-        catch (/** @type {?} */ e) {
+        catch (e) {
             r1 = 0;
         }
         try {
             r2 = arg2.toString().split(".")[1].length;
         }
-        catch (/** @type {?} */ e) {
+        catch (e) {
             r2 = 0;
         }
         m = Math.pow(10, Math.max(r1, r2));
@@ -305,17 +352,24 @@ var CommonMethodService = /** @class */ (function () {
      * @return {?}
      */
     function (arg1, arg2) {
-        var /** @type {?} */ r1, /** @type {?} */ r2, /** @type {?} */ m, /** @type {?} */ n;
+        /** @type {?} */
+        var r1;
+        /** @type {?} */
+        var r2;
+        /** @type {?} */
+        var m;
+        /** @type {?} */
+        var n;
         try {
             r1 = arg1.toString().split(".")[1].length;
         }
-        catch (/** @type {?} */ e) {
+        catch (e) {
             r1 = 0;
         }
         try {
             r2 = arg2.toString().split(".")[1].length;
         }
-        catch (/** @type {?} */ e) {
+        catch (e) {
             r2 = 0;
         }
         m = Math.pow(10, Math.max(r1, r2));
@@ -327,19 +381,12 @@ var CommonMethodService = /** @class */ (function () {
     ];
     /** @nocollapse */
     CommonMethodService.ctorParameters = function () { return [
-        { type: ComponentFactoryResolver, },
+        { type: ComponentFactoryResolver }
     ]; };
     return CommonMethodService;
 }());
 export { CommonMethodService };
-function CommonMethodService_tsickle_Closure_declarations() {
-    /** @type {!Array<{type: !Function, args: (undefined|!Array<?>)}>} */
-    CommonMethodService.decorators;
-    /**
-     * @nocollapse
-     * @type {function(): !Array<(null|{type: ?, decorators: (undefined|!Array<{type: !Function, args: (undefined|!Array<?>)}>)})>}
-     */
-    CommonMethodService.ctorParameters;
+if (false) {
     /** @type {?} */
     CommonMethodService.prototype.vRef;
     /** @type {?} */

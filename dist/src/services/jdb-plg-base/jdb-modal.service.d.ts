@@ -1,5 +1,5 @@
 import { ComponentFactoryResolver, ComponentRef, Type, ViewContainerRef } from '@angular/core';
-import { JdbPlgDialogComponent } from '../../components/jdb-plg-dialog/jdb-plg-dialog.component';
+import { JdbPlgNewDialogComponent } from '../../components/jdb-plg-new-dialog/jdb-plg-new-dialog.component';
 export interface Options {
     /**
      * 自定义父容器类，可选
@@ -106,12 +106,12 @@ export interface Options {
 }
 export declare class JdbModalService {
     private componentFactoryResolver;
-    componentRef: ComponentRef<JdbPlgDialogComponent>;
+    componentRef: ComponentRef<JdbPlgNewDialogComponent>;
     _componentRefList: any[];
     _options: Options;
     constructor(componentFactoryResolver: ComponentFactoryResolver);
-    create(options: Options): ComponentRef<JdbPlgDialogComponent>;
-    assignProps(componentRef: ComponentRef<JdbPlgDialogComponent>): void;
+    create(options: Options): ComponentRef<JdbPlgNewDialogComponent>;
+    assignProps(componentRef: ComponentRef<JdbPlgNewDialogComponent>): void;
     destroy(): void;
     triggerOk(): void;
     triggerClose(): void;

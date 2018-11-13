@@ -12,7 +12,7 @@
             <input (blur)="_emitBlur($event)" (focus)="_emitFocus($event)" [disabled]="_disabled" [readonly]="_readonly" [attr.id]="jdbId"
                 [attr.type]="_type" class="input" [ngClass]="_classMap" [attr.placeholder]="_placeHolder" [(ngModel)]="jdbValue"
                 [style.width]="width" maxlength="{{jdbMaxLength}}" #input />
-            <span class="input-clear" *ngIf="_clear && _value && _type=='text'" (click)="clearTxt()">
+            <span class="input-clear" *ngIf="_clear && _value && _type=='text'" (click)="clearTxt($event)">
                 <i class="close-icon icon-empty"></i>
             </span>
         </span>

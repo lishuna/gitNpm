@@ -3,7 +3,9 @@
         <div *ngFor="let item of items;let i = index;" class="tab-item {{item.theme}} {{item.style}} tab-item-hei{{item.height}}"
          [ngClass]="{'tab-selected':i == curTabIndex, 'trapezoid1':item.theme === 'trapezoid'&&(i == 0)}"
           title='{{item.title}}'>
-            <div (click)="tabChange(i)" class="tab-text" [ngClass]="{'trapezoid-div':item.theme === 'trapezoid'}"> {{item.title}}</div>
+            <div (click)="tabChange(i)" class="tab-text" [ngClass]="{'trapezoid-div':item.theme === 'trapezoid'}">
+                {{item.title}}<span *ngIf="totalTip.isShow ? totalTip.isShow : false" class="tab-total">{{totalTip[i]}}</span>
+            </div>
             <span class="close-btn" (click)="removeTab(i)" *ngIf="i !== 0 && item.isCloseFlag != true">&times;</span>
             <div *ngIf="item.borderLength === 'short'" class="self-border"></div>
         </div>

@@ -1,11 +1,13 @@
-import { OnInit, ComponentFactoryResolver, Injector, OnDestroy, EventEmitter } from '@angular/core';
-export declare class JdbTabComponent implements OnInit, OnDestroy {
+import { OnInit, ComponentFactoryResolver, Injector, OnDestroy, EventEmitter, OnChanges } from '@angular/core';
+export declare class JdbTabComponent implements OnInit, OnDestroy, OnChanges {
     private componentFactoryResolver;
     _injector: Injector;
     target: any;
     onTabChange: EventEmitter<{}>;
     onTabRemove: EventEmitter<{}>;
     onTopComMsg: EventEmitter<{}>;
+    totalTip: any;
+    totalTipChange: EventEmitter<{}>;
     items: any[];
     tabComs: any[];
     tabSubs: any;
@@ -13,6 +15,7 @@ export declare class JdbTabComponent implements OnInit, OnDestroy {
     tabIdComMap: {};
     constructor(componentFactoryResolver: ComponentFactoryResolver, _injector: Injector);
     ngOnInit(): void;
+    ngOnChanges(): void;
     /**
      *
      * @param ChildComponent
@@ -53,8 +56,8 @@ export declare class JdbTabComponent implements OnInit, OnDestroy {
      * ‘short'-短边框，此时显示元素
      */
     addItem(ChildComponent: any, attrs: any, title: string, comId?: any, isCloseFlag?: boolean): any;
-    private setOneComHide;
-    private setOneComShow;
+    private setOneComHide(tabIndex);
+    private setOneComShow(tabIndex);
     tabChange(index: any): void;
     setOneTabShow(index: any): void;
     removeTab(index: any): void;

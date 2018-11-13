@@ -1,8 +1,9 @@
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-export var /** @type {?} */ keyCode = {
+/** @type {?} */
+export var keyCode = {
     UP: 38,
     DOWN: 40,
     ENTER: 13

@@ -183,7 +183,8 @@ export class JdbPlgInputComponent implements OnInit, AfterViewInit, ControlValue
             ['input-error']: this._error
         };
     }
-    clearTxt() {
+    clearTxt(e) {
+        e.stopPropagation();
         this._value = '';
         this.onChange('');
     }

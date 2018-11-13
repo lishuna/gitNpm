@@ -1,9 +1,11 @@
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-var /** @type {?} */ hasOwnProperty = Object.prototype.hasOwnProperty;
-var /** @type {?} */ propIsEnumerable = Object.prototype.propertyIsEnumerable;
+/** @type {?} */
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+/** @type {?} */
+var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 /**
  * @param {?} val
  * @return {?}
@@ -24,19 +26,22 @@ export function objectAssign(target) {
     for (var _i = 1; _i < arguments.length; _i++) {
         source[_i - 1] = arguments[_i];
     }
-    var /** @type {?} */ from;
-    var /** @type {?} */ to = toObject(target);
-    var /** @type {?} */ symbols;
-    for (var /** @type {?} */ s = 1; s < arguments.length; s++) {
+    /** @type {?} */
+    var from;
+    /** @type {?} */
+    var to = toObject(target);
+    /** @type {?} */
+    var symbols;
+    for (var s = 1; s < arguments.length; s++) {
         from = Object(arguments[s]);
-        for (var /** @type {?} */ key in from) {
+        for (var key in from) {
             if (hasOwnProperty.call(from, key)) {
                 to[key] = from[key];
             }
         }
         if ((/** @type {?} */ (Object)).getOwnPropertySymbols) {
             symbols = (/** @type {?} */ (Object)).getOwnPropertySymbols(from);
-            for (var /** @type {?} */ i = 0; i < symbols.length; i++) {
+            for (var i = 0; i < symbols.length; i++) {
                 if (propIsEnumerable.call(from, symbols[i])) {
                     to[symbols[i]] = from[symbols[i]];
                 }

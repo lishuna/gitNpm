@@ -18,6 +18,7 @@ export declare class JdbPlgPaginationComponent {
     quickJumpPage: any;
     hisQicukPage: any;
     _jdbSimple: boolean;
+    _jdbSelectWidth: string;
     jdbPageSizeChange: EventEmitter<number>;
     jdbPageIndexChange: EventEmitter<number>;
     private inputJump;
@@ -27,14 +28,18 @@ export declare class JdbPlgPaginationComponent {
     jdbPageIndex: number;
     jdbShowPageSize: boolean;
     jdbPageSize: number;
-    jdbSizeOptions: any;
+    jdbSizeOptions: {
+        value: number;
+        text: string;
+    }[];
     jdbShowQuickJump: boolean;
     jdbSimple: boolean;
+    jdbSelectWidth: string;
     setPageNo(): void;
-    dataChange(status: boolean, num: number): void;
+    dataChange(status: boolean, num: number, e?: any): void;
     quickJump(): void;
-    jumpBefore(pageSize: any): void;
-    jumpAfter(pageSize: any): void;
+    jumpBefore(e: any, pageSize: any): void;
+    jumpAfter(e: any, pageSize: any): void;
     toBoolean(value: boolean | string): boolean;
     isNumber(obj: any): boolean;
 }

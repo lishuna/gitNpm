@@ -1,6 +1,6 @@
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 import { Component, Input, Output, EventEmitter, HostListener, ElementRef, Renderer2, ViewChild, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -85,6 +85,7 @@ var JdbPlgAutocompleteComponent = /** @class */ (function () {
      */
     function (simples) {
     };
+    // 键盘事件
     /**
      * @param {?} event
      * @return {?}
@@ -110,13 +111,15 @@ var JdbPlgAutocompleteComponent = /** @class */ (function () {
                 this.setSearchWord();
                 break;
             case keyCode.ENTER:
-                var /** @type {?} */ item = /** @type {?} */ (this.searchResult[this.activeIndex]);
+                /** @type {?} */
+                var item = /** @type {?} */ (this.searchResult[this.activeIndex]);
                 this.selectedItem(item, this.activeIndex);
                 break;
             default:
                 this.activeIndex = -1;
         }
     };
+    // 粘贴事件
     /**
      * @param {?} event
      * @return {?}
@@ -138,11 +141,11 @@ var JdbPlgAutocompleteComponent = /** @class */ (function () {
     function () {
         var _this = this;
         if (this._searchWord) {
-            if (this.jdbDataAsyn) { // 异步请求接口，返回数据
+            if (this.jdbDataAsyn) {
                 // 异步请求接口，返回数据
                 // this.popupList();
             }
-            else { // 同步过滤处理
+            else {
                 // 同步过滤处理
                 this.searchResult = this.jdbDataSource.filter(function (obj) { return obj['text'].indexOf(_this._searchWord) !== -1; });
                 // if (this.searchResult.length > 0) {
@@ -267,13 +270,20 @@ var JdbPlgAutocompleteComponent = /** @class */ (function () {
      * @return {?}
      */
     function (fn, wait, immediate) {
-        var /** @type {?} */ timeout, /** @type {?} */
-        args, /** @type {?} */
-        context, /** @type {?} */
-        timestamp, /** @type {?} */
-        result;
-        var /** @type {?} */ later = function () {
-            var /** @type {?} */ last = new Date().getTime() - timestamp;
+        /** @type {?} */
+        var timeout;
+        /** @type {?} */
+        var args;
+        /** @type {?} */
+        var context;
+        /** @type {?} */
+        var timestamp;
+        /** @type {?} */
+        var result;
+        /** @type {?} */
+        var later = function () {
+            /** @type {?} */
+            var last = new Date().getTime() - timestamp;
             if (last < wait && last >= 0) {
                 timeout = setTimeout(later, wait - last);
             }
@@ -291,7 +301,8 @@ var JdbPlgAutocompleteComponent = /** @class */ (function () {
             context = this;
             args = arguments;
             timestamp = new Date().getTime();
-            var /** @type {?} */ callNow = immediate && !timeout;
+            /** @type {?} */
+            var callNow = immediate && !timeout;
             if (!timeout) {
                 timeout = setTimeout(later, wait);
             }
@@ -312,27 +323,36 @@ var JdbPlgAutocompleteComponent = /** @class */ (function () {
      * @return {?}
      */
     function (node) {
-        var /** @type {?} */ getOffsetTop = function (ele) {
-            var /** @type {?} */ top = ele.offsetTop;
+        /** @type {?} */
+        var getOffsetTop = function (ele) {
+            /** @type {?} */
+            var top = ele.offsetTop;
             if (!ele.offsetParent) {
                 top += getOffsetTop(ele.offsetParent);
             }
             return top;
         };
-        var /** @type {?} */ getScrollTop = function (ele) {
-            var /** @type {?} */ top = ele.scrollTop;
+        /** @type {?} */
+        var getScrollTop = function (ele) {
+            /** @type {?} */
+            var top = ele.scrollTop;
             if (!ele.parentElement) {
                 top += getScrollTop(ele.parentElement);
             }
             return top;
         };
-        var /** @type {?} */ nodeTop = getOffsetTop(node), /** @type {?} */
-        clientHeight = document.documentElement.clientHeight || document.body.clientHeight, /** @type {?} */
-        scrollTop = getScrollTop(node.parentElement), /** @type {?} */
-        popHeight = this.resultEle.nativeElement.offsetHeight || 250, /** @type {?} */
-        inputHeight = node.querySelector('input[type="text"]').offsetHeight;
-        // console.log('clientHeight:' + clientHeight + 'nodeTop:' + nodeTop + 'nodeHeight:' + nodeHeight + 'scrollTop:' + scrollTop);
-        var /** @type {?} */ lastDirect = clientHeight - (nodeTop - scrollTop) - popHeight - inputHeight;
+        /** @type {?} */
+        var nodeTop = getOffsetTop(node);
+        /** @type {?} */
+        var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+        /** @type {?} */
+        var scrollTop = getScrollTop(node.parentElement);
+        /** @type {?} */
+        var popHeight = this.resultEle.nativeElement.offsetHeight || 250;
+        /** @type {?} */
+        var inputHeight = node.querySelector('input[type="text"]').offsetHeight;
+        /** @type {?} */
+        var lastDirect = clientHeight - (nodeTop - scrollTop) - popHeight - inputHeight;
         if (lastDirect <= 0) {
             this.render.addClass(this.resultEle.nativeElement, 'pop_top');
         }
@@ -369,20 +389,16 @@ var JdbPlgAutocompleteComponent = /** @class */ (function () {
             this._dataSource = value;
             if (!this.jdbDataAsyn && this._dataSource.length > 0) {
                 if (typeof this._dataSource[0] === 'string') {
-                    this._dataSource = this._dataSource.map(function (val, index) {
-                        return ({
-                            value: val,
-                            text: val
-                        });
-                    });
+                    this._dataSource = this._dataSource.map(function (val, index) { return ({
+                        value: val,
+                        text: val
+                    }); });
                 }
                 else if (typeof this._dataSource[0] === 'object' && (this.dataKey !== 'value' || this.dataVal !== 'text')) {
-                    this._dataSource = this._dataSource.map(function (obj, index) {
-                        return ({
-                            value: obj[_this.dataKey],
-                            text: obj[_this.dataVal]
-                        });
-                    });
+                    this._dataSource = this._dataSource.map(function (obj, index) { return ({
+                        value: obj[_this.dataKey],
+                        text: obj[_this.dataVal]
+                    }); });
                 }
                 this.searchResult = this._dataSource;
             }
@@ -475,36 +491,27 @@ var JdbPlgAutocompleteComponent = /** @class */ (function () {
     ];
     /** @nocollapse */
     JdbPlgAutocompleteComponent.ctorParameters = function () { return [
-        { type: ElementRef, },
-        { type: Renderer2, },
+        { type: ElementRef },
+        { type: Renderer2 }
     ]; };
     JdbPlgAutocompleteComponent.propDecorators = {
-        "resultEle": [{ type: ViewChild, args: ['resultele',] },],
-        "jdbPlaceHolder": [{ type: Input },],
-        "width": [{ type: Input },],
-        "dataKey": [{ type: Input },],
-        "dataVal": [{ type: Input },],
-        "jdbDataAsyn": [{ type: Input },],
-        "onSelected": [{ type: Output },],
-        "OnKeyDown": [{ type: HostListener, args: ['keydown', ['$event'],] },],
-        "OnPaste": [{ type: HostListener, args: ['paste', ['$event'],] },],
-        "jdbDataSource": [{ type: Input },],
-        "jdbSearchParam": [{ type: Input },],
-        "jdbServerApi": [{ type: Input },],
+        resultEle: [{ type: ViewChild, args: ['resultele',] }],
+        jdbPlaceHolder: [{ type: Input }],
+        width: [{ type: Input }],
+        dataKey: [{ type: Input }],
+        dataVal: [{ type: Input }],
+        jdbDataAsyn: [{ type: Input }],
+        onSelected: [{ type: Output }],
+        OnKeyDown: [{ type: HostListener, args: ['keydown', ['$event'],] }],
+        OnPaste: [{ type: HostListener, args: ['paste', ['$event'],] }],
+        jdbDataSource: [{ type: Input }],
+        jdbSearchParam: [{ type: Input }],
+        jdbServerApi: [{ type: Input }]
     };
     return JdbPlgAutocompleteComponent;
 }());
 export { JdbPlgAutocompleteComponent };
-function JdbPlgAutocompleteComponent_tsickle_Closure_declarations() {
-    /** @type {!Array<{type: !Function, args: (undefined|!Array<?>)}>} */
-    JdbPlgAutocompleteComponent.decorators;
-    /**
-     * @nocollapse
-     * @type {function(): !Array<(null|{type: ?, decorators: (undefined|!Array<{type: !Function, args: (undefined|!Array<?>)}>)})>}
-     */
-    JdbPlgAutocompleteComponent.ctorParameters;
-    /** @type {!Object<string,!Array<{type: !Function, args: (undefined|!Array<?>)}>>} */
-    JdbPlgAutocompleteComponent.propDecorators;
+if (false) {
     /** @type {?} */
     JdbPlgAutocompleteComponent.prototype._searchParam;
     /** @type {?} */

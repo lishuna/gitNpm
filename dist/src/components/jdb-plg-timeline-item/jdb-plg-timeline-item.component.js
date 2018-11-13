@@ -1,6 +1,6 @@
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 import { Component, Input } from '@angular/core';
 var JdbPlgTimelineItemComponent = /** @class */ (function () {
@@ -61,24 +61,15 @@ var JdbPlgTimelineItemComponent = /** @class */ (function () {
     /** @nocollapse */
     JdbPlgTimelineItemComponent.ctorParameters = function () { return []; };
     JdbPlgTimelineItemComponent.propDecorators = {
-        "cardBoxWidth": [{ type: Input },],
-        "cardBgc": [{ type: Input },],
-        "timeNum": [{ type: Input },],
-        "lastItem": [{ type: Input },],
+        cardBoxWidth: [{ type: Input }],
+        cardBgc: [{ type: Input }],
+        timeNum: [{ type: Input }],
+        lastItem: [{ type: Input }]
     };
     return JdbPlgTimelineItemComponent;
 }());
 export { JdbPlgTimelineItemComponent };
-function JdbPlgTimelineItemComponent_tsickle_Closure_declarations() {
-    /** @type {!Array<{type: !Function, args: (undefined|!Array<?>)}>} */
-    JdbPlgTimelineItemComponent.decorators;
-    /**
-     * @nocollapse
-     * @type {function(): !Array<(null|{type: ?, decorators: (undefined|!Array<{type: !Function, args: (undefined|!Array<?>)}>)})>}
-     */
-    JdbPlgTimelineItemComponent.ctorParameters;
-    /** @type {!Object<string,!Array<{type: !Function, args: (undefined|!Array<?>)}>>} */
-    JdbPlgTimelineItemComponent.propDecorators;
+if (false) {
     /** @type {?} */
     JdbPlgTimelineItemComponent.prototype.isLast;
     /** @type {?} */

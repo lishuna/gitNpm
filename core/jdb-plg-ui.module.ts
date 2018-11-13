@@ -9,6 +9,7 @@ import { JdbPlgPaginationComponent } from './components/jdb-plg-pagination/jdb-p
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JdbPlgButtonComponent } from './components/jdb-plg-button/jdb-plg-button.component';
 import { JdbPlgDialogComponent } from './components/jdb-plg-dialog/jdb-plg-dialog.component';
+import { JdbPlgNewDialogComponent } from './components/jdb-plg-new-dialog/jdb-plg-new-dialog.component';
 
 import { OnlyNumberDirective } from './directive/only-number.directive';
 import { WatermarkDirective } from './directive/watermark.directive';
@@ -27,7 +28,7 @@ import { ProvinceReformPipe } from './pipe/province-reform.pipe';
 import { AmountReformPipe } from './pipe/amount-reform.pipe';
 import { JdbPlgTimelineItemComponent } from './components/jdb-plg-timeline-item/jdb-plg-timeline-item.component';
 import { JdbPlgSwitchComponent } from './components/jdb-plg-switch/jdb-plg-switch.component';
-
+import { from } from 'rxjs';
 
 const MDL_MODULES = [
   ShowPictureComponent,
@@ -37,6 +38,7 @@ const MDL_MODULES = [
   JdbPlgPaginationComponent,
   JdbPlgButtonComponent,
   JdbPlgDialogComponent,
+  JdbPlgNewDialogComponent,
   JdbPlgSelectComponent,
   JdbPlgInputComponent,
   JdbPlgTimelineItemComponent,
@@ -68,6 +70,7 @@ const MDL_MODULES = [
     JdbPlgSelectComponent,
     JdbPlgButtonComponent,
     JdbPlgDialogComponent,
+    JdbPlgNewDialogComponent,
     JdbPlgInputComponent,
     JdbPlgTimelineItemComponent,
     // JdbPlgAutocompleteDirective,
@@ -78,7 +81,7 @@ const MDL_MODULES = [
     JdbPlgSwitchComponent,
   ],
   providers: [JdbPlgBaseService, CommonMethodService, FillTableService, SendStatisticService, JdbModalService],
-  entryComponents: [JdbPlgToastComponent,JdbPlgDialogComponent],
+  entryComponents: [JdbPlgToastComponent,JdbPlgNewDialogComponent,JdbPlgDialogComponent],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ]
@@ -94,3 +97,4 @@ export { CommonMethodService } from './services/jdb-plg-base/common-method.servi
 
 export { SendStatisticService } from './services/jdb-plg-base/send-statistic.service';
 export { JdbModalService } from './services/jdb-plg-base/jdb-modal.service';
+export { jQueryLikeParamSerializer } from './services/jdb-plg-base/query-string';

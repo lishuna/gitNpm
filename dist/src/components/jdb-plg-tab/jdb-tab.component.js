@@ -1,8 +1,8 @@
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-import { Component, ViewContainerRef, ViewChild, ComponentFactoryResolver, Injector, Output, EventEmitter, } from '@angular/core';
+import { Component, Input, ViewContainerRef, ViewChild, ComponentFactoryResolver, Injector, Output, EventEmitter } from '@angular/core';
 var JdbTabComponent = /** @class */ (function () {
     function JdbTabComponent(componentFactoryResolver, _injector) {
         this.componentFactoryResolver = componentFactoryResolver;
@@ -10,10 +10,14 @@ var JdbTabComponent = /** @class */ (function () {
         this.onTabChange = new EventEmitter();
         this.onTabRemove = new EventEmitter();
         this.onTopComMsg = new EventEmitter();
+        this.totalTipChange = new EventEmitter();
         this.items = [];
         this.tabComs = [];
         this.curTabIndex = 0;
         this.tabIdComMap = {};
+        this.totalTip = {
+            isShow: false
+        };
     }
     /**
      * @return {?}
@@ -21,7 +25,15 @@ var JdbTabComponent = /** @class */ (function () {
     JdbTabComponent.prototype.ngOnInit = /**
      * @return {?}
      */
+    function () { };
+    /**
+     * @return {?}
+     */
+    JdbTabComponent.prototype.ngOnChanges = /**
+     * @return {?}
+     */
     function () {
+        // console.log('changes:totalTip:' + this.totalTip);
     };
     /**
      *
@@ -142,23 +154,39 @@ var JdbTabComponent = /** @class */ (function () {
      */
     function (ChildComponent, attrs, title, comId, isCloseFlag) {
         var _this = this;
-        if (comId === void 0) { comId = ""; }
+        if (comId === void 0) { comId = ''; }
         if (isCloseFlag === void 0) { isCloseFlag = false; }
         if (comId && this.tabIdComMap[comId]) {
-            var /** @type {?} */ com = this.tabIdComMap[comId];
+            /** @type {?} */
+            var com = this.tabIdComMap[comId];
             this.tabChange(com.index);
             return;
         }
-        var /** @type {?} */ childComponent = this.componentFactoryResolver.resolveComponentFactory(ChildComponent);
-        var /** @type {?} */ comInstance = this.target.createComponent(childComponent);
-        var /** @type {?} */ keys = Object.keys(attrs);
+        /** @type {?} */
+        var childComponent = this.componentFactoryResolver.resolveComponentFactory(ChildComponent);
+        /** @type {?} */
+        var comInstance = this.target.createComponent(childComponent);
+        /** @type {?} */
+        var keys = Object.keys(attrs);
         this.items.push({
             title: title,
             isCloseFlag: isCloseFlag,
-            theme: (attrs.theme ? (attrs.theme.name ? attrs.theme.name : null) : null),
-            style: (attrs.theme ? (attrs.theme.style ? attrs.theme.style : null) : null),
-            height: (attrs.theme ? (attrs.theme.height ? attrs.theme.height : null) : null),
-            borderLength: (attrs.theme ? (attrs.theme.borderLength ? attrs.theme.borderLength : null) : null)
+            theme: attrs.theme ? (attrs.theme.name ? attrs.theme.name : null) : null,
+            style: attrs.theme
+                ? attrs.theme.style
+                    ? attrs.theme.style
+                    : null
+                : null,
+            height: attrs.theme
+                ? attrs.theme.height
+                    ? attrs.theme.height
+                    : null
+                : null,
+            borderLength: attrs.theme
+                ? attrs.theme.borderLength
+                    ? attrs.theme.borderLength
+                    : null
+                : null
         });
         keys.forEach(function (value) {
             comInstance.instance[value] = attrs[value];
@@ -189,7 +217,7 @@ var JdbTabComponent = /** @class */ (function () {
      * @return {?}
      */
     function (tabIndex) {
-        this.tabComs[tabIndex].location.nativeElement.style.display = "none";
+        this.tabComs[tabIndex].location.nativeElement.style.display = 'none';
     };
     /**
      * @param {?} tabIndex
@@ -200,7 +228,7 @@ var JdbTabComponent = /** @class */ (function () {
      * @return {?}
      */
     function (tabIndex) {
-        this.tabComs[tabIndex].location.nativeElement.style.display = "block";
+        this.tabComs[tabIndex].location.nativeElement.style.display = 'block';
     };
     /**
      * @param {?} index
@@ -218,7 +246,8 @@ var JdbTabComponent = /** @class */ (function () {
         this.setOneComShow(index);
         this.curTabIndex = index;
         this.onTabChange.emit(index);
-        this.tabComs[index].instance.tabRefresh && this.tabComs[index].instance.tabRefresh({});
+        this.tabComs[index].instance.tabRefresh &&
+            this.tabComs[index].instance.tabRefresh({});
         // this.tabComs[index].destroy();
     };
     /**
@@ -252,8 +281,9 @@ var JdbTabComponent = /** @class */ (function () {
         }
         this.setOneComShow(this.curTabIndex);
         this.onTabRemove.emit(index);
-        var /** @type {?} */ tabIdComMap = this.tabIdComMap;
-        for (var /** @type {?} */ key in tabIdComMap) {
+        /** @type {?} */
+        var tabIdComMap = this.tabIdComMap;
+        for (var key in tabIdComMap) {
             if (tabIdComMap[key].index == index) {
                 delete tabIdComMap[key];
                 break;
@@ -269,8 +299,9 @@ var JdbTabComponent = /** @class */ (function () {
      * @return {?}
      */
     function (id) {
-        var /** @type {?} */ tabIdComMap = this.tabIdComMap;
-        for (var /** @type {?} */ key in tabIdComMap) {
+        /** @type {?} */
+        var tabIdComMap = this.tabIdComMap;
+        for (var key in tabIdComMap) {
             if (key == id) {
                 this.removeTab(tabIdComMap[key]['index']);
                 break;
@@ -292,33 +323,26 @@ var JdbTabComponent = /** @class */ (function () {
     JdbTabComponent.decorators = [
         { type: Component, args: [{
                     selector: 'jdb-tab',
-                    template: "<div class=\"tab-wraper\"> <div class=\"tab-nav-wraper\"> <div *ngFor=\"let item of items;let i = index;\" class=\"tab-item {{item.theme}} {{item.style}} tab-item-hei{{item.height}}\" [ngClass]=\"{'tab-selected':i == curTabIndex, 'trapezoid1':item.theme === 'trapezoid'&&(i == 0)}\" title='{{item.title}}'> <div (click)=\"tabChange(i)\" class=\"tab-text\" [ngClass]=\"{'trapezoid-div':item.theme === 'trapezoid'}\"> {{item.title}}</div> <span class=\"close-btn\" (click)=\"removeTab(i)\" *ngIf=\"i !== 0 && item.isCloseFlag != true\">&times;</span> <div *ngIf=\"item.borderLength === 'short'\" class=\"self-border\"></div> </div> </div> <div class=\"tab-content-wraper\"> <div #tabContent class=\"place-holder\"></div> </div> </div> ",
+                    template: "<div class=\"tab-wraper\"> <div class=\"tab-nav-wraper\"> <div *ngFor=\"let item of items;let i = index;\" class=\"tab-item {{item.theme}} {{item.style}} tab-item-hei{{item.height}}\" [ngClass]=\"{'tab-selected':i == curTabIndex, 'trapezoid1':item.theme === 'trapezoid'&&(i == 0)}\" title='{{item.title}}'> <div (click)=\"tabChange(i)\" class=\"tab-text\" [ngClass]=\"{'trapezoid-div':item.theme === 'trapezoid'}\"> {{item.title}}<span *ngIf=\"totalTip.isShow ? totalTip.isShow : false\" class=\"tab-total\">{{totalTip[i]}}</span> </div> <span class=\"close-btn\" (click)=\"removeTab(i)\" *ngIf=\"i !== 0 && item.isCloseFlag != true\">&times;</span> <div *ngIf=\"item.borderLength === 'short'\" class=\"self-border\"></div> </div> </div> <div class=\"tab-content-wraper\"> <div #tabContent class=\"place-holder\"></div> </div> </div> "
                 },] },
     ];
     /** @nocollapse */
     JdbTabComponent.ctorParameters = function () { return [
-        { type: ComponentFactoryResolver, },
-        { type: Injector, },
+        { type: ComponentFactoryResolver },
+        { type: Injector }
     ]; };
     JdbTabComponent.propDecorators = {
-        "target": [{ type: ViewChild, args: ['tabContent', { read: ViewContainerRef },] },],
-        "onTabChange": [{ type: Output },],
-        "onTabRemove": [{ type: Output },],
-        "onTopComMsg": [{ type: Output },],
+        target: [{ type: ViewChild, args: ['tabContent', { read: ViewContainerRef },] }],
+        onTabChange: [{ type: Output }],
+        onTabRemove: [{ type: Output }],
+        onTopComMsg: [{ type: Output }],
+        totalTip: [{ type: Input }],
+        totalTipChange: [{ type: Output }]
     };
     return JdbTabComponent;
 }());
 export { JdbTabComponent };
-function JdbTabComponent_tsickle_Closure_declarations() {
-    /** @type {!Array<{type: !Function, args: (undefined|!Array<?>)}>} */
-    JdbTabComponent.decorators;
-    /**
-     * @nocollapse
-     * @type {function(): !Array<(null|{type: ?, decorators: (undefined|!Array<{type: !Function, args: (undefined|!Array<?>)}>)})>}
-     */
-    JdbTabComponent.ctorParameters;
-    /** @type {!Object<string,!Array<{type: !Function, args: (undefined|!Array<?>)}>>} */
-    JdbTabComponent.propDecorators;
+if (false) {
     /** @type {?} */
     JdbTabComponent.prototype.target;
     /** @type {?} */
@@ -327,6 +351,10 @@ function JdbTabComponent_tsickle_Closure_declarations() {
     JdbTabComponent.prototype.onTabRemove;
     /** @type {?} */
     JdbTabComponent.prototype.onTopComMsg;
+    /** @type {?} */
+    JdbTabComponent.prototype.totalTip;
+    /** @type {?} */
+    JdbTabComponent.prototype.totalTipChange;
     /** @type {?} */
     JdbTabComponent.prototype.items;
     /** @type {?} */

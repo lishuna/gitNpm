@@ -1,6 +1,6 @@
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 import { Injectable } from '@angular/core';
 var FillTableService = /** @class */ (function () {
@@ -27,10 +27,14 @@ var FillTableService = /** @class */ (function () {
         lines = lines || 10;
         lists = lists || [];
         flag = flag || true;
-        var /** @type {?} */ aLength = lists.length;
-        var /** @type {?} */ mLength = lines - aLength;
-        var /** @type {?} */ fillObj = { unShowOpt: flag };
-        var /** @type {?} */ keys;
+        /** @type {?} */
+        var aLength = lists.length;
+        /** @type {?} */
+        var mLength = lines - aLength;
+        /** @type {?} */
+        var fillObj = { unShowOpt: flag };
+        /** @type {?} */
+        var keys;
         if (aLength !== 0) {
             lists.forEach(function (element) {
                 element.unShowOpt = !flag;
@@ -45,7 +49,7 @@ var FillTableService = /** @class */ (function () {
             }
         }
         if (aLength !== 0 && mLength > 0) {
-            for (var /** @type {?} */ i = 0; i < mLength; i++) {
+            for (var i = 0; i < mLength; i++) {
                 lists.push(fillObj);
             }
         }
@@ -59,13 +63,4 @@ var FillTableService = /** @class */ (function () {
     return FillTableService;
 }());
 export { FillTableService };
-function FillTableService_tsickle_Closure_declarations() {
-    /** @type {!Array<{type: !Function, args: (undefined|!Array<?>)}>} */
-    FillTableService.decorators;
-    /**
-     * @nocollapse
-     * @type {function(): !Array<(null|{type: ?, decorators: (undefined|!Array<{type: !Function, args: (undefined|!Array<?>)}>)})>}
-     */
-    FillTableService.ctorParameters;
-}
 //# sourceMappingURL=fill-table.service.js.map

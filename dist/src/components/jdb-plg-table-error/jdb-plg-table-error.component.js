@@ -1,6 +1,6 @@
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 import { Component, Input } from '@angular/core';
 var JdbPlgTableErrorComponent = /** @class */ (function () {
@@ -27,21 +27,12 @@ var JdbPlgTableErrorComponent = /** @class */ (function () {
     /** @nocollapse */
     JdbPlgTableErrorComponent.ctorParameters = function () { return []; };
     JdbPlgTableErrorComponent.propDecorators = {
-        "tableErrorText": [{ type: Input },],
+        tableErrorText: [{ type: Input }]
     };
     return JdbPlgTableErrorComponent;
 }());
 export { JdbPlgTableErrorComponent };
-function JdbPlgTableErrorComponent_tsickle_Closure_declarations() {
-    /** @type {!Array<{type: !Function, args: (undefined|!Array<?>)}>} */
-    JdbPlgTableErrorComponent.decorators;
-    /**
-     * @nocollapse
-     * @type {function(): !Array<(null|{type: ?, decorators: (undefined|!Array<{type: !Function, args: (undefined|!Array<?>)}>)})>}
-     */
-    JdbPlgTableErrorComponent.ctorParameters;
-    /** @type {!Object<string,!Array<{type: !Function, args: (undefined|!Array<?>)}>>} */
-    JdbPlgTableErrorComponent.propDecorators;
+if (false) {
     /** @type {?} */
     JdbPlgTableErrorComponent.prototype.tableErrorText;
 }

@@ -1,6 +1,6 @@
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, Renderer } from '@angular/core';
 import { animate, style, transition, trigger, state } from '@angular/animations';
@@ -108,7 +108,8 @@ var PictureViewerComponent = /** @class */ (function () {
      * @return {?}
      */
     function () {
-        var /** @type {?} */ imgContent = this.imgContent.nativeElement;
+        /** @type {?} */
+        var imgContent = this.imgContent.nativeElement;
         this.renderer.setElementStyle(imgContent, 'height', this.maxHeight + 'px');
         this.renderer.setElementStyle(imgContent, 'width', this.maxWidth + 'px');
         if (this.jdbShowType == 1) {
@@ -127,15 +128,19 @@ var PictureViewerComponent = /** @class */ (function () {
      */
     function (index) {
         var _this = this;
-        var /** @type {?} */ image = new Image();
+        /** @type {?} */
+        var image = new Image();
         image.onload = function () {
-            // 获取当前加载图片宽高
-            var /** @type {?} */ w = image.width;
-            var /** @type {?} */ h = image.height;
-            var /** @type {?} */ hRatio;
-            var /** @type {?} */ wRatio;
-            // 设置默认比例以及容器宽高
-            var /** @type {?} */ imgRate = w / h; // 图片宽高比
+            /** @type {?} */
+            var w = image.width;
+            /** @type {?} */
+            var h = image.height;
+            /** @type {?} */
+            var hRatio;
+            /** @type {?} */
+            var wRatio;
+            /** @type {?} */
+            var imgRate = w / h; // 图片宽高比
             // const maxWidth = 800;
             // const maxHeight = 600;
             wRatio = _this.maxWidth / w;
@@ -276,7 +281,8 @@ var PictureViewerComponent = /** @class */ (function () {
         if (this.imgOperate.num > 4) {
             this.imgOperate.num = 4;
         }
-        var /** @type {?} */ rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
+        /** @type {?} */
+        var rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
         this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
     };
     // 缩小
@@ -291,7 +297,8 @@ var PictureViewerComponent = /** @class */ (function () {
         if (this.imgOperate.num < 1) {
             this.imgOperate.num = 0.5;
         }
-        var /** @type {?} */ rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
+        /** @type {?} */
+        var rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
         this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
     };
     // 逆时针旋转
@@ -303,7 +310,8 @@ var PictureViewerComponent = /** @class */ (function () {
      */
     function () {
         this.imgOperate.degnum++;
-        var /** @type {?} */ rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
+        /** @type {?} */
+        var rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
         this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
     };
     // 顺时针旋转
@@ -315,7 +323,8 @@ var PictureViewerComponent = /** @class */ (function () {
      */
     function () {
         this.imgOperate.degnum--;
-        var /** @type {?} */ rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
+        /** @type {?} */
+        var rate = 'scale(' + 1 * this.imgOperate.num + ',' + 1 * this.imgOperate.num + ') rotate(' + (-this.imgOperate.degnum * 90) + 'deg)';
         this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
     };
     // 重置图片数据
@@ -330,7 +339,8 @@ var PictureViewerComponent = /** @class */ (function () {
             num: 1,
             degnum: 0
         };
-        var /** @type {?} */ rate = 'scale(1,1) rotate(0deg)';
+        /** @type {?} */
+        var rate = 'scale(1,1) rotate(0deg)';
         this.renderer.setElementStyle(this.elem[this.current].children[0], 'transition', 'transform 0.2s linear 0.4s');
         this.renderer.setElementStyle(this.elem[this.current].children[0], 'transform', rate);
     };
@@ -394,33 +404,24 @@ var PictureViewerComponent = /** @class */ (function () {
     ];
     /** @nocollapse */
     PictureViewerComponent.ctorParameters = function () { return [
-        { type: Renderer, },
+        { type: Renderer }
     ]; };
     PictureViewerComponent.propDecorators = {
-        "pictureList": [{ type: Input },],
-        "update": [{ type: Output },],
-        "imgBox": [{ type: ViewChild, args: ['img',] },],
-        "imgContent": [{ type: ViewChild, args: ['imgContent',] },],
-        "maxWidth": [{ type: Input },],
-        "maxHeight": [{ type: Input },],
-        "jdbShowType": [{ type: Input },],
-        "jdbMaster": [{ type: Input },],
-        "jdbClear": [{ type: Input },],
-        "jdbCurrent": [{ type: Input },],
+        pictureList: [{ type: Input }],
+        update: [{ type: Output }],
+        imgBox: [{ type: ViewChild, args: ['img',] }],
+        imgContent: [{ type: ViewChild, args: ['imgContent',] }],
+        maxWidth: [{ type: Input }],
+        maxHeight: [{ type: Input }],
+        jdbShowType: [{ type: Input }],
+        jdbMaster: [{ type: Input }],
+        jdbClear: [{ type: Input }],
+        jdbCurrent: [{ type: Input }]
     };
     return PictureViewerComponent;
 }());
 export { PictureViewerComponent };
-function PictureViewerComponent_tsickle_Closure_declarations() {
-    /** @type {!Array<{type: !Function, args: (undefined|!Array<?>)}>} */
-    PictureViewerComponent.decorators;
-    /**
-     * @nocollapse
-     * @type {function(): !Array<(null|{type: ?, decorators: (undefined|!Array<{type: !Function, args: (undefined|!Array<?>)}>)})>}
-     */
-    PictureViewerComponent.ctorParameters;
-    /** @type {!Object<string,!Array<{type: !Function, args: (undefined|!Array<?>)}>>} */
-    PictureViewerComponent.propDecorators;
+if (false) {
     /** @type {?} */
     PictureViewerComponent.prototype.pictureList;
     /** @type {?} */

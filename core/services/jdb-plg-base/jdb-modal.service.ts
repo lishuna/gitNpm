@@ -1,5 +1,5 @@
 import { Injectable, ComponentFactoryResolver, ComponentRef, EmbeddedViewRef, Type, ViewContainerRef } from '@angular/core';
-import { JdbPlgDialogComponent } from '../../components/jdb-plg-dialog/jdb-plg-dialog.component';
+import { JdbPlgNewDialogComponent } from '../../components/jdb-plg-new-dialog/jdb-plg-new-dialog.component';
 
 export interface Options {
     /**
@@ -110,7 +110,7 @@ export interface Options {
 
 @Injectable()
 export class JdbModalService {
-    componentRef: ComponentRef<JdbPlgDialogComponent>;
+    componentRef: ComponentRef<JdbPlgNewDialogComponent>;
     _componentRefList = [];
     _options: Options = {
         customClass: '',
@@ -148,8 +148,36 @@ export class JdbModalService {
     }
 
     //动态创建模态框,返回模态框实例
-    create(options: Options): ComponentRef<JdbPlgDialogComponent> {
-        let componentFactory = this.componentFactoryResolver.resolveComponentFactory(JdbPlgDialogComponent);
+    create(options: Options): ComponentRef<JdbPlgNewDialogComponent> {
+        this._options = {
+            customClass: '',
+            maskClass: '',
+            bodyStyle: null,
+            visible: false,
+            title: '',
+            closeable: true,
+            component: null,
+            text:'',
+            componentParams:{},
+            width: null,
+            footer: true,
+            container:null,
+            isConfirm: false,
+            okText: '',
+            cancelText: '',
+            class:'',
+            style:null,
+            onClose: () => {
+                this.destroy();
+            },
+            onOk: () => {
+                this.destroy();
+            },
+            onCancel: () => {
+                this.destroy();
+            }
+        }
+        let componentFactory = this.componentFactoryResolver.resolveComponentFactory(JdbPlgNewDialogComponent);
         let componentRef = options.container.createComponent(componentFactory);
         this._componentRefList.push(componentRef);
         //assign配置
@@ -163,7 +191,7 @@ export class JdbModalService {
     }
 
     //模态框实例上添加属性
-    assignProps(componentRef: ComponentRef<JdbPlgDialogComponent>): void {
+    assignProps(componentRef: ComponentRef<JdbPlgNewDialogComponent>): void {
         let _options = this._options;
         let ins = componentRef.instance;
         ins.visible = _options.visible || true;
@@ -196,11 +224,11 @@ export class JdbModalService {
 
     //销毁模态框
     destroy(): void {
-        console.log(this._componentRefList);
         let len = this._componentRefList.length-1;
-        this._componentRefList[len].destroy();
+        if(this._componentRefList[len]){
+            this._componentRefList[len].destroy();
+        }
         this._componentRefList.pop();
-        //this.componentRef.destroy();
     }
 
     //triggerOk

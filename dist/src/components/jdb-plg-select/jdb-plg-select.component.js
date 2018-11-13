@@ -1,6 +1,6 @@
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
   下拉框功能：
@@ -43,6 +43,7 @@ var JdbPlgSelectComponent = /** @class */ (function () {
         function () {
             return this._jdbItemDisabled;
         },
+        // 选项中某项禁用字段
         set: /**
          * @param {?} value
          * @return {?}
@@ -60,6 +61,7 @@ var JdbPlgSelectComponent = /** @class */ (function () {
         function () {
             return this._jdbError;
         },
+        // 输入框是否处于报错状态
         set: /**
          * @param {?} value
          * @return {?}
@@ -77,6 +79,7 @@ var JdbPlgSelectComponent = /** @class */ (function () {
         function () {
             return this._jdbSureDisabled;
         },
+        // 选项中某项确认禁用
         set: /**
          * @param {?} value
          * @return {?}
@@ -94,6 +97,15 @@ var JdbPlgSelectComponent = /** @class */ (function () {
         function () {
             return this._placeHolder;
         },
+        // // 选项中某项不禁用
+        // @Input()
+        // set jdbNoDisabled(value) {
+        //   this._jdbNoDisabled = value;
+        // }
+        // get jdbNoDisabled(): any {
+        //   return this._jdbNoDisabled;
+        // }
+        // 选项中某项确认禁用
         set: /**
          * @param {?} value
          * @return {?}
@@ -111,6 +123,7 @@ var JdbPlgSelectComponent = /** @class */ (function () {
         function () {
             return this._jdbClear;
         },
+        // 是否需要显示清空
         set: /**
          * @param {?} value
          * @return {?}
@@ -128,6 +141,7 @@ var JdbPlgSelectComponent = /** @class */ (function () {
         function () {
             return this._selectList;
         },
+        // 下拉框数组，必写
         set: /**
          * @param {?} value
          * @return {?}
@@ -136,9 +150,11 @@ var JdbPlgSelectComponent = /** @class */ (function () {
             var _this = this;
             // 循环数组，判断是否需要展示带有图片下拉框
             if (value) {
-                var /** @type {?} */ arr_1 = [];
+                /** @type {?} */
+                var arr_1 = [];
                 value.forEach(function (element) {
-                    var /** @type {?} */ type = typeof element;
+                    /** @type {?} */
+                    var type = typeof element;
                     if (type === 'string' || type === 'number') {
                         arr_1.push({
                             text: element,
@@ -165,6 +181,7 @@ var JdbPlgSelectComponent = /** @class */ (function () {
         function () {
             return this._size;
         },
+        // 下拉框尺寸，默认为高度30px；small为24px,large为40px;
         set: /**
          * @param {?} value
          * @return {?}
@@ -182,6 +199,7 @@ var JdbPlgSelectComponent = /** @class */ (function () {
         function () {
             return this._width;
         },
+        // 自定义宽度
         set: /**
          * @param {?} value
          * @return {?}
@@ -199,6 +217,7 @@ var JdbPlgSelectComponent = /** @class */ (function () {
         function () {
             return this._optionText;
         },
+        // 展示在页面内容字段名称
         set: /**
          * @param {?} value
          * @return {?}
@@ -216,6 +235,7 @@ var JdbPlgSelectComponent = /** @class */ (function () {
         function () {
             return this._optionValue;
         },
+        // 返回给serve对应字段名称
         set: /**
          * @param {?} value
          * @return {?}
@@ -233,6 +253,7 @@ var JdbPlgSelectComponent = /** @class */ (function () {
         function () {
             return this._jdbDisabled;
         },
+        // 下拉框禁用
         set: /**
          * @param {?} value
          * @return {?}
@@ -250,6 +271,7 @@ var JdbPlgSelectComponent = /** @class */ (function () {
         function () {
             return this._jdbMode;
         },
+        // select模式，默认为单选，chooseMore多选
         set: /**
          * @param {?} value
          * @return {?}
@@ -281,9 +303,9 @@ var JdbPlgSelectComponent = /** @class */ (function () {
             _this.show = false;
             _this.renderer.setElementClass(_this.inputDom.nativeElement, 'jdb-plg-select-active', _this.show);
         });
-        if (this._jdbClear && !this._jdbDisabled) {
-            // 监听输入框元素，若有内容时则滑上显示x
-            this.renderer2.listen(this.inputDom.nativeElement, 'mouseenter', function () {
+        // 监听输入框元素，若有内容时则滑上显示x
+        this.renderer2.listen(this.inputDom.nativeElement, 'mouseenter', function () {
+            if (_this._jdbClear && !_this._jdbDisabled) {
                 // 若输入框不存在内容，则不做任何操作
                 if (_this._jdbMode === 'chooseOne' && (_this.inputText === '' || _this.show)) {
                     return;
@@ -296,8 +318,10 @@ var JdbPlgSelectComponent = /** @class */ (function () {
                 }
                 _this.isShowClear = true;
                 _this.renderer.setElementClass(_this.inputDom.nativeElement, 'jdb-plg-select-active', _this.show);
-            });
-            this.renderer2.listen(this.inputDom.nativeElement, 'mouseleave', function () {
+            }
+        });
+        this.renderer2.listen(this.inputDom.nativeElement, 'mouseleave', function () {
+            if (_this._jdbClear && !_this._jdbDisabled) {
                 // 若输入框不存在内容，则不做任何操作
                 if (_this._jdbMode === 'chooseOne' && (_this.inputText === '' || _this.show)) {
                     return;
@@ -310,8 +334,35 @@ var JdbPlgSelectComponent = /** @class */ (function () {
                 }
                 _this.isShowClear = false;
                 _this.renderer.setElementClass(_this.inputDom.nativeElement, 'jdb-plg-select-active', _this.show);
-            });
-        }
+            }
+        });
+        // if (this._jdbClear && !this._jdbDisabled) {
+        // 	// 监听输入框元素，若有内容时则滑上显示x
+        // 	this.renderer2.listen(this.inputDom.nativeElement, 'mouseenter', () => {
+        // 		// 若输入框不存在内容，则不做任何操作
+        // 		if (this._jdbMode === 'chooseOne' && (this.inputText === '' || this.show)) {
+        // 			return;
+        // 		} else if (this._jdbMode === 'chooseNum' && (this.inputText === 0 || this.show)) {
+        // 			return;
+        // 		} else if (this._jdbMode === 'chooseMore' && (this.inputText.length === 0 || this.show)) {
+        // 			return;
+        // 		}
+        // 		this.isShowClear = true;
+        // 		this.renderer.setElementClass(this.inputDom.nativeElement, 'jdb-plg-select-active', this.show);
+        // 	});
+        // 	this.renderer2.listen(this.inputDom.nativeElement, 'mouseleave', () => {
+        // 		// 若输入框不存在内容，则不做任何操作
+        // 		if (this._jdbMode === 'chooseOne' && (this.inputText === '' || this.show)) {
+        // 			return;
+        // 		} else if (this._jdbMode === 'chooseNum' && (this.inputText === 0 || this.show)) {
+        // 			return;
+        // 		} else if (this._jdbMode === 'chooseMore' && (this.inputText.length === 0 || this.show)) {
+        // 			return;
+        // 		}
+        // 		this.isShowClear = false;
+        // 		this.renderer.setElementClass(this.inputDom.nativeElement, 'jdb-plg-select-active', this.show);
+        // 	});
+        // }
     };
     /**
      * @return {?}
@@ -358,7 +409,6 @@ var JdbPlgSelectComponent = /** @class */ (function () {
      * @return {?}
      */
     function () {
-        var _a, _b;
         if (this._jdbMode === 'chooseMore') {
             this._classMap = (_a = {},
                 _a["" + this._size] = true,
@@ -378,6 +428,7 @@ var JdbPlgSelectComponent = /** @class */ (function () {
             ,
                 _b);
         }
+        var _a, _b;
     };
     // 点击x，清空内容
     /**
@@ -437,11 +488,16 @@ var JdbPlgSelectComponent = /** @class */ (function () {
      * @return {?}
      */
     function (listHeight) {
-        var /** @type {?} */ offetTop = this.getTop(this.inputDom.nativeElement); // 元素offetTop
-        var /** @type {?} */ scrollTop = this.getScrollTop(this.inputDom.nativeElement.parentElement);
-        var /** @type {?} */ clientHeight = document.documentElement.clientHeight || document.body.clientHeight; // 屏幕高度
-        var /** @type {?} */ elemHeight = this.inputDom.nativeElement.clientHeight; // 元素高度
-        var /** @type {?} */ paddingHeight;
+        /** @type {?} */
+        var offetTop = this.getTop(this.inputDom.nativeElement);
+        /** @type {?} */
+        var scrollTop = this.getScrollTop(this.inputDom.nativeElement.parentElement);
+        /** @type {?} */
+        var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+        /** @type {?} */
+        var elemHeight = this.inputDom.nativeElement.clientHeight;
+        /** @type {?} */
+        var paddingHeight;
         if (this.jdbSize === 'small') {
             paddingHeight = 2;
         }
@@ -451,7 +507,16 @@ var JdbPlgSelectComponent = /** @class */ (function () {
         else if (this.jdbSize === 'middle') {
             paddingHeight = 5;
         }
-        var /** @type {?} */ flexHeight = clientHeight - offetTop - elemHeight - paddingHeight + scrollTop; // 剩余高度
+        /** @type {?} */
+        var flexHeight = clientHeight - offetTop - elemHeight - paddingHeight + scrollTop; // 剩余高度
+        // console.log(
+        // 	'元素offsetTop', offetTop,
+        // 	'父元素scrollTop', scrollTop,
+        // 	'元素高度', elemHeight,
+        // 	'屏幕高度', clientHeight,
+        // 	'计算后剩余高度', flexHeight,
+        // 	'浮层元素高度', listHeight,
+        // );
         if (flexHeight < listHeight) {
             // 空间不足
             this.spaceFlex = false;
@@ -571,17 +636,18 @@ var JdbPlgSelectComponent = /** @class */ (function () {
         value.forEach(function (item) {
             _this._selectList.forEach(function (elem) {
                 if (elem[_this._optionValue] === item) {
-                    // inputText为输入框中展示的内容 判断是否有重新赋值text和value字段
-                    var /** @type {?} */ textName = _this._optionText;
-                    var /** @type {?} */ valueName = _this._optionValue;
+                    /** @type {?} */
+                    var textName = _this._optionText;
+                    /** @type {?} */
+                    var valueName = _this._optionValue;
                     if (_this.jdbOptionText) {
                         textName = _this.jdbOptionText;
                     }
                     if (_this.jdbOptionValue) {
                         valueName = _this.jdbOptionValue;
                     }
-                    // key为变量的赋值方法
-                    var /** @type {?} */ obj = {};
+                    /** @type {?} */
+                    var obj = {};
                     obj[textName] = elem[_this._optionText];
                     obj[valueName] = elem[_this._optionValue];
                     _this.inputText.push(obj);
@@ -659,7 +725,8 @@ var JdbPlgSelectComponent = /** @class */ (function () {
      */
     function (e, item) {
         var _this = this;
-        var /** @type {?} */ flag = false;
+        /** @type {?} */
+        var flag = false;
         // 阻止事件冒泡
         e.stopPropagation();
         // 判断show是否为true
@@ -681,16 +748,18 @@ var JdbPlgSelectComponent = /** @class */ (function () {
             this.deleteMoreItem(e, item);
             return;
         }
-        // inputText为输入框中展示的内容
-        var /** @type {?} */ textName = this._optionText;
-        var /** @type {?} */ valueName = this._optionValue;
+        /** @type {?} */
+        var textName = this._optionText;
+        /** @type {?} */
+        var valueName = this._optionValue;
         if (this.jdbOptionText) {
             textName = this.jdbOptionText;
         }
         if (this.jdbOptionValue) {
             valueName = this.jdbOptionValue;
         }
-        var /** @type {?} */ obj = {};
+        /** @type {?} */
+        var obj = {};
         obj[textName] = item[this._optionText];
         obj[valueName] = item[this._optionValue];
         this.inputText.push(obj);
@@ -714,7 +783,8 @@ var JdbPlgSelectComponent = /** @class */ (function () {
      */
     function (e, item) {
         var _this = this;
-        var /** @type {?} */ flag = false;
+        /** @type {?} */
+        var flag = false;
         // 阻止事件冒泡
         e.stopPropagation();
         // 判断show是否为true
@@ -754,7 +824,8 @@ var JdbPlgSelectComponent = /** @class */ (function () {
      */
     function (item) {
         var _this = this;
-        var /** @type {?} */ flag = false;
+        /** @type {?} */
+        var flag = false;
         this._chooseMoreArray.forEach(function (element, index) {
             if (element === item[_this._optionValue]) {
                 flag = true;
@@ -818,7 +889,8 @@ var JdbPlgSelectComponent = /** @class */ (function () {
      * @return {?}
      */
     function (e) {
-        var /** @type {?} */ offset = e.offsetTop;
+        /** @type {?} */
+        var offset = e.offsetTop;
         if (e.offsetParent != null) {
             offset += this.getTop(e.offsetParent);
         }
@@ -834,7 +906,8 @@ var JdbPlgSelectComponent = /** @class */ (function () {
      * @return {?}
      */
     function (e) {
-        var /** @type {?} */ offset = e.scrollTop;
+        /** @type {?} */
+        var offset = e.scrollTop;
         if (e.parentElement != null) {
             offset += this.getScrollTop(e.parentElement);
         }
@@ -857,39 +930,30 @@ var JdbPlgSelectComponent = /** @class */ (function () {
     ];
     /** @nocollapse */
     JdbPlgSelectComponent.ctorParameters = function () { return [
-        { type: Renderer2, },
-        { type: Renderer, },
+        { type: Renderer2 },
+        { type: Renderer }
     ]; };
     JdbPlgSelectComponent.propDecorators = {
-        "jdbClassName": [{ type: Input },],
-        "jdbItemDisabled": [{ type: Input },],
-        "jdbError": [{ type: Input },],
-        "jdbSureDisabled": [{ type: Input },],
-        "jdbPlaceHolder": [{ type: Input },],
-        "jdbClear": [{ type: Input },],
-        "jdbSelectList": [{ type: Input },],
-        "jdbSize": [{ type: Input },],
-        "jdbWidth": [{ type: Input },],
-        "jdbOptionText": [{ type: Input },],
-        "jdbOptionValue": [{ type: Input },],
-        "jdbDisabled": [{ type: Input },],
-        "jdbMode": [{ type: Input },],
-        "inputDom": [{ type: ViewChild, args: ['inputDom',] },],
-        "optionList": [{ type: ViewChild, args: ['optionList',] },],
+        jdbClassName: [{ type: Input }],
+        jdbItemDisabled: [{ type: Input }],
+        jdbError: [{ type: Input }],
+        jdbSureDisabled: [{ type: Input }],
+        jdbPlaceHolder: [{ type: Input }],
+        jdbClear: [{ type: Input }],
+        jdbSelectList: [{ type: Input }],
+        jdbSize: [{ type: Input }],
+        jdbWidth: [{ type: Input }],
+        jdbOptionText: [{ type: Input }],
+        jdbOptionValue: [{ type: Input }],
+        jdbDisabled: [{ type: Input }],
+        jdbMode: [{ type: Input }],
+        inputDom: [{ type: ViewChild, args: ['inputDom',] }],
+        optionList: [{ type: ViewChild, args: ['optionList',] }]
     };
     return JdbPlgSelectComponent;
 }());
 export { JdbPlgSelectComponent };
-function JdbPlgSelectComponent_tsickle_Closure_declarations() {
-    /** @type {!Array<{type: !Function, args: (undefined|!Array<?>)}>} */
-    JdbPlgSelectComponent.decorators;
-    /**
-     * @nocollapse
-     * @type {function(): !Array<(null|{type: ?, decorators: (undefined|!Array<{type: !Function, args: (undefined|!Array<?>)}>)})>}
-     */
-    JdbPlgSelectComponent.ctorParameters;
-    /** @type {!Object<string,!Array<{type: !Function, args: (undefined|!Array<?>)}>>} */
-    JdbPlgSelectComponent.propDecorators;
+if (false) {
     /** @type {?} */
     JdbPlgSelectComponent.prototype._selectList;
     /** @type {?} */

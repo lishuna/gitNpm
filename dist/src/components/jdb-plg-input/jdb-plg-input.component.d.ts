@@ -48,6 +48,6 @@ export declare class JdbPlgInputComponent implements OnInit, AfterViewInit, Cont
     _emitFocus($event: any): void;
     textareaOnChange($event: any): void;
     setClassMap(): void;
-    clearTxt(): void;
+    clearTxt(e: any): void;
     toBoolean(value: boolean | string): boolean;
 }

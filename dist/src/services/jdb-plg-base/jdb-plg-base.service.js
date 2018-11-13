@@ -1,16 +1,18 @@
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 import { CommonMethodService } from './common-method.service';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import 'rxjs/add/observable/throw';
 import { filter, catchError } from 'rxjs/operators';
 import { jQueryLikeParamSerializer } from './query-string';
 import { objectAssign } from './object-assign';
 import { SendStatisticService } from './send-statistic.service';
-var /** @type {?} */ statisticList = [];
+/** @type {?} */
+var statisticList = [];
 var JdbPlgBaseService = /** @class */ (function () {
     function JdbPlgBaseService(http, commonService, sendStatisticService) {
         var _this = this;
@@ -59,7 +61,7 @@ var JdbPlgBaseService = /** @class */ (function () {
      */
     function (vRef) {
         this.vRef = vRef;
-        this.commonService.setRootViewContainerRef(this.vRef);
+        this.commonService.setRootViewContainerRef(vRef);
     };
     /**
      *
@@ -83,12 +85,16 @@ var JdbPlgBaseService = /** @class */ (function () {
      */
     function (apiName, dataObj, options) {
         var _this = this;
-        var /** @type {?} */ time = new Date().getTime();
-        var /** @type {?} */ loginToken;
-        var /** @type {?} */ loginWay;
-        var /** @type {?} */ orgUid;
-        // 系统来源
-        var /** @type {?} */ from;
+        /** @type {?} */
+        var time = new Date().getTime();
+        /** @type {?} */
+        var loginToken;
+        /** @type {?} */
+        var loginWay;
+        /** @type {?} */
+        var orgUid;
+        /** @type {?} */
+        var from;
         // 获取接口的apiException
         this.newStatisticData.service.apiException = {
             requestTime: null,
@@ -98,7 +104,8 @@ var JdbPlgBaseService = /** @class */ (function () {
             resMessage: '',
             errorMessage: ''
         };
-        var /** @type {?} */ apiException = JSON.parse(JSON.stringify(this.newStatisticData.service.apiException));
+        /** @type {?} */
+        var apiException = JSON.parse(JSON.stringify(this.newStatisticData.service.apiException));
         this.newStatisticData.service.apiException = apiException;
         if (options && options.tokenObj) {
             loginToken = localStorage.getItem(options.tokenObj.loginToken);
@@ -106,9 +113,12 @@ var JdbPlgBaseService = /** @class */ (function () {
             orgUid = localStorage.getItem(options.tokenObj.orgUid);
             from = localStorage.getItem(options.tokenObj.from);
         }
-        var /** @type {?} */ loginObj = {};
-        var /** @type {?} */ data = {};
-        var /** @type {?} */ currentRoute = location.hash.split('/')[1];
+        /** @type {?} */
+        var loginObj = {};
+        /** @type {?} */
+        var data = {};
+        /** @type {?} */
+        var currentRoute = location.hash.split('/')[1];
         if (loginToken) {
             if (orgUid) {
                 loginObj = {
@@ -133,11 +143,14 @@ var JdbPlgBaseService = /** @class */ (function () {
         // 請求參數
         apiException.params = data;
         data = jQueryLikeParamSerializer(data);
-        var /** @type {?} */ headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' });
-        var /** @type {?} */ requestoptions = {
+        /** @type {?} */
+        var headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' });
+        /** @type {?} */
+        var requestoptions = {
             headers: headers
         };
-        var /** @type {?} */ reqUrl = apiName;
+        /** @type {?} */
+        var reqUrl = apiName;
         //统计数据添加from和operator字段
         this.baseObj.from = from;
         this.baseObj.operator = localStorage.getItem('nickName');
@@ -150,7 +163,8 @@ var JdbPlgBaseService = /** @class */ (function () {
             if (currentRoute != 'login' && options && options.joinTraceId) {
                 res.error.returnUserMessage = res.error.returnUserMessage + '<br/>(日志号:' + loginObj.jdbDhTraceId + ')';
             }
-            var /** @type {?} */ endTime = new Date().getTime();
+            /** @type {?} */
+            var endTime = new Date().getTime();
             //统计接口请求时长
             apiException.requestTime = endTime - time;
             //校验接口返回的数据结构格式
@@ -160,9 +174,11 @@ var JdbPlgBaseService = /** @class */ (function () {
                 return false;
             }
             if (options.fns && options.fns.length != 0) {
-                var /** @type {?} */ len = options.fns.length;
-                for (var /** @type {?} */ i = 0; i < len; i++) {
-                    var /** @type {?} */ fn = options.fns[i];
+                /** @type {?} */
+                var len = options.fns.length;
+                for (var i = 0; i < len; i++) {
+                    /** @type {?} */
+                    var fn = options.fns[i];
                     if (res.error && res.error.returnCode * 1 === fn.returnCode && currentRoute != 'login') {
                         fn.callback();
                     }
@@ -227,7 +243,8 @@ var JdbPlgBaseService = /** @class */ (function () {
      */
     function (stamp) {
         if (stamp) {
-            var /** @type {?} */ date = new Date(stamp).toJSON();
+            /** @type {?} */
+            var date = new Date(stamp).toJSON();
             return date.split('T')[0];
         }
         return null;
@@ -243,24 +260,15 @@ var JdbPlgBaseService = /** @class */ (function () {
      * @return {?}
      */
     function (apiName, params) {
-        // let cookieStr = Cookie.get('loginInfo');
-        var /** @type {?} */ cookieObj = {};
-        var /** @type {?} */ cookieData = {};
-        // if (cookieStr) {
-        //   try {
-        //     cookieObj = JSON.parse(cookieStr);
-        //     cookieData = {
-        //       loginToken: cookieObj.loginToken,
-        //       employeeId: cookieObj.empId
-        //     };
-        //   }
-        //   catch (e) {
-        //     console.log('parse cookie error...');
-        //   }
-        // }
-        var /** @type {?} */ paramsObj = objectAssign({}, cookieData, params);
-        var /** @type {?} */ url = apiName + '?';
-        for (var /** @type {?} */ key in paramsObj) {
+        /** @type {?} */
+        var cookieObj = {};
+        /** @type {?} */
+        var cookieData = {};
+        /** @type {?} */
+        var paramsObj = objectAssign({}, cookieData, params);
+        /** @type {?} */
+        var url = apiName + '?';
+        for (var key in paramsObj) {
             if (paramsObj[key]) {
                 url += key + '=' + encodeURIComponent(paramsObj[key]) + '&';
             }
@@ -276,15 +284,20 @@ var JdbPlgBaseService = /** @class */ (function () {
      * @return {?}
      */
     function (file) {
-        var /** @type {?} */ arr = {};
-        var /** @type {?} */ reader = new FileReader();
+        /** @type {?} */
+        var arr = {};
+        /** @type {?} */
+        var reader = new FileReader();
         reader.onload = function (e) {
-            var /** @type {?} */ data = e.target.result;
-            //加载图片获取图片真实宽度和高度
-            var /** @type {?} */ image = new Image();
+            /** @type {?} */
+            var data = e.target.result;
+            /** @type {?} */
+            var image = new Image();
             image.onload = function () {
-                var /** @type {?} */ width = image.width;
-                var /** @type {?} */ height = image.height;
+                /** @type {?} */
+                var width = image.width;
+                /** @type {?} */
+                var height = image.height;
                 arr = {
                     height: height,
                     width: width
@@ -300,21 +313,14 @@ var JdbPlgBaseService = /** @class */ (function () {
     ];
     /** @nocollapse */
     JdbPlgBaseService.ctorParameters = function () { return [
-        { type: HttpClient, },
-        { type: CommonMethodService, },
-        { type: SendStatisticService, },
+        { type: HttpClient },
+        { type: CommonMethodService },
+        { type: SendStatisticService }
     ]; };
     return JdbPlgBaseService;
 }());
 export { JdbPlgBaseService };
-function JdbPlgBaseService_tsickle_Closure_declarations() {
-    /** @type {!Array<{type: !Function, args: (undefined|!Array<?>)}>} */
-    JdbPlgBaseService.decorators;
-    /**
-     * @nocollapse
-     * @type {function(): !Array<(null|{type: ?, decorators: (undefined|!Array<{type: !Function, args: (undefined|!Array<?>)}>)})>}
-     */
-    JdbPlgBaseService.ctorParameters;
+if (false) {
     /** @type {?} */
     JdbPlgBaseService.prototype.vRef;
     /** @type {?} */
