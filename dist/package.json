@@ -11,9 +11,6 @@
     "build": "sh ./build.sh",
     "packagr": "ng-packagr -p ng-package.json"
   },
-  "files": [
-    "dist/**/*.*"
-  ],
   "repository": {
     "type": "git",
     "url": "git@github.com:lishuna/gitNpm.git"
