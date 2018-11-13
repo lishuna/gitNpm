@@ -2,10 +2,10 @@ node_modules/
 tsconfig.json
 .gitignore
 .npmignore
-./core
-./build-script
+core/
+build-script/
 ng-package.json
-rollup.config.json
+rollup.config.js
 tslint.json
 webpack.config.js
 build.sh
