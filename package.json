@@ -13,7 +13,6 @@
   "files": [
     "dist/**/*.*"
   ],
-  "private": true,
   "repository": {
     "type": "git",
     "url": "git@github.com:lishuna/gitNpm.git"
