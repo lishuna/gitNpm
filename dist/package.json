@@ -2,23 +2,14 @@
   "name": "@test-ui/core",
   "version": "1.0.2",
   "description": "",
-  "types": "./jdb-plg-ui.d.ts",
-  "main": "./bundles/jdb-plg-ui.umd.js",
-  "module": "./esm5/jdb-plg-ui.js",
+  "types": "./dist/jdb-plg-ui.d.ts",
+  "main": "./dist/bundles/jdb-plg-ui.umd.js",
+  "module": "./dist/esm5/jdb-plg-ui.js",
   "scripts": {
     "start": "webpack",
     "build": "sh ./build.sh",
     "packagr": "ng-packagr -p ng-package.json"
   },
-  "files": [
-    "dist/**/*.ts",
-    "dist/**/*.css",
-    "dist/**/*.scss",
-    "dist/**/*.js",
-    "dist/**/*.json",
-    "dist/**/*.js.*",
-    "README.md"
-  ],
   "private": true,
   "repository": {
     "type": "git",
