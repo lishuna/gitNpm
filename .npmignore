@@ -3,6 +3,7 @@ tsconfig.json
 .gitignore
 .npmignore
 core/
+core.bak/
 build-script/
 ng-package.json
 rollup.config.js
