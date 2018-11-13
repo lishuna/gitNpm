@@ -10,6 +10,15 @@
     "build": "sh ./build.sh",
     "packagr": "ng-packagr -p ng-package.json"
   },
+  "files": [
+    "dist/**/*.ts",
+    "dist/**/*.css",
+    "dist/**/*.scss",
+    "dist/**/*.js",
+    "dist/**/*.json",
+    "dist/**/*.js.*",
+    "README.md"
+  ],
   "private": true,
   "repository": {
     "type": "git",
