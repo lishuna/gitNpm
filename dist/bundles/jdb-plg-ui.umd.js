@@ -1,7 +1,7 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/animations'), require('rxjs'), require('@angular/forms'), require('@angular/common/http'), require('rxjs/operators'), require('@angular/common')) :
     typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@angular/animations', 'rxjs', '@angular/forms', '@angular/common/http', 'rxjs/operators', '@angular/common'], factory) :
-    (factory((global['jdb-plg-ui'] = {}),global.ng.core,global.ng.animations,global.Rx,global.ng.forms,global.ng.common.http,global.Rx.Observable.prototype,global.ng.common));
+    (factory((global['@test-ui/core'] = {}),global.ng.core,global.ng.animations,global.Rx,global.ng.forms,global.ng.common.http,global.Rx.Observable.prototype,global.ng.common));
 }(this, (function (exports,core,animations,rxjs,forms,http,operators,common) { 'use strict';
 
     /*! *****************************************************************************

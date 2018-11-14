@@ -114,7 +114,7 @@ export default {
   external: Object.keys(globals),
   output: {
     exports: 'named',
-    name: 'jdb-plg-ui',
+    name: '@test-ui/core',
     globals,
     sourcemap: true,
   }
