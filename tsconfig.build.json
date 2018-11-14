@@ -33,7 +33,7 @@
         "annotateForClosureCompiler": true,
         "strictMetadataEmit": true,
         "flatModuleOutFile": "index.js",
-        "flatModuleId": "JdbPlgUiModule",
+        "flatModuleId": "@test-ui/core",
         "skipTemplateCodegen": true
     }
 }
