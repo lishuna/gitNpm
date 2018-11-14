@@ -1,0 +1,59 @@
+@import '../../../scss/base/variables';
+.autoprompt {
+    position: relative;
+    display: inline-block;
+    .input {
+        width: 300px;
+    }
+    ul {
+        background: $white;
+        border: 1px solid $font-c;
+        border-radius: 2px;
+        box-shadow: 3px 2px 5px $font-c;
+        width: 300px;
+        margin: 0;
+        list-style: none;
+        max-height: 250px;
+        padding: 0;
+        overflow: auto;
+        position: absolute;
+        z-index: 1001;
+    }
+    .pop_top {
+        bottom: 31px;
+    }
+    li {
+        height: 30px;
+        line-height: 30px;
+        p {
+            margin: 0 10px;
+            font-size: 13px;
+            color: $font-a;
+        }
+    }
+    li:not(.selected):hover {
+        background: $bg-a;
+        p {
+            color: $font-a;
+        }
+    }
+    .selected {
+        background: $btn-blue-n;
+        p {
+            color: $white;
+        }
+    }
+}
+
+.autoprompt-mask {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    -webkit-tap-highlight-color: transparent;
+    transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    opacity: 0;
+    position: absolute;
+    pointer-events: auto;
+    z-index: 1000;
+}

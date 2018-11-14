@@ -4525,9 +4525,6 @@ var CommonMethodService = /** @class */ (function () {
     return CommonMethodService;
 }());
 
-Object.defineProperty(exports, "__esModule", { value: true });
-require("rxjs-compat/add/observable/throw");
-
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc

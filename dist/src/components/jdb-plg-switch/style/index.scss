@@ -1,0 +1,145 @@
+:host {
+  display: inline-block;
+  .jdb-switch {
+    min-width: 44px;
+    height: 22px;
+    line-height: 20px;
+    border-radius: 100px;
+    background-color: rgba(0, 0, 0, .25);
+    display: inline-block;
+    box-sizing: border-box;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    position: relative;
+    user-select: none;
+    cursor: pointer;
+    transition: all 0.36s;
+    .inner-content {
+      color: #fff;
+      font-size: 12px;
+      display: block;
+      margin-left: 24px;
+      margin-right: 6px;
+    }
+    &:hover {
+      box-shadow: 0 0 0 2px rgba(63, 105, 242, .2);
+      outline: 0;
+    }
+
+    // 白色圆圈
+    &:before, &:after {
+      position: absolute;
+      left: 1px;
+      top: 1px;
+      width: 18px;
+      height: 18px;
+      border-radius: 18px;
+      background-color: #fff;
+      content: " ";
+      transition: all 0.36s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+    }
+
+    &:after {
+      box-shadow: 0 2px 4px 0 rgba(0, 35, 11, .2);
+    }
+
+    // 增加拉伸效果
+    &:active:before,
+    &:active:after {
+      width: 24px;
+    }
+
+    // 加载状态
+    // TODO 替换loading图标
+    &:before {
+      content: "\e64d";
+      font-family: anticon;
+      animation: loadingCircle 1s infinite linear;
+      text-align: center;
+      background: transparent;
+      z-index: 1;
+      display: none;
+      font-size: 12px;
+    }
+
+    &-loading:before {
+      display: inline-block;
+      color: rgba(0, 0, 0, 0.65);
+    }
+
+    // 小形态
+    &-small {
+      height: 16px;
+      min-width: 28px;
+      line-height: 14px;
+      &:before, &:after {
+        width: 12px;
+        height: 12px;
+      }
+      &:before {
+        animation: JdbSwitchSmallLoadingCircle 1s infinite linear;
+      }
+
+      &:active:before,
+      &:active:after {
+        width: 16px;
+      }
+      .inner-content {
+        margin-left: 18px;
+        margin-right: 3px;
+      }
+
+    }
+
+    // 开启状态
+    &-checked {
+      background-color: #3f69f2;
+      .inner-content {
+        margin-left: 6px;
+        margin-right: 24px;
+      }
+      &:after {
+        left: calc(100% - 1px);
+        transform: translateX(-100%);
+      }
+      &:before {
+        left: 100%;
+        margin-left: -19px;
+      }
+      &-loading:before {
+        color: #3f69f2;
+      }
+
+    }
+
+    // loading和禁用态置灰
+    &-loading, &-disabled {
+      pointer-events: none;
+      opacity: .4;
+    }
+  }
+
+}
+
+@keyframes JdbSwitchSmallLoadingCircle {
+  0% {
+    transform-origin: 50% 50%;
+    transform: rotate(0deg) scale(0.66667);
+  }
+  100% {
+    transform-origin: 50% 50%;
+    transform: rotate(360deg) scale(0.66667);
+  }
+}
+
+// scss并列写法有问题
+.jdb-switch-checked.jdb-switch-small {
+  .inner-content {
+    margin-left: 3px;
+    margin-right: 18px;
+  }
+  &:before {
+    left: 100%;
+    margin-left: -13px;
+  }
+}

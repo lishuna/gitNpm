@@ -57,10 +57,8 @@ let globals = {
   'date-fns/set_day': 'date-fns/set_day/index',
 
   'rxjs': 'Rx',
-  'rxjs/Observable': 'Observable',
-  'rxjs/Rx': 'Observable',
   'rxjs/operators': 'Rx.Observable.prototype',
-  'ng2-cookies/ng2-cookies': 'Cookie'
+  'rxjs/subject': 'RX.Subject.prototype'
 };
 
 const listOfDateFns = [
@@ -106,13 +104,12 @@ switch (target) {
     break;
   case 'mumd':
     console.dir(uglify.uglify);
-    plugins.push(uglify({
-      sourceMap: true
-    }));
+    plugins.push(uglify());
     break;
 };
 
 export default {
+  input: './core/jdb-plg-ui.moudle.ts',
   plugins,
   external: Object.keys(globals),
   output: {

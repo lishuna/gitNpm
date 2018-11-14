@@ -6,7 +6,6 @@ import { CommonMethodService } from './common-method.service';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import 'rxjs/add/observable/throw';
 import { filter, catchError } from 'rxjs/operators';
 import { jQueryLikeParamSerializer } from './query-string';
 import { objectAssign } from './object-assign';

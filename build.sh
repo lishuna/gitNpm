@@ -25,7 +25,7 @@ $(npm bin)/ngc -p tsconfig.build.json -t es2015 --outDir publish-es2015/src
 
 # 用rollup将编译好的es2015打包成es到 publish-es2015/esm2015/jdb-plg-ui.js
 echo 'Bundling to es module of es2015'
-export ROLLUP_TARGET=es
+export ROLLUP_TARGET=esm
 $(npm bin)/rollup -c rollup.config.js -f es -i publish-es2015/src/index.js -o publish-es2015/esm2015/jdb-plg-ui.js
 
 # 将源码编译成es5

@@ -1,0 +1,210 @@
+@import '../../../scss/base/variables.scss';
+.tab-wraper {
+    display: flex;
+    flex-direction: column;
+}
+
+.tab-nav-wraper {
+  display: flex;
+  position: relative;
+  .tab-item {
+    position: relative;
+    display: flex;
+    margin-right: 5px;
+    width: auto;
+    height: 30px;
+    line-height: 30px;
+    justify-content: center;
+    background: $bg-a;
+    border: 1px solid $font-c;
+    border-bottom: none;
+    border-radius: 2px 2px 0 0;
+    font-size: 13px;
+    text-align: center;
+    cursor: pointer;
+    &.tab-item-hei32 {
+      height: 32px;
+      line-height: 32px;
+    }
+    &.tab-item-hei36 {
+      height: 36px;
+      line-height: 36px;
+    }
+    &.tab-item-hei40 {
+      height: 40px;
+      line-height: 40px;
+    }
+    .tab-text {
+      padding: 0px 20px;
+      white-space: nowrap;
+    //   overflow: hidden;
+      vertical-align: middle;
+      text-overflow: ellipsis;
+      color: $font-b;
+    }
+    .close-btn {
+      position: absolute;
+      top: 0;
+      right: 8px; // font-size: 24px;
+      cursor: pointer;
+      color: #999;
+      font-weight: 100;
+    } // 样式拓展
+    .self-border {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      margin-left: -6px;
+      width: 12px;
+      height: 3px;
+      background-color: transparent;
+    }
+    &.tab-selected {
+      background: $body-bg;
+      border: none;
+      border-top: 3px solid $btn-blue-n;
+      .tab-text {
+        color: $btn-blue-n;
+      }
+      .self-border {
+        background-color: #3f69f2;
+      }
+    }
+    &.rectangle {
+      // 默认形状，可添加色调配置
+      width: auto;
+    }
+    &.text {
+      margin-right: 0px;
+      width: auto;
+      border: none;
+      background-color: transparent;
+      &.tab-selected {
+        border-top: none;
+        border-bottom: 3px solid #3f69f2;
+        .tab-text {
+          color: #222;
+          font-weight: bold;
+        }
+      }
+      &.lightWhiteOrangeLong {
+        .tab-text {
+          color: rgba(255, 255, 255, 0.5);
+        }
+        &.tab-selected {
+          border-bottom: 3px solid #ffab27;
+          .tab-text {
+            color: #fff;
+          }
+        }
+      }
+      &.lightWhiteOrangeShort {
+        .tab-text {
+          color: rgba(255, 255, 255, 0.5);
+        }
+        &.tab-selected {
+          border-bottom: none;
+          .tab-text {
+            color: #fff;
+          }
+          .self-border {
+            background-color: #ffab27;
+          }
+        }
+      }
+      &.grayBlackBlueShort {
+        &.tab-selected {
+          border-bottom: none;
+        }
+      }
+    }
+    &.trapezoid {
+      // 需要在项目中单独配置 .tab-nav-wraper的高度，这样就不会有1px的高度偏差。
+      margin-right: 17px;
+      border: none;
+      border-top: 1px solid $font-c;
+      &.trapezoid1 {
+        margin-left: 12px;
+      }
+      .tab-text {
+        padding: 0px 15px;
+      }
+      .trapezoid-div {
+        position: relative;
+        background-color: #e9eaee;
+        border-radius: 3px 0 0 0;
+        &::before {
+          content: '';
+          position: absolute;
+          z-index: 1;
+          top: -1px;
+          left: -7px;
+          bottom: 0;
+          width: 16px;
+          background: #e9eaee;
+          transform: skew(-20deg);
+          border-radius: 3px 0 0 0;
+          border-left: 1px solid #afb0b3;
+          border-top: 1px solid #afb0b3;
+        }
+        &::after {
+          content: '';
+          position: absolute;
+          z-index: 2;
+          top: -1px;
+          right: -7px;
+          bottom: 0;
+          width: 16px;
+          background: #e9eaee;
+          transform: skew(20deg);
+          border-radius: 0 3px 0 0;
+          border-right: 1px solid #afb0b3;
+          border-top: 1px solid #afb0b3;
+        }
+      }
+      &.tab-selected {
+        top: 0px;
+        height: 31px;
+        &.tab-item-hei32 {
+          height: 33px;
+        }
+        &.tab-item-hei36 {
+          height: 37px;
+          &.trapezoid1 {
+            margin-left: 13px;
+          }
+        }
+        &.tab-item-hei40 {
+          height: 41px;
+          &.trapezoid1 {
+            margin-left: 14px;
+          }
+        }
+        .tab-text {
+          font-weight: 500;
+        }
+        .trapezoid-div {
+          background-color: #fff;
+          color: #222;
+          &::before {
+            background: #fff;
+            z-index: 4;
+          }
+          &::after {
+            background: #fff;
+            z-index: 4;
+          }
+        }
+      }
+    }
+  }
+}
+
+.tab-content-wraper {
+  .place-holder {
+    width: 0;
+    height: 0;
+  }
+  box-shadow: 1px 1px 1px 1px $font-c;
+  background: $body-bg;
+}
